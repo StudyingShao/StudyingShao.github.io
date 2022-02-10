@@ -146,6 +146,125 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/10/cuda-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/10/cuda-2/" class="post-title-link" itemprop="url">cuda-2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-10 22:22:15" itemprop="dateCreated datePublished" datetime="2022-02-10T22:22:15+08:00">2022-02-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-11 01:06:04" itemprop="dateModified" datetime="2022-02-11T01:06:04+08:00">2022-02-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="关于Warp-Shuffle-Functions-sync-首个参数mask的作用"><a href="#关于Warp-Shuffle-Functions-sync-首个参数mask的作用" class="headerlink" title="关于Warp Shuffle Functions *_sync 首个参数mask的作用"></a>关于Warp Shuffle Functions *_sync 首个参数mask的作用</h1><p>首先来看CUDA 9.0之前的Warp Shuffle Functions形式。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">T __shfl(T var,<span class="type">int</span> srcLane,<span class="type">int</span> width=warpSize)</span><br><span class="line">T __shfl_up(T var,<span class="type">unsigned</span> <span class="type">int</span> delta,<span class="type">int</span> width=warpSize)</span><br><span class="line">T __shfl_down(T var,<span class="type">unsigned</span> <span class="type">int</span> delta,<span class="type">int</span> width=warpSize)</span><br><span class="line">T __shfl_xor(T var, <span class="type">int</span> laneMask, <span class="type">int</span> width=warpSize)</span><br></pre></td></tr></table></figure><br>再来看从CUDA 9.0开始，引入的改进的Warp Shuffle Functions形式。<br><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">CUDA C++ Programming Guide</a><br>Deprecation Notice: <strong>shfl, </strong>shfl_up, <strong>shfl_down, and </strong>shfl_xor have been deprecated as of CUDA 9.0.<br>C++官方手册中说，从CUDA 9.0开始，原有Warp Shuffle Functions被废弃，全部改用以下新形式。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">T __shfl_sync(<span class="type">unsigned</span> mask, T var, <span class="type">int</span> srcLane, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_up_sync(<span class="type">unsigned</span> mask, T var, <span class="type">unsigned</span> <span class="type">int</span> delta, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_down_sync(<span class="type">unsigned</span> mask, T var, <span class="type">unsigned</span> <span class="type">int</span> delta, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_xor_sync(<span class="type">unsigned</span> mask, T var, <span class="type">int</span> laneMask, <span class="type">int</span> width=warpSize);</span><br></pre></td></tr></table></figure><br>新形式与原有Warp Shuffle Functions功能完全一致。可以看到，与原有Warp Shuffle Functions最大的区别是新形式引入了一个变量mask。mask为一个32 bit变量，对应一个warp中的32个thread (lane)，指明参与调用的线程，也就是参与到Warp Shuffle Functions的线程集合。除此之外，可以看到每个函数后面都额外增加了一个表明同步的后缀_sync。<strong>在Pascal以及之前的架构中，我们知道一个warp中的32个线程是完全同步执行的。</strong> warp scheduler每次分别发射一条相同的指令给一个warp中的32个线程，除非遇到warp divergence情况，不在当前控制流path上的线程会被屏蔽。<br>然而，<strong>从Pascal的下一代架构——Volta架构开始，warp scheduler支持Independent Thread Scheduling，也就是说，同一个warp中的32个threads不再保证完全同步。</strong> 因此，为了保证Warp Shuffle Functions协同操作的正确性，所有参与的线程必须首先进行同步，从而保证结果的正确性。比如reduction操作的__shfl_down_sync，32个lane中的前16个先读取后16个的寄存器，必须等待操作完成之后，前8个才能再读取lane ID为8-15的lane的寄存器，以此类推。每次读取之前需要一个warp级别的同步，来保证对应的lane中寄存器的数据已经准备好。<strong>因此这些带有_sync后缀的函数首先会隐式同步所有参与到函数调用的线程，而哪些线程将参与到函数调用中，由mask的对应bit位来指定，0代表不参与，1代表参与。</strong><br>The new *_sync shfl intrinsics take in a mask indicating the threads participating in the call. A bit, representing the thread’s lane id, must be set for each participating thread to ensure they are properly converged before the intrinsic is executed by the hardware. All non-exited threads named in mask must execute the same intrinsic with the same mask, or the result is undefined.<br>那么，未被mask指定的线程呢？这里简单做一个测试。写一个kernel，并以&lt;&lt;<1,32>&gt;&gt;启动。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line"><span class="type">int</span> shfl_val = __shfl_down_sync(<span class="number">0xffffffff</span>, val, <span class="number">16</span>);</span><br></pre></td></tr></table></figure><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line"><span class="type">int</span> shfl_val = __shfl_down_sync(<span class="number">0x0000000f</span>, val, <span class="number">16</span>);</span><br></pre></td></tr></table></figure><br>观察执行后每个线程中变量shfl_val的值，可以看到传入两个不同的mask，得到的结果相同，如下所示。</1,32></p>
+<font size="1">
+
+|Thread ID|0|1|...|15|16|...|30|31|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|**shfl_val**|16|17|...|31|16|...|30|31|
+</font>
+将参数delta由16改为8，即为每个thread读当前lane ID + 8的thread中的寄存器。
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line"><span class="type">int</span> shfl_val = __shfl_down_sync(<span class="number">0xffffffff</span>, val, <span class="number">8</span>);</span><br></pre></td></tr></table></figure>
+<font size="1">
+
+|Thread ID|0|1|...|7|8|...|14|15|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|**shfl_val**|8|9|...|15|16|...|22|23|
+
+|Thread ID|16|17|...|23|24|...|30|31|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|**shfl_val**|24|25|...|31|24|...|30|31|
+</font>
+
+<p>这也就证明了:</p>
+<ol>
+<li>__shfl_down_sync()，为lane ID小的thread读取大的thread的寄存器。越界的线程，即lane ID + 8 &gt; 31的线程返回自身寄存器中的值。</li>
+<li>mask未指定的thread也会调用warp shuffle functions，而不是不执行，但这部分线程不会被函数隐式同步，所得到的结果是undefined。</li>
+</ol>
+<p>也就是说，对于Pascal及之前的架构来说，带有_sync后缀的Warp Shuffle Functions中的参数mask没有作用。而对于从Volta开始的架构来说，mask将指定参与Warp Shuffle Functions的线程，从而告知编译器，来对这部分线程在执行时进行必要的同步，来保证结果的正确性。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/what-does-mask-mean-in-warp-shuffle-functions-shfl-sync/67697">What does mask mean in warp shuffle functions (__shfl_sync)</a></p>
+<p>引用其中一段回答：</p>
+<blockquote>
+<p>For correctness, you must specify a mask parameter which includes the warp lanes you expect to participate. The behavior of lanes outside the mask is undefined (because, in fact, Volta provides no guarantees of warp convergence, except those the programmer specifically asks for, and therefore a warp lane with a zero bit in the mask implies that the specified lane may or may not participate.)</p>
+<p>The mask parameter says the following:</p>
+<p>“These are the warp lanes that must participate for correctness.”</p>
+<p>The compiler will generate the necessary instructions to reconverge those threads if they are not already converged.</p>
+<p>Thereafter the warp shuffle proceeds for the current state of the warp.</p>
+<p>There is no other implied behavior. Regardless of the mask, after the reconvergence step, the result of the warp shuffle operation will be the result you would get for whichever threads happen to be participating. A zero bit in the mask argument does not prevent a warp lane from participating, it merely does not guarantee that such a lane will participate if the warp is in a diverged state.</p>
+</blockquote>
+<p>mask中的0 bit位不会阻止一个warp lane参与到shuffle function的执行中，而仅仅是不保证这样一个lane在warp内具有分歧时会参与到shuffle function的执行中。换句话说，就是不会在执行前同步这个lane，如果它恰好执行到这里，那么就一起执行，如果不在不管它。</p>
+<blockquote>
+<p>There is an important caveat here. The mask parameter will create a reconvergence of the indicated threads. However it cannot cause reconvergence of threads that your code has made impossible.</p>
+<p>For example, this is illegal (will result in undefined behavior for warp 0):</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="keyword">if</span> (threadIdx.x &gt; <span class="number">3</span>)</span><br><span class="line">   __shfl_down_sync(<span class="number">0xFFFFFFFF</span>, v, offset, <span class="number">8</span>);</span><br></pre></td></tr></table></figure>
+<p>有一个重要的警告。mask参数会在shuffle function中同步指定threads，然而，并不包括代码中规定的并不能同步的线程（条件语句等造成的condition branches，控制流分叉warp divergence）。如上所示代码，对于warp 0来说，mask指定32个warp lane都要执行<strong>shfl_down_sync，因此要对warp 0中的32个线程进行同步。但if语句规定只有后28个线程会执行到这里，而前四个线程不会执行，二者冲突，会导致undefined behavior。<br>正确写法：使用</strong>ballot_sync预先得到所有参与__shfl_down_sync()的线程所对应的mask。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> mask = __ballot_sync(<span class="number">0xFFFFFFFF</span>, threadIdx.x &gt; <span class="number">3</span>);</span><br><span class="line"><span class="keyword">if</span> (threadIdx.x &gt; <span class="number">3</span>)</span><br><span class="line">    __shfl_down_sync(mask, v, offset, <span class="number">8</span>);</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>额外这里记录一个我自己看到的好玩儿的问题。<br><a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/using-cuda-warp-level-primitives/">developer.nvidia.com/blog/: Using CUDA Warp-Level Primitives</a>中，在Listing 4，作者写了这样一段代码：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (threadIdx.x % <span class="number">2</span>) &#123;</span><br><span class="line">    val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>配文：</p>
+<blockquote>
+<p>On Volta and later GPU architectures, the data exchange primitives can be used in thread-divergent branches: branches where some threads in the warp take a different path than the others. Listing 4 shows an example where <strong>all the threads in a warp get the value of val from the thread at lane 0. The even- and odd-numbered threads take different branches of an if statement.</strong><br>On the latest Volta (and future) GPUs, you can run library functions that use warp synchronous primitives without worrying whether the function is called in a thread-divergent branch.</p>
+</blockquote>
+<p>毫无疑问，这与我上面所说的警告有所冲突，原因在于这里FULL_MASK为0xFFFFFFFF，但对于其中一个if分支，仅有odd/even线程会访问到这里。也就是说会这会导致上文中提到的undefined behavior问题。具体这个undefined behavior是什么，在<a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/using-cuda-warp-level-primitives/148673/16">forums.developer.nvidia.com: Using CUDA Warp-Level Primitives</a>中，有人提到：</p>
+<blockquote>
+<p>In “Update Legacy Warp-Level Programming”, it says “Don’t just use FULL_MASK (i.e. 0xffffffff for 32 threads) as the mask value. If not all threads in the warp can reach the primitive according to the program logic, then using FULL_MASK may cause the program to hang.”</p>
+<p>In listing 4, regardless the thread id is even or odd, the thread in the warp will always execute one of the two __shfl_sync() statements. Therefore, FULL_MASK should be used.</p>
+<p>The following code may cause a stall.<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="keyword">if</span> (threadIdx.x % <span class="number">2</span>) &#123;</span><br><span class="line">  val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">  …</span><br><span class="line">&gt;&#125;</span><br><span class="line">&gt;<span class="keyword">else</span> &#123;</span><br><span class="line">  …</span><br><span class="line">&gt;&#125;</span><br></pre></td></tr></table></figure><br>因此我猜这里所说的undefined behavior应该就是死锁，由于FULL_MASK要求同步warp中的32个lane，而控制流导致有的lane永远不会执行到这里，因此造成死锁。这与在if条件语句中使用block内同步函数<strong>syncthreads()所导致的死锁原理相似。<br>Listing 4中的代码合法的原因是，不管是odd还是even线程，都会执行到一条</strong>shfl_sync(FULL_MASK, val, 0)指令，这两条指令的mask都是FULL_MASK，因此对这32个warp lane同步并不会导致死锁。这个道理类似__syncwarp()。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __syncwarp(<span class="type">unsigned</span> mask=FULL_MASK);</span><br></pre></td></tr></table></figure><br>用于同步warp中的线程，同步哪些由mask指定。</p>
+</blockquote>
+<p>The <strong>syncwarp() primitive causes the executing thread to wait until all threads specified in mask have executed **a </strong>syncwarp() (with the same mask)** before resuming execution. It also provides a memory fence to allow threads to communicate via memory before and after calling the primitive.</p>
+<p>只要mask指定的线程执行到了具有相同mask的<strong>syncwarp()即可继续执行，并非是一定位于同一个控制流分支的</strong>syncwarp()。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/10/cuda-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -169,10 +288,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-02-10 13:55:56 / Modified: 20:26:32" itemprop="dateCreated datePublished" datetime="2022-02-10T13:55:56+08:00">2022-02-10</time>
+              <time title="Created: 2022-02-10 13:55:56" itemprop="dateCreated datePublished" datetime="2022-02-10T13:55:56+08:00">2022-02-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-11 01:07:14" itemprop="dateModified" datetime="2022-02-11T01:07:14+08:00">2022-02-11</time>
+              </span>
 
           
 
@@ -206,121 +331,24 @@
 <li>Thread synchronization: synchronize threads in a warp and provide a memory fence.<br>线程同步指令，同步warp内的所有线程，并提供一个memory fence（这点与block内的线程同步指令<strong>syncthreads()有所区别，</strong>syncthreads()并不提供memory fence，线程间的访存结果并不彼此可见，仅保证了线程内部对自身访存结果的前后一致性）。<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__syncwarp</span><br></pre></td></tr></table></figure>
 详细内容参见：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">CUDA C++ Programming Guide</a></li>
 </ol>
-<h2 id="Synchronized-Data-Exchange"><a href="#Synchronized-Data-Exchange" class="headerlink" title="Synchronized Data Exchange"></a>Synchronized Data Exchange</h2><p>Each of the “synchronized data exchange” primitives perform a collective operation among a set of threads in a warp. The set of threads that participates in invoking each primitive is specified using a 32-bit mask, which is the first argument of these primitives. 由基元函数中第一个参数mask，来指定warp中哪些线程参与调用基元函数。<br>All the participating threads must be synchronized for the collective operation to work correctly. Therefore, these primitives first synchronize the threads if they are not already synchronized. <font color="red">为了保证协同操作的正确性，所有参与的线程必须同步。</font>意思就是，大家同时读取其他lane的寄存器，才能保证正确性，否则可能读取到其他线程修改过/未修改的值，造成错误。比如reduction操作的__shfl_down_sync，32个lane中的前16个先读取后16个的寄存器，必须操作完成之后，前8个才能再读取lane ID为8-15的lane的寄存器，以此类推，每次读取之前需要一个warp级别的同步，来保证对应的lane中寄存器的数据已经准备好。因此这些基元函数首先会隐式同步线程。</p>
+<h2 id="Synchronized-Data-Exchange"><a href="#Synchronized-Data-Exchange" class="headerlink" title="Synchronized Data Exchange"></a>Synchronized Data Exchange</h2><p>Each of the “synchronized data exchange” primitives perform a collective operation among a set of threads in a warp. The set of threads that participates in invoking each primitive is specified using a 32-bit mask, which is the first argument of these primitives. 由基元函数中第一个参数mask，来指定warp中哪些线程参与调用基元函数。<br>All the participating threads must be synchronized for the collective operation to work correctly. Therefore, these primitives first synchronize the threads if they are not already synchronized. <font color="red">为了保证协同操作的正确性，所有参与的线程必须同步。</font>意思就是，在读取其他lane的寄存器之前，必须保证对应得lane已经执行到了这里，准备好了数据，才能保证正确性，否则可能读取到其他线程修改过/未修改的值，造成错误。比如reduction操作的__shfl_down_sync，32个lane中的前16个先读取后16个的寄存器，必须操作完成之后，前8个才能再读取lane ID为8-15的lane的寄存器，以此类推，每次读取之前需要一个warp级别的同步，来保证对应的lane中寄存器的数据已经准备好。因此这些基元函数首先会隐式同步线程。</p>
 <blockquote>
 <p>what should I use for the mask argument?</p>
 </blockquote>
 <p>mask指定了哪些线程需要参与到协同操作中，这部份线程通常由程序逻辑决定，在程序中早先的一些条件分支中计算得到。以reduction为例，如果vector的单元数比block中的threads数量少，对应的代码如下。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> mask = __ballot_sync(FULL_MASK, threadIdx.x &lt; NUM_ELEMENTS);</span><br><span class="line"><span class="keyword">if</span> (threadIdx.x &lt; NUM_ELEMENTS) &#123; </span><br><span class="line">    val = input[threadIdx.x]; </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> offset = <span class="number">16</span>; offset &gt; <span class="number">0</span>; offset /= <span class="number">2</span>)</span><br><span class="line">        val += __shfl_down_sync(mask, val, offset);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>ballot_sync()用于得到参与</strong>shfl_down_sync()的线程mask，而__ballot_sync()本身使用FULL_MASK (0xffffffff for 32 threads)，因为我们假定所有线程都要执行这条指令。</p>
-<blockquote>
-<font size="5"> shuffle function test</font>
-
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line">val += __shfl_down_sync(<span class="number">0xffffffff</span>, val, <span class="number">16</span>);</span><br></pre></td></tr></table></figure>
-<font size="1">
-
-|Thread ID|0|1|...|15|16|...|30|31|
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|**val**|16|18|...|46|32|...|60|62|
-|**-**|0+16|1+17|...|15+31|16+16|...|30+30|31+31|
-</font>
-
-<blockquote>
-<p>CUDA C++</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line"><span class="type">int</span> shfl_val = __shfl_down_sync(<span class="number">0x0000000f</span>, val, <span class="number">16</span>);</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>SASS Code</p>
-</blockquote>
-<pre><code>    code for sm_60
-    Function : _Z12shuffle_testv
-    .headerflags    @&quot;EF_CUDA_SM60 EF_CUDA_PTX_SM(EF_CUDA_SM60)&quot;
-                                                       /* 0x007fbc0321e01fef */
-    /*0008*/                   MOV R1, c[0x0][0x20] ;  /* 0x4c98078000870001 */
-    /*0010*/                   S2R R0, SR_TID.X ;      /* 0xf0c8000002170000 */
-    /*0018*/                   MOV R0, R0 ;            /* 0x5c98078000070000 */
-                                                       /* 0x007fbc03fde01fef */
-    /*0028*/                   MOV R0, R0 ;            /* 0x5c98078000070000 */
-    /*0030*/                   MOV R2, R0 ;            /* 0x5c98078000070002 */
-    /*0038*/                   MOV32I R4, 0xf ;        /* 0x0100000000f7f004 */
-                                                       /* 0x007fbc03fde01fef */
-    /*0048*/                   MOV32I R6, 0x10 ;       /* 0x010000000107f006 */
-    /*0050*/                   MOV32I R7, 0x20 ;       /* 0x010000000207f007 */
-    /*0058*/                   MOV R4, R4 ;            /* 0x5c98078000470004 */
-                                                       /* 0x007fbc03fde01fef */
-    /*0068*/                   MOV R5, R2 ;            /* 0x5c98078000270005 */
-    /*0070*/                   MOV R6, R6 ;            /* 0x5c98078000670006 */
-    /*0078*/                   MOV R7, R7 ;            /* 0x5c98078000770007 */
-                                                       /* 0x007fbc03fde01fef */
-    /*0088*/                   JCAL 0x0 ;              /* 0xe220000000000040 */
-    /*0090*/                   MOV R4, R4 ;            /* 0x5c98078000470004 */
-    /*0098*/                   MOV R4, R4 ;            /* 0x5c98078000470004 */
-                                                       /* 0x001fbc03fde01fef */
-    /*00a8*/                   MOV R0, R4 ;            /* 0x5c98078000470000 */
-    /*00b0*/                   EXIT ;                  /* 0xe30000000007000f */
-    /*00b8*/                   NOP ;                   /* 0x50b0000000070f00 */
-                                                       /* 0x001f9000fde007ef */
-    /*00c8*/                   NOP ;                   /* 0x50b0000000070f00 */
-    /*00d0*/                   NOP ;                   /* 0x50b0000000070f00 */
-    /*00d8*/                   NOP ;                   /* 0x50b0000000070f00 */
-                                                       /* 0x001f8000ffe01fef */
-    /*00e8*/                   EXIT ;                  /* 0xe30000000007000f */
-    /*00f0*/                   BRA 0xf0 ;              /* 0xe2400fffff87000f */
-    /*00f8*/                   NOP;                    /* 0x50b0000000070f00 */
-            ..........
-
-
-    Function : _ZN63_INTERNAL_41_tmpxft_00002bd0_00000000_8_kernel_cpp1_ii_14db5dc516__shfl_down_syncEjiji
-    .headerflags    @&quot;EF_CUDA_SM60 EF_CUDA_PTX_SM(EF_CUDA_SM60)&quot;
-                                                               /* 0x007fbc03fde01fef */
-    /*0008*/                   MOV R7, R7 ;                    /* 0x5c98078000770007 */
-    /*0010*/                   MOV R6, R6 ;                    /* 0x5c98078000670006 */
-    /*0018*/                   MOV R5, R5 ;                    /* 0x5c98078000570005 */
-                                                               /* 0x007fbc03fde01fef */
-    /*0028*/                   MOV R4, R4 ;                    /* 0x5c98078000470004 */
-    /*0030*/                   MOV R4, R4 ;                    /* 0x5c98078000470004 */
-    /*0038*/                   MOV R5, R5 ;                    /* 0x5c98078000570005 */
-                                                               /* 0x007fbc03fde01fef */
-    /*0048*/                   MOV R3, R6 ;                    /* 0x5c98078000670003 */
-    /*0050*/                   MOV R0, R7 ;                    /* 0x5c98078000770000 */
-    /*0058*/                   MOV R6, R4 ;                    /* 0x5c98078000470006 */
-                                                               /* 0x007fbc03fde01fef */
-    /*0068*/                   MOV R5, R5 ;                    /* 0x5c98078000570005 */
-    /*0070*/                   MOV R3, R3 ;                    /* 0x5c98078000370003 */
-    /*0078*/                   MOV R0, R0 ;                    /* 0x5c98078000070000 */
-                                                               /* 0x007fbc03fde01fef */
-    /*0088*/                   MOV32I R4, 0x20 ;               /* 0x010000000207f004 */
-    /*0090*/                   IADD R4, R4, -R0 ;              /* 0x5c11000000070404 */
-    /*0098*/                   SHL R4, R4, 0x8 ;               /* 0x3848000000870404 */
-                                                               /* 0x00643c03fde01fef */
-    /*00a8*/                   LOP32I.OR R4, R4, 0x1f ;        /* 0x0420000001f70404 */
-    /*00b0*/                   MOV R8, R4 ;                    /* 0x5c98078000470008 */
-    /*00b8*/                   SHFL.DOWN PT, R7, R5, R3, R8 ;  /* 0xef17040080370507 */
-                                                               /* 0x007fbc03fde01fef */
-    /*00c8*/                   MOV R7, R7 ;                    /* 0x5c98078000770007 */
-    /*00d0*/                   MOV R4, R7 ;                    /* 0x5c98078000770004 */
-    /*00d8*/                   MOV R4, R4 ;                    /* 0x5c98078000470004 */
-                                                               /* 0x007fbc03fde01fef */
-    /*00e8*/                   BRA 0xf0 ;                      /* 0xe24000000007000f */
-    /*00f0*/                   MOV R4, R4 ;                    /* 0x5c98078000470004 */
-    /*00f8*/                   RET ;                           /* 0xe32000000007000f */
-                                                               /* 0x001f8000fc0007ff */
-    /*0108*/                   BRA 0x100 ;                     /* 0xe2400fffff07000f */
-    /*0110*/                   NOP;                            /* 0x50b0000000070f00 */
-    /*0118*/                   NOP;                            /* 0x50b0000000070f00 */
-                                                               /* 0x001f8000fc0007e0 */
-    /*0128*/                   NOP;                            /* 0x50b0000000070f00 */
-    /*0130*/                   NOP;                            /* 0x50b0000000070f00 */
-    /*0138*/                   NOP;                            /* 0x50b0000000070f00 */
-            ..........
-</code></pre><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __ballot_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> predicate);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __shfl_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> val, <span class="type">int</span> src_line, <span class="type">int</span> width=warpSize);</span><br><span class="line"><span class="type">int</span> __shfl_down_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> var, <span class="type">unsigned</span> detla, <span class="type">int</span> width=warpSize);</span><br><span class="line"><span class="type">int</span> __ballot_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> predicate);</span><br></pre></td></tr></table></figure>
 <p>Each thread that calls __ballot_sync() receives a bit mask representing all the threads in the warp that pass a true value for the predicate argument.</p>
-<p>On Volta and later GPU architectures, the data exchange primitives can be used in thread-divergent branches: branches where some threads in the warp take a different path than the others.<br>Volta以及之后的架构支持Independent Thread Scheduling，允许同一warp内的线程执行分歧分支。</p>
+<p>On Volta and later GPU architectures, the data exchange primitives can be used in thread-divergent branches: branches where some threads in the warp take a different path than the others.<br>Volta以及之后的架构支持Independent Thread Scheduling，允许同一warp内的线程执行分歧分支，不再严格保证warp内的同步。</p>
 <center><img src="/cuda-1/NVIDIA%20GPU%20architecture.jpg" width="100%" height="100%"><font color="#708090" size="2">NVIDIA GPU architecture history, Volta之后最新的架构为Turing</font></center>
 
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (threadIdx.x % <span class="number">2</span>) &#123;</span><br><span class="line">    val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Listing 4 shows an example where all the threads in a warp get the value of val from the thread at lane 0. The even- and odd-numbered threads take different branches of an if statement.<br>__shfl_sync()用于获取指定lane ID（代码中为lane 0）中寄存器中的数据。示例中，warp内所有线程获取lane 0中的val变量值，而奇数线程与偶数线程分别执行一条if语句的不同分支。可以看到mask参数给定FULL_MASK</p>
+<p>Listing 4 shows an example where all the threads in a warp get the value of val from the thread at lane 0. The even- and odd-numbered threads take different branches of an if statement.<br><strong>shfl_sync()用于获取指定lane ID（代码中为lane 0）中寄存器中的数据。示例中，warp内所有线程获取lane 0中的val变量值，而奇数线程与偶数线程分别执行一条if语句的不同分支。可以看到mask参数这里给定FULL_MASK，这是由于不管是基数线程还是偶数线程，都会执行到一条</strong>shfl_sync(FULL_MASK, val, 0)指令，因此对这32个warp lane同步并不会导致死锁。</p>
+<h2 id="Active-Mask-Query"><a href="#Active-Mask-Query" class="headerlink" title="Active Mask Query"></a>Active Mask Query</h2><p><strong>active_mask() returns a 32-bit unsigned int mask of all currently active threads in the calling warp. In other words, it shows the calling thread which threads in its warp are also executing the same </strong>active_mask(). This is useful for the :opportunistic warp-level programming” technique we explain later, as well as for debugging and understanding program behavior.<br><strong>active_mask()就是返回当前warp中所有active线程的对应mask。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Incorrect use of __active_mask()</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="keyword">if</span> (threadIdx.x &lt; NUM_ELEMENTS) &#123; </span><br><span class="line">    <span class="type">unsigned</span> mask = __active_mask(); </span><br><span class="line">    val = input[threadIdx.x]; </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> offset = <span class="number">16</span>; offset &gt; <span class="number">0</span>; offset /= <span class="number">2</span>)</span><br><span class="line">        val += __shfl_down_sync(mask, val, offset);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>如上代码是一种错误用法。相比于使用<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> mask = __ballot_sync(FULL_MASK, threadIdx.x &lt; NUM_ELEMENTS);</span><br></pre></td></tr></table></figure><br>来计算mask，代码中在if分支中使用<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> mask = __active_mask(); </span><br></pre></td></tr></table></figure><br>来计算mask。错误的原因在于，从Volta架构开始，不再保证同一warp内所有线程的完全同步执行，而当某一个线程调用</strong>active_mask()，其返回的mask是当前时刻warp中所有active threads所对应的mask，而不是所有将会执行到这里的threads所对应的mask。<br>The CUDA execution model does not guarantee that all threads taking the branch together will execute the __activemask() together. Implicit lock step execution is not guaranteed, as we will explain.</p>
+<h2 id="Warp-Synchronization"><a href="#Warp-Synchronization" class="headerlink" title="Warp Synchronization"></a>Warp Synchronization</h2><p>When threads in a warp need to perform more complicated communications or collective operations than what the data exchange primitives provide, you can use the <strong>syncwarp() primitive to synchronize threads in a warp. It is similar to the </strong>syncthreads() primitive (which synchronizes all threads in the thread block) but at finer granularity.<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __syncwarp(<span class="type">unsigned</span> mask=FULL_MASK);</span><br></pre></td></tr></table></figure><br>用于同步warp中的线程，同步哪些由mask指定。</p>
+<p>The <strong>syncwarp() primitive causes the executing thread to wait until all threads specified in mask have executed **a </strong>syncwarp() (with the same mask)<strong> before resuming execution. It also provides a </strong>memory fence** to allow threads to communicate via memory before and after calling the primitive.</p>
+<p>只要mask指定的线程执行到了具有相同mask的<strong>syncwarp()即可继续执行，并非是一定位于同一个控制流分支的</strong>syncwarp()。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> tid = threadIdx.x;</span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">16</span>]; __syncwarp();</span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">8</span>];  __syncwarp();</span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">4</span>];  __syncwarp();</span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">2</span>];  __syncwarp();</span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">1</span>];  __syncwarp();</span><br></pre></td></tr></table></figure>
 
       
@@ -617,7 +645,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

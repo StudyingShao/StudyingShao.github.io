@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="关于Warp Shuffle Functions *_sync 首个参数mask的作用首先来看CUDA 9.0之前的Warp Shuffle Functions形式。1234T __shfl(T var,int srcLane,int width&#x3D;warpSize)T __shfl_up(T var,unsigned int delta,int width&#x3D;warpSize)T __shfl_do">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cuda-2">
+<meta property="og:url" content="http://example.com/2022/02/10/cuda-2/index.html">
+<meta property="og:site_name" content="邵大宝的学习Blog">
+<meta property="og:description" content="关于Warp Shuffle Functions *_sync 首个参数mask的作用首先来看CUDA 9.0之前的Warp Shuffle Functions形式。1234T __shfl(T var,int srcLane,int width&#x3D;warpSize)T __shfl_up(T var,unsigned int delta,int width&#x3D;warpSize)T __shfl_do">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-10T14:22:15.000Z">
+<meta property="article:modified_time" content="2022-02-10T17:06:04.166Z">
+<meta property="article:author" content="Jiang Shao">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/02/10/cuda-2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>cuda-2 | 邵大宝的学习Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">邵大宝的学习Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">最爱严小跳</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/10/cuda-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          cuda-2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-10 22:22:15" itemprop="dateCreated datePublished" datetime="2022-02-10T22:22:15+08:00">2022-02-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-11 01:06:04" itemprop="dateModified" datetime="2022-02-11T01:06:04+08:00">2022-02-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="关于Warp-Shuffle-Functions-sync-首个参数mask的作用"><a href="#关于Warp-Shuffle-Functions-sync-首个参数mask的作用" class="headerlink" title="关于Warp Shuffle Functions *_sync 首个参数mask的作用"></a>关于Warp Shuffle Functions *_sync 首个参数mask的作用</h1><p>首先来看CUDA 9.0之前的Warp Shuffle Functions形式。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">T __shfl(T var,<span class="type">int</span> srcLane,<span class="type">int</span> width=warpSize)</span><br><span class="line">T __shfl_up(T var,<span class="type">unsigned</span> <span class="type">int</span> delta,<span class="type">int</span> width=warpSize)</span><br><span class="line">T __shfl_down(T var,<span class="type">unsigned</span> <span class="type">int</span> delta,<span class="type">int</span> width=warpSize)</span><br><span class="line">T __shfl_xor(T var, <span class="type">int</span> laneMask, <span class="type">int</span> width=warpSize)</span><br></pre></td></tr></table></figure><br>再来看从CUDA 9.0开始，引入的改进的Warp Shuffle Functions形式。<br><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">CUDA C++ Programming Guide</a><br>Deprecation Notice: <strong>shfl, </strong>shfl_up, <strong>shfl_down, and </strong>shfl_xor have been deprecated as of CUDA 9.0.<br>C++官方手册中说，从CUDA 9.0开始，原有Warp Shuffle Functions被废弃，全部改用以下新形式。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">T __shfl_sync(<span class="type">unsigned</span> mask, T var, <span class="type">int</span> srcLane, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_up_sync(<span class="type">unsigned</span> mask, T var, <span class="type">unsigned</span> <span class="type">int</span> delta, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_down_sync(<span class="type">unsigned</span> mask, T var, <span class="type">unsigned</span> <span class="type">int</span> delta, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_xor_sync(<span class="type">unsigned</span> mask, T var, <span class="type">int</span> laneMask, <span class="type">int</span> width=warpSize);</span><br></pre></td></tr></table></figure><br>新形式与原有Warp Shuffle Functions功能完全一致。可以看到，与原有Warp Shuffle Functions最大的区别是新形式引入了一个变量mask。mask为一个32 bit变量，对应一个warp中的32个thread (lane)，指明参与调用的线程，也就是参与到Warp Shuffle Functions的线程集合。除此之外，可以看到每个函数后面都额外增加了一个表明同步的后缀_sync。<strong>在Pascal以及之前的架构中，我们知道一个warp中的32个线程是完全同步执行的。</strong> warp scheduler每次分别发射一条相同的指令给一个warp中的32个线程，除非遇到warp divergence情况，不在当前控制流path上的线程会被屏蔽。<br>然而，<strong>从Pascal的下一代架构——Volta架构开始，warp scheduler支持Independent Thread Scheduling，也就是说，同一个warp中的32个threads不再保证完全同步。</strong> 因此，为了保证Warp Shuffle Functions协同操作的正确性，所有参与的线程必须首先进行同步，从而保证结果的正确性。比如reduction操作的__shfl_down_sync，32个lane中的前16个先读取后16个的寄存器，必须等待操作完成之后，前8个才能再读取lane ID为8-15的lane的寄存器，以此类推。每次读取之前需要一个warp级别的同步，来保证对应的lane中寄存器的数据已经准备好。<strong>因此这些带有_sync后缀的函数首先会隐式同步所有参与到函数调用的线程，而哪些线程将参与到函数调用中，由mask的对应bit位来指定，0代表不参与，1代表参与。</strong><br>The new *_sync shfl intrinsics take in a mask indicating the threads participating in the call. A bit, representing the thread’s lane id, must be set for each participating thread to ensure they are properly converged before the intrinsic is executed by the hardware. All non-exited threads named in mask must execute the same intrinsic with the same mask, or the result is undefined.<br>那么，未被mask指定的线程呢？这里简单做一个测试。写一个kernel，并以&lt;&lt;<1,32>&gt;&gt;启动。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line"><span class="type">int</span> shfl_val = __shfl_down_sync(<span class="number">0xffffffff</span>, val, <span class="number">16</span>);</span><br></pre></td></tr></table></figure><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line"><span class="type">int</span> shfl_val = __shfl_down_sync(<span class="number">0x0000000f</span>, val, <span class="number">16</span>);</span><br></pre></td></tr></table></figure><br>观察执行后每个线程中变量shfl_val的值，可以看到传入两个不同的mask，得到的结果相同，如下所示。</1,32></p>
+<font size="1">
+
+|Thread ID|0|1|...|15|16|...|30|31|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|**shfl_val**|16|17|...|31|16|...|30|31|
+</font>
+将参数delta由16改为8，即为每个thread读当前lane ID + 8的thread中的寄存器。
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line"><span class="type">int</span> shfl_val = __shfl_down_sync(<span class="number">0xffffffff</span>, val, <span class="number">8</span>);</span><br></pre></td></tr></table></figure>
+<font size="1">
+
+|Thread ID|0|1|...|7|8|...|14|15|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|**shfl_val**|8|9|...|15|16|...|22|23|
+
+|Thread ID|16|17|...|23|24|...|30|31|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|**shfl_val**|24|25|...|31|24|...|30|31|
+</font>
+
+<p>这也就证明了:</p>
+<ol>
+<li>__shfl_down_sync()，为lane ID小的thread读取大的thread的寄存器。越界的线程，即lane ID + 8 &gt; 31的线程返回自身寄存器中的值。</li>
+<li>mask未指定的thread也会调用warp shuffle functions，而不是不执行，但这部分线程不会被函数隐式同步，所得到的结果是undefined。</li>
+</ol>
+<p>也就是说，对于Pascal及之前的架构来说，带有_sync后缀的Warp Shuffle Functions中的参数mask没有作用。而对于从Volta开始的架构来说，mask将指定参与Warp Shuffle Functions的线程，从而告知编译器，来对这部分线程在执行时进行必要的同步，来保证结果的正确性。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/what-does-mask-mean-in-warp-shuffle-functions-shfl-sync/67697">What does mask mean in warp shuffle functions (__shfl_sync)</a></p>
+<p>引用其中一段回答：</p>
+<blockquote>
+<p>For correctness, you must specify a mask parameter which includes the warp lanes you expect to participate. The behavior of lanes outside the mask is undefined (because, in fact, Volta provides no guarantees of warp convergence, except those the programmer specifically asks for, and therefore a warp lane with a zero bit in the mask implies that the specified lane may or may not participate.)</p>
+<p>The mask parameter says the following:</p>
+<p>“These are the warp lanes that must participate for correctness.”</p>
+<p>The compiler will generate the necessary instructions to reconverge those threads if they are not already converged.</p>
+<p>Thereafter the warp shuffle proceeds for the current state of the warp.</p>
+<p>There is no other implied behavior. Regardless of the mask, after the reconvergence step, the result of the warp shuffle operation will be the result you would get for whichever threads happen to be participating. A zero bit in the mask argument does not prevent a warp lane from participating, it merely does not guarantee that such a lane will participate if the warp is in a diverged state.</p>
+</blockquote>
+<p>mask中的0 bit位不会阻止一个warp lane参与到shuffle function的执行中，而仅仅是不保证这样一个lane在warp内具有分歧时会参与到shuffle function的执行中。换句话说，就是不会在执行前同步这个lane，如果它恰好执行到这里，那么就一起执行，如果不在不管它。</p>
+<blockquote>
+<p>There is an important caveat here. The mask parameter will create a reconvergence of the indicated threads. However it cannot cause reconvergence of threads that your code has made impossible.</p>
+<p>For example, this is illegal (will result in undefined behavior for warp 0):</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="keyword">if</span> (threadIdx.x &gt; <span class="number">3</span>)</span><br><span class="line">   __shfl_down_sync(<span class="number">0xFFFFFFFF</span>, v, offset, <span class="number">8</span>);</span><br></pre></td></tr></table></figure>
+<p>有一个重要的警告。mask参数会在shuffle function中同步指定threads，然而，并不包括代码中规定的并不能同步的线程（条件语句等造成的condition branches，控制流分叉warp divergence）。如上所示代码，对于warp 0来说，mask指定32个warp lane都要执行<strong>shfl_down_sync，因此要对warp 0中的32个线程进行同步。但if语句规定只有后28个线程会执行到这里，而前四个线程不会执行，二者冲突，会导致undefined behavior。<br>正确写法：使用</strong>ballot_sync预先得到所有参与__shfl_down_sync()的线程所对应的mask。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> mask = __ballot_sync(<span class="number">0xFFFFFFFF</span>, threadIdx.x &gt; <span class="number">3</span>);</span><br><span class="line"><span class="keyword">if</span> (threadIdx.x &gt; <span class="number">3</span>)</span><br><span class="line">    __shfl_down_sync(mask, v, offset, <span class="number">8</span>);</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>额外这里记录一个我自己看到的好玩儿的问题。<br><a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/using-cuda-warp-level-primitives/">developer.nvidia.com/blog/: Using CUDA Warp-Level Primitives</a>中，在Listing 4，作者写了这样一段代码：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (threadIdx.x % <span class="number">2</span>) &#123;</span><br><span class="line">    val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>配文：</p>
+<blockquote>
+<p>On Volta and later GPU architectures, the data exchange primitives can be used in thread-divergent branches: branches where some threads in the warp take a different path than the others. Listing 4 shows an example where <strong>all the threads in a warp get the value of val from the thread at lane 0. The even- and odd-numbered threads take different branches of an if statement.</strong><br>On the latest Volta (and future) GPUs, you can run library functions that use warp synchronous primitives without worrying whether the function is called in a thread-divergent branch.</p>
+</blockquote>
+<p>毫无疑问，这与我上面所说的警告有所冲突，原因在于这里FULL_MASK为0xFFFFFFFF，但对于其中一个if分支，仅有odd/even线程会访问到这里。也就是说会这会导致上文中提到的undefined behavior问题。具体这个undefined behavior是什么，在<a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/using-cuda-warp-level-primitives/148673/16">forums.developer.nvidia.com: Using CUDA Warp-Level Primitives</a>中，有人提到：</p>
+<blockquote>
+<p>In “Update Legacy Warp-Level Programming”, it says “Don’t just use FULL_MASK (i.e. 0xffffffff for 32 threads) as the mask value. If not all threads in the warp can reach the primitive according to the program logic, then using FULL_MASK may cause the program to hang.”</p>
+<p>In listing 4, regardless the thread id is even or odd, the thread in the warp will always execute one of the two __shfl_sync() statements. Therefore, FULL_MASK should be used.</p>
+<p>The following code may cause a stall.<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="keyword">if</span> (threadIdx.x % <span class="number">2</span>) &#123;</span><br><span class="line">  val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">  …</span><br><span class="line">&gt;&#125;</span><br><span class="line">&gt;<span class="keyword">else</span> &#123;</span><br><span class="line">  …</span><br><span class="line">&gt;&#125;</span><br></pre></td></tr></table></figure><br>因此我猜这里所说的undefined behavior应该就是死锁，由于FULL_MASK要求同步warp中的32个lane，而控制流导致有的lane永远不会执行到这里，因此造成死锁。这与在if条件语句中使用block内同步函数<strong>syncthreads()所导致的死锁原理相似。<br>Listing 4中的代码合法的原因是，不管是odd还是even线程，都会执行到一条</strong>shfl_sync(FULL_MASK, val, 0)指令，这两条指令的mask都是FULL_MASK，因此对这32个warp lane同步并不会导致死锁。这个道理类似__syncwarp()。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __syncwarp(<span class="type">unsigned</span> mask=FULL_MASK);</span><br></pre></td></tr></table></figure><br>用于同步warp中的线程，同步哪些由mask指定。</p>
+</blockquote>
+<p>The <strong>syncwarp() primitive causes the executing thread to wait until all threads specified in mask have executed **a </strong>syncwarp() (with the same mask)** before resuming execution. It also provides a memory fence to allow threads to communicate via memory before and after calling the primitive.</p>
+<p>只要mask指定的线程执行到了具有相同mask的<strong>syncwarp()即可继续执行，并非是一定位于同一个控制流分支的</strong>syncwarp()。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/10/cuda-1/" rel="prev" title="cuda_1">
+      <i class="fa fa-chevron-left"></i> cuda_1
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8EWarp-Shuffle-Functions-sync-%E9%A6%96%E4%B8%AA%E5%8F%82%E6%95%B0mask%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">关于Warp Shuffle Functions *_sync 首个参数mask的作用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jiang Shao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jiang Shao</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
