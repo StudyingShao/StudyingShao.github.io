@@ -20,19 +20,17 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation1. Smoke Simulation Method1.1. Operator-Splitting MethodReference: Harris M J. Fast fluid dynamics simulation on the GPU">
+  <meta name="description" content="查看需要密码。请联系shao_study@163.com">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NVIDIA_intern_paper.md">
 <meta property="og:url" content="http://example.com/2022/02/09/NVIDIA-intern-paper-md/index.html">
 <meta property="og:site_name" content="邵大宝的学习Blog">
-<meta property="og:description" content="Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation1. Smoke Simulation Method1.1. Operator-Splitting MethodReference: Harris M J. Fast fluid dynamics simulation on the GPU">
+<meta property="og:description" content="查看需要密码。请联系shao_study@163.com">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2022/02/09/NVIDIA-intern-paper-md/1.1.1_1.png">
 <meta property="article:published_time" content="2022-02-09T15:02:28.000Z">
-<meta property="article:modified_time" content="2022-02-09T18:16:39.601Z">
+<meta property="article:modified_time" content="2022-02-10T18:45:26.663Z">
 <meta property="article:author" content="Jiang Shao">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2022/02/09/NVIDIA-intern-paper-md/1.1.1_1.png">
 
 <link rel="canonical" href="http://example.com/2022/02/09/NVIDIA-intern-paper-md/">
 
@@ -120,6 +118,11 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
@@ -183,8 +186,17 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-10 02:16:39" itemprop="dateModified" datetime="2022-02-10T02:16:39+08:00">2022-02-10</time>
+                <time title="Modified: 2022-02-11 02:45:26" itemprop="dateModified" datetime="2022-02-11T02:45:26+08:00">2022-02-11</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NVIDIA-intern-paper/" itemprop="url" rel="index"><span itemprop="name">NVIDIA intern paper</span></a>
+                </span>
+            </span>
 
           
 
@@ -197,15 +209,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation"><a href="#Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation" class="headerlink" title="Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation"></a>Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation</h1><h2 id="1-Smoke-Simulation-Method"><a href="#1-Smoke-Simulation-Method" class="headerlink" title="1. Smoke Simulation Method"></a>1. Smoke Simulation Method</h2><h3 id="1-1-Operator-Splitting-Method"><a href="#1-1-Operator-Splitting-Method" class="headerlink" title="1.1. Operator-Splitting Method"></a>1.1. Operator-Splitting Method</h3><p><strong>Reference:</strong> Harris M J. Fast fluid dynamics simulation on the GPU[J]. SIGGRAPH Courses, 2005, 220(10.1145): 1198555-1198790.<br>&ensp;&ensp;The smoke simulation solves an incompressible NS equation expressed as</p>
-<script type="math/tex; mode=display">\frac{\partial \mathbf{u} }{\partial t}=-\left( \mathbf{u}\cdot \nabla  \right)\mathbf{u}-\frac{1}{\rho }\nabla p+\nu { {\nabla }^{2} }\mathbf{u}+\mathbf{F} \tag {1.1.1}</script><p>, where <strong>u</strong> is the velocity field and for an incompressible fluid, it satisfies</p>
-<script type="math/tex; mode=display">\nabla \cdot \mathbf{u}=0. \tag {1.1.2}</script><p>With the Operator-Splitting Method, the solution of the NS equation is calculated via composition of transformations on the state. In other words, each component of the NS equation is a step that takes a field as input, and produces a new field as output. $\color{red}{[Fast Fluid Dynamics Simulation on the GPU.]}$ Define an operator <strong>S</strong> that is equivalent to the solution of NS equation over a single time step. Then, the operator S can be decomposed into the operators for advection <strong>A</strong>, diffusion <strong>D</strong>, force application <strong>F</strong>, and projection <strong>P</strong>.</p>
-<center><img src="/2022/02/09/NVIDIA-intern-paper-md/1.1.1_1.png" width="50%" height="50%"></center>
-
-<p>&ensp;&ensp;After <strong>F</strong>, <strong>D</strong>, and <strong>A</strong> operations, we can get a divergent velocity field <strong>w</strong>. Then we can get the velocity field <strong>u</strong> with zero divergence by adopting the Helmholtz-Hodge Decomposition Theorem.</p>
-<script type="math/tex; mode=display">\mathbf{w}=\mathbf{u}+\nabla p \tag {1.1.3}</script><p>This process is called the projection corresponding to <strong>P</strong>. A projection operation is always needed to guarantee the incompressibility of the fluid.<br>&ensp;&ensp;If we apply the divergence operator to both sides of the above equation, we obtain</p>
-<script type="math/tex; mode=display">\nabla \cdot \mathbf{u}+{ {\nabla }^{2} }p={ {\nabla }^{2} }p=\nabla \cdot \mathbf{w}. \tag {1.1.4}</script><p>Note that for an incompressible fluid, we have $\nabla \cdot \mathbf{u}=0$. Then, it becomes a Poisson equation for the pressure of the fluid, sometimes called the Poisson-pressure equation. With this equation, we can get the pressure p, and then use <strong>w</strong> and p to compute the new divergence-free velocity field <strong>u</strong> by</p>
-<script type="math/tex; mode=display">\mathbf{w}=\mathbf{u}+\nabla p. \tag {1.1.5}</script>
+        <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="cb4e2a09b470b0d68fd86f8b016444bdb72f1742a73b366a63cd692c5c1d8366">8f97375f58e8bec0b4b7e236823428aed80676320485702c3b7d5d2a2075ba100898bdaa827447c2c82617b456971f339ebea69b6b2c07170f68278ef4f13b53c8b7bf387ad232d9b6b2e48a43ef5cd0b9aefe9c33ec53993a4ccb4bd28dd5723aef3d36a6d47128d75d78073561d1a793cc6caa59e7afd42a23307828761eb9c2fedf8b5f425aa186f74c79dda28cf12de01e7030e8151963d03734e90c567c7b4f3e24c12b416bcba018268a71f36b242fbce9140a97f8df6736c4ca422360738f0feae93016594c140b243802b47f89f22ce36c82c556e2a65c974b20ff0157da11d1ab62dedbb962308551b802c08d1262201657ab7e10c41703e715533b0c23139be20e8890258805ad65c522b77580f97e44b06204e23b8d31fc7e410d424f32b5dff38455b14b88200e28ad609be1536f33d5bd925d2624ed3d3197d18a618c7da5977216df20678606cf7932e14b073d5d5c10d490ad447e20b68a3ed16b3963f61b1b62270fed3fafbf5ee76e019cb0f1d5fb0b4342d0bc4a30a949a85dd94a3865f42f781a4cf514b3ea4ca4b76e08dab94e50b63fce85d78dd24b995589294513f0dd99756742943c14cc73e36af82b0cf76e8bef7729d2feeb94752642219d5c3e73ccf189abedd9f5867f1ce95ad75663f6ed4c9f29eb10c5a3e632b573bd25219e1754cb25bfd4b03f5cc4f7b90bc17c388b2c0cbb1f450c784ab97e2bf8e714e0309dcd37f248b1f560d35c5a790a80871638fd36a2f188e894b220f9094cd37bbc7701caf42b4c85b0fe7feaed833cb924b00f564dd18d2fd029752a4d978abe9ab5bedccc6224ad559c80b4ce0bdd46794cb29490fa19451f2bf4d4a85c7444651bd0550e2fd5f43112e20638b0f98901a0054f12ecd8a4206aa2002f63f1797d3f366579534f42d8171ce023e6033f18168c7d9678d5c5b5ec6f49c3ef8e9b8b919979763ce4618e08bf39378bde143402c6df0579deefd26c9204a9d02b556c20343ab450ff2ce3e856291641a5793221fa0f156e47f5906cbbf0b4ce9cac88d5b160e6cb290b51cb32ac1d4258534772d3b89116962f99f7520e524a8d44856d66d7ad047d0d3a9e0b12b6110c7cb912b6647898e4c06dda8e708195bb12d58e76d8caedc796177190ecbe1491da905d4222f08210adb926dcdc41d4e44d6aa313a2dcf6c3c15a6c473872ed0915df473d5d346b4aae958e6f2681ec04b86d86588e2fe135b9727c0f51c5593fa8e31d3d501c9458cd53222c6167d887600fa219053937d5629aa4bf7d5702a7ecc73ad09ab472f70a90db256293d594aab41cf1d8c436adca7b8d1c1a2b7480e76b7044cbe54506ba7d4f730c638a02a08ac7c4b1ad34b4ab5cf42c3516dddf9bdfebfaa7a9e082b97025618d688cad7834c0dbdae0fa6739031fa2233e3d74c483716986f605e10e7df0d95d7daec76d5646eb3bc77526a1b39b751b90df7326b5eb7541112d59d36672e852062cd48fa531e212d1152d989b089d54a53d76d69bb5f3b15c057da7c80735e45ef500809e04b96487d555d1cf22624ca039ad8046e499f8679d039c53b49187969063ce29c0307a05f547e62efc0cf79dc0a11013b80aa35dcc55b85d335cd9b1a229071bbca5b6af47c2f2ab3a1dd1edbf27d4364076b08a153b29e9cb7a138edcca388ad19b1fa28d0cfb10ca5405a63e95cecaf16b3be906e7f4c84b4226c772202aa4a4463ef35c6bc9c96628f99f0f4f62c83ed9e3f1296f2261a3facf089bb110e14c22cac01b9730a54058cca02d53188c8aa6636f020d363ff9b16fafe7ae2c06b46fe11b6a589eae0c4df04872ca9351c391d6e41fe6667a664f51b057817ca0b084006969c77f3a399a0cb20b75e4de3750ae1ffada948b91f8c83218c80e65d9985d72b89f0cc78aa999aaca4881431df03a5d63ff700275cf2725f300bb2f8d8f2121585748e0e8aa4d0b4cdc6e478bb335fa60b98fa95b15dac7a741ca6e810ca08f0637047bda34f18b2fd4958e8b5bd4785c5c84dfdc3b99508f31e40a152234d1f5276dd8c336def5a679b4003007b4c831a08eafab95f01a7edf094fa2decf3c418840616fb59ac87344fd5cb1f06af1d8317aa52c4f97247a48d723a032e2e185ecd2aa7dc43ba620e150d521e99a076064746323622e09855f48e0a6e8e5bb66760b0eca2b861287ee1d92d8714abd23f1f154b2e35fe5d65d0171d8a97c1ec02d6363da5ccdce829232d963bf2a0f164667d6bb84ac8438fc309978ec1f531170707d917f2fc9f2acae71572ffc2dda14075704de90eb8ca2e938c25f20fd9647c8c96b56f6f144ea951d203a7baeacc7ccf4b6cbbd71a789859ed9fa105023ac65ee897e9054d9c6a72c55f04e271933fae522db4b60d334d847dbc6fd997d6f43f4fa1ce1a64fa7a6cee8c96dd351c6238fd1d8d5fefd2549b26fe971b91cebc2d2a86c623cbe87bb76a3bf481385dc76f02e0554b31b2f3e7f185ec04b12829b4e72ff22d9f93c34f814f002d2722b85f39213d17011f1dd09564de48e4ec4bc49e3a321de69927aa3853da18bd8a678be3b282c825c3d3fd836dbba188fecf0bbb63c828c7a9bdbe1354653de2ea4dab5eea52aae59840b90697dfe528dd20152bda6317b48c772e6ab8e77afdd447c9b3f64666ef451ca3c2c19b95ce088269803bab3ab7a54c038cfd93b166adac0e9856860bd090f69cce4eeba8bab402200ea307ee9cb1e10b3537205f6ed30093e31a50dfbbe312dff0a94396b51bc4d6f611c406094286019024187fd557c07d3bcbdeaac877b125a175ab59d09bac191624ee76c9a3d7e6b009f4b94e6e3cfcb0eb14b6dbb65ea0aa4c5cfe89f6d54d2a674c7190d8831f759d2cfc3fc66fc92b20c8c9308e336fa3df3e04142236a65cc79bbef73e5aa39259ca505ac928197c600aa5bb191c9f7d0b5fb14b913bfc1548e03958c2b3a063a98c29ddf3756ea325ad799971f76d86576db7560858105baae6402ad7849e9f8e20db4572f50b2795e122c0ac8b8ac35ce6eccc4952d774251afe5ff67445a6b33e992b2fe2554620e1df4496b5943070f906b8e3a07afe99be9db8b4cc7761704d1a69e0645125e1a66f1dee264097a6095af7dc037be80d6c571dced491b9d6e75df06696d9dea7dd0ae87daa5ce0f17b9232082d6bd60e41aae43586e3813a6cf8589eb8e9851b4b4fdbc799407e8e717175e8ade8a6add2dfa3dbcde623416664bc2478234337784f6e6d9cc38e2bcdb422681c4cb036bc8afbe38cdc5099978d70bb2711ac6dabc9f48cc22492ddc5576b2d9373aa02b0932cca94ce6c0550838690ce2e6df492a36aca8d5151e14d23c77d269a8fd13c62c3af5ba4ca0fe4cc5b082664bb1eceebb69f8762aa899cd40942fb0b9789cb01f90041452d123af06887ed6116ddf39fb5b183b06a5d71e03ff4882fd588aa974ca232c4e6fec5bff2ba185bd8a08469bab4f3d568d723bc540e7455f5b29ebe1ea760e7ef3eb6c1588679d6dbb5fa53f01a68b65bd2e265b9c412e335a3d57c72cc209f1f6d0a8739efe16044b5c6326ac78425a06b7ae93fad15bd6278a81f76c71eff236f1bbf354c44e99c94e77167036209ac7702d2d6d1b528ffac5b194a5bd7f7e4de13e94bb7baadabbbd0ffb893c805eae081960ec2e8b99a126e280d9528bb76541425fdd90a51f995b7338a6cbf82e7dd64c737b649c80a546240fe8a5c56f1e9fde99741764383c4a7ecffed14e613055dcca413ca034e286f3809e5d8f3b6e4ca8cbc4a827b74e9f6d0026512d785ca8f31d62455886f253c32180e47f322cda75fdef150257cd518c72ea2b4240f661507425ebf877ed5888f7a731cd281a16c653869fb45c8724eb2cda8abb2363fbd6628aaf38db779bf9a48bda791f961f751ed583f8f955e521895b4e63981b65be1d569b461b1463aebb01e9dfc618b3291125d38ed7e985b6d90e98ea622fa24b3f214da25ce93d2b5e90a813b2d7d549e33a43d1755460e4f5e8b5c4b30fc8b723c5f9ec28f97bb30ece14ecd6c4a0ac4a5abcc19fca5c889f153594a80540eafded624f0d94114f45f09668ae7057ea949ca1957f971b5460332585b024e6ead47c310812fdf73c544e4c0e50f78570b23721fd0bc952b9d44173f5457e6b02fb4357db75c612c70cb13bbb31360565f80f197e1da02677f31a85f8b65c40e3c39d6773b1247ff2cc544765c7d3ca61bda2b7e4a06c95bfde521974e7bb977884e67b3f5f3bc0506ac1d185f0e9ab8fcf3e743e2c0441f2783ec0c7e67f0f6dbd0c5d1fa4569bda3fe734ecf5f36d229bd86fb36a522fc631c027cae734c5edf8db5b9a945425d2e33d893e342d72b4d9c893e0c7848c806c9fb5f151d97e239f41fccad26fd0f4ba2aaac062708ed7250afed6f4ffc8cf7d4a50af790105065f5dba6c1269c44afda8cbdc83c18e9fcb18c3d2313e7355f87f5a4a0e4ee7e331a4bb409422c4ef788418222e684ecaa3942f94799d2fa12d7787f5bd4f93990a08902dcb0a9c86f258ce42d0df4860508b48aae3c78f045ded41d46261cce4ecf3b7478ef567fda08e499f04f1714d3d93a16d502c21be366518548a916762348a2fca8c89b4f284da4880fcbb1ced3bf5b530f49ff80703ed5d7c3e2d697d76f0cda3c9e75b1963841d09ea3a44226f5f4effb3adab0555207086fc9f6e6183163ed0ca8af1918939345d0704b54e6eabe7bc3142818cd9e6d573c0d3a9be603d65fd4d570cde98fd38a6111e4be20103a5f7de26b8a1fa1f3211a6e84f690fe9bf1234e36b9e5eadee4131cfd9b0f80cc8318b05d55de9298e49279b9efb5c5f682b</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">请输入密码。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
     </div>
 
     
@@ -285,7 +300,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation"><span class="nav-number">1.</span> <span class="nav-text">Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Smoke-Simulation-Method"><span class="nav-number">1.1.</span> <span class="nav-text">1. Smoke Simulation Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Operator-Splitting-Method"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1. Operator-Splitting Method</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -302,6 +316,12 @@
           <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>
 </div>

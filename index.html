@@ -114,6 +114,11 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
@@ -160,7 +165,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/10/cuda-2/" class="post-title-link" itemprop="url">cuda-2</a>
+            <a href="/2022/02/10/cuda-2/" class="post-title-link" itemprop="url">关于Warp Shuffle Functions *_sync 首个参数mask的作用</a>
         </h2>
 
         <div class="post-meta">
@@ -177,7 +182,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-11 01:06:04" itemprop="dateModified" datetime="2022-02-11T01:06:04+08:00">2022-02-11</time>
+                <time title="Modified: 2022-02-11 01:49:15" itemprop="dateModified" datetime="2022-02-11T01:49:15+08:00">2022-02-11</time>
               </span>
 
           
@@ -192,25 +197,97 @@
 
       
           <h1 id="关于Warp-Shuffle-Functions-sync-首个参数mask的作用"><a href="#关于Warp-Shuffle-Functions-sync-首个参数mask的作用" class="headerlink" title="关于Warp Shuffle Functions *_sync 首个参数mask的作用"></a>关于Warp Shuffle Functions *_sync 首个参数mask的作用</h1><p>首先来看CUDA 9.0之前的Warp Shuffle Functions形式。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">T __shfl(T var,<span class="type">int</span> srcLane,<span class="type">int</span> width=warpSize)</span><br><span class="line">T __shfl_up(T var,<span class="type">unsigned</span> <span class="type">int</span> delta,<span class="type">int</span> width=warpSize)</span><br><span class="line">T __shfl_down(T var,<span class="type">unsigned</span> <span class="type">int</span> delta,<span class="type">int</span> width=warpSize)</span><br><span class="line">T __shfl_xor(T var, <span class="type">int</span> laneMask, <span class="type">int</span> width=warpSize)</span><br></pre></td></tr></table></figure><br>再来看从CUDA 9.0开始，引入的改进的Warp Shuffle Functions形式。<br><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">CUDA C++ Programming Guide</a><br>Deprecation Notice: <strong>shfl, </strong>shfl_up, <strong>shfl_down, and </strong>shfl_xor have been deprecated as of CUDA 9.0.<br>C++官方手册中说，从CUDA 9.0开始，原有Warp Shuffle Functions被废弃，全部改用以下新形式。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">T __shfl_sync(<span class="type">unsigned</span> mask, T var, <span class="type">int</span> srcLane, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_up_sync(<span class="type">unsigned</span> mask, T var, <span class="type">unsigned</span> <span class="type">int</span> delta, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_down_sync(<span class="type">unsigned</span> mask, T var, <span class="type">unsigned</span> <span class="type">int</span> delta, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_xor_sync(<span class="type">unsigned</span> mask, T var, <span class="type">int</span> laneMask, <span class="type">int</span> width=warpSize);</span><br></pre></td></tr></table></figure><br>新形式与原有Warp Shuffle Functions功能完全一致。可以看到，与原有Warp Shuffle Functions最大的区别是新形式引入了一个变量mask。mask为一个32 bit变量，对应一个warp中的32个thread (lane)，指明参与调用的线程，也就是参与到Warp Shuffle Functions的线程集合。除此之外，可以看到每个函数后面都额外增加了一个表明同步的后缀_sync。<strong>在Pascal以及之前的架构中，我们知道一个warp中的32个线程是完全同步执行的。</strong> warp scheduler每次分别发射一条相同的指令给一个warp中的32个线程，除非遇到warp divergence情况，不在当前控制流path上的线程会被屏蔽。<br>然而，<strong>从Pascal的下一代架构——Volta架构开始，warp scheduler支持Independent Thread Scheduling，也就是说，同一个warp中的32个threads不再保证完全同步。</strong> 因此，为了保证Warp Shuffle Functions协同操作的正确性，所有参与的线程必须首先进行同步，从而保证结果的正确性。比如reduction操作的__shfl_down_sync，32个lane中的前16个先读取后16个的寄存器，必须等待操作完成之后，前8个才能再读取lane ID为8-15的lane的寄存器，以此类推。每次读取之前需要一个warp级别的同步，来保证对应的lane中寄存器的数据已经准备好。<strong>因此这些带有_sync后缀的函数首先会隐式同步所有参与到函数调用的线程，而哪些线程将参与到函数调用中，由mask的对应bit位来指定，0代表不参与，1代表参与。</strong><br>The new *_sync shfl intrinsics take in a mask indicating the threads participating in the call. A bit, representing the thread’s lane id, must be set for each participating thread to ensure they are properly converged before the intrinsic is executed by the hardware. All non-exited threads named in mask must execute the same intrinsic with the same mask, or the result is undefined.<br>那么，未被mask指定的线程呢？这里简单做一个测试。写一个kernel，并以&lt;&lt;<1,32>&gt;&gt;启动。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line"><span class="type">int</span> shfl_val = __shfl_down_sync(<span class="number">0xffffffff</span>, val, <span class="number">16</span>);</span><br></pre></td></tr></table></figure><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line"><span class="type">int</span> shfl_val = __shfl_down_sync(<span class="number">0x0000000f</span>, val, <span class="number">16</span>);</span><br></pre></td></tr></table></figure><br>观察执行后每个线程中变量shfl_val的值，可以看到传入两个不同的mask，得到的结果相同，如下所示。</1,32></p>
-<font size="1">
-
-|Thread ID|0|1|...|15|16|...|30|31|
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|**shfl_val**|16|17|...|31|16|...|30|31|
-</font>
-将参数delta由16改为8，即为每个thread读当前lane ID + 8的thread中的寄存器。
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line"><span class="type">int</span> shfl_val = __shfl_down_sync(<span class="number">0xffffffff</span>, val, <span class="number">8</span>);</span><br></pre></td></tr></table></figure>
-<font size="1">
-
-|Thread ID|0|1|...|7|8|...|14|15|
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|**shfl_val**|8|9|...|15|16|...|22|23|
-
-|Thread ID|16|17|...|23|24|...|30|31|
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|**shfl_val**|24|25|...|31|24|...|30|31|
-</font>
-
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Thread ID</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">…</th>
+<th style="text-align:center">15</th>
+<th style="text-align:center">16</th>
+<th style="text-align:center">…</th>
+<th style="text-align:center">30</th>
+<th style="text-align:center">31</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>shfl_val</strong></td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">17</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">31</td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">30</td>
+<td style="text-align:center">31</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>将参数delta由16改为8，即为每个thread读当前lane ID + 8的thread中的寄存器。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line"><span class="type">int</span> shfl_val = __shfl_down_sync(<span class="number">0xffffffff</span>, val, <span class="number">8</span>);</span><br></pre></td></tr></table></figure></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Thread ID</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">…</th>
+<th style="text-align:center">7</th>
+<th style="text-align:center">8</th>
+<th style="text-align:center">…</th>
+<th style="text-align:center">14</th>
+<th style="text-align:center">15</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>shfl_val</strong></td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">15</td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">22</td>
+<td style="text-align:center">23</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Thread ID</th>
+<th style="text-align:center">16</th>
+<th style="text-align:center">17</th>
+<th style="text-align:center">…</th>
+<th style="text-align:center">23</th>
+<th style="text-align:center">24</th>
+<th style="text-align:center">…</th>
+<th style="text-align:center">30</th>
+<th style="text-align:center">31</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>shfl_val</strong></td>
+<td style="text-align:center">24</td>
+<td style="text-align:center">25</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">31</td>
+<td style="text-align:center">24</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">30</td>
+<td style="text-align:center">31</td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>这也就证明了:</p>
 <ol>
 <li>__shfl_down_sync()，为lane ID小的thread读取大的thread的寄存器。越界的线程，即lane ID + 8 &gt; 31的线程返回自身寄存器中的值。</li>
@@ -296,7 +373,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-11 01:07:14" itemprop="dateModified" datetime="2022-02-11T01:07:14+08:00">2022-02-11</time>
+                <time title="Modified: 2022-02-11 01:23:25" itemprop="dateModified" datetime="2022-02-11T01:23:25+08:00">2022-02-11</time>
               </span>
 
           
@@ -319,7 +396,7 @@
 <p><strong>SIMT: Single Instruction, Multiple Thread</strong><br>In a SIMT architecture, rather than <font color="red">a single thread issuing vector instructions applied to data vectors</font>, <font color="red">multiple threads issue common instructions to arbitrary data</font>.<br>多个线程发射相同的指令作用于任意数据。矢量线程发射标量指令作用于多个标量数据。</p>
 <p>NVIDIA GPUs execute warps of 32 parallel threads using SIMT, which enables each thread to access its own registers, to load and store from divergent addresses, and to follow divergent control flow paths. The CUDA compiler and the GPU work together to ensure the threads of a warp execute the same instruction sequences together as frequently as possible to maximize performance.<br>利用SIMT架构执行以32个并行线程为单位的warps，每个线程访问自己的寄存器，从不同地址存取数据，执行分歧控制流路径。</p>
 <p>While the high performance obtained by warp execution happens behind the scene, many CUDA programs can achieve even higher performance by using explicit warp-level programming.<br>由warp执行所带来的高性能往往发生在幕后，而CUDA程序还可以通过显式warp级别编程来达到更好的性能。</p>
-<center><img src="/cuda-1/reduce_shfl_down.png" width="100%" height="100%"><font color="#708090" size="2">Part of a warp-level parallel reduction using shfl_down_sync().</font></center>
+<center><img src="/2022/02/10/cuda-1/reduce_shfl_down.png" width="100%" height="100%"><font color="#708090" size="2">Part of a warp-level parallel reduction using shfl_down_sync().</font></center>
 
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> FULL_MASK 0xffffffff</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> offset = <span class="number">16</span>; offset &gt; <span class="number">0</span>; offset /= <span class="number">2</span>)</span><br><span class="line">    val += __shfl_down_sync(FULL_MASK, val, offset);</span><br></pre></td></tr></table></figure>
 <p><a target="_blank" rel="noopener" href="http://xh.5156edu.com/page/z1015m9220j18754.html">颜色表及html代码</a><br>一个使用warp内向下shuffle函数实现reduction操作的示例。</p>
@@ -341,7 +418,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __shfl_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> val, <span class="type">int</span> src_line, <span class="type">int</span> width=warpSize);</span><br><span class="line"><span class="type">int</span> __shfl_down_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> var, <span class="type">unsigned</span> detla, <span class="type">int</span> width=warpSize);</span><br><span class="line"><span class="type">int</span> __ballot_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> predicate);</span><br></pre></td></tr></table></figure>
 <p>Each thread that calls __ballot_sync() receives a bit mask representing all the threads in the warp that pass a true value for the predicate argument.</p>
 <p>On Volta and later GPU architectures, the data exchange primitives can be used in thread-divergent branches: branches where some threads in the warp take a different path than the others.<br>Volta以及之后的架构支持Independent Thread Scheduling，允许同一warp内的线程执行分歧分支，不再严格保证warp内的同步。</p>
-<center><img src="/cuda-1/NVIDIA%20GPU%20architecture.jpg" width="100%" height="100%"><font color="#708090" size="2">NVIDIA GPU architecture history, Volta之后最新的架构为Turing</font></center>
+<center><img src="/2022/02/10/cuda-1/NVIDIA%20GPU%20architecture.jpg" width="100%" height="100%"><font color="#708090" size="2">NVIDIA GPU architecture history, Volta之后最新的架构为Turing</font></center>
 
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (threadIdx.x % <span class="number">2</span>) &#123;</span><br><span class="line">    val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Listing 4 shows an example where all the threads in a warp get the value of val from the thread at lane 0. The even- and odd-numbered threads take different branches of an if statement.<br><strong>shfl_sync()用于获取指定lane ID（代码中为lane 0）中寄存器中的数据。示例中，warp内所有线程获取lane 0中的val变量值，而奇数线程与偶数线程分别执行一条if语句的不同分支。可以看到mask参数这里给定FULL_MASK，这是由于不管是基数线程还是偶数线程，都会执行到一条</strong>shfl_sync(FULL_MASK, val, 0)指令，因此对这32个warp lane同步并不会导致死锁。</p>
@@ -400,8 +477,17 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-10 02:16:39" itemprop="dateModified" datetime="2022-02-10T02:16:39+08:00">2022-02-10</time>
+                <time title="Modified: 2022-02-11 02:45:26" itemprop="dateModified" datetime="2022-02-11T02:45:26+08:00">2022-02-11</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NVIDIA-intern-paper/" itemprop="url" rel="index"><span itemprop="name">NVIDIA intern paper</span></a>
+                </span>
+            </span>
 
           
 
@@ -414,15 +500,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation"><a href="#Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation" class="headerlink" title="Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation"></a>Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation</h1><h2 id="1-Smoke-Simulation-Method"><a href="#1-Smoke-Simulation-Method" class="headerlink" title="1. Smoke Simulation Method"></a>1. Smoke Simulation Method</h2><h3 id="1-1-Operator-Splitting-Method"><a href="#1-1-Operator-Splitting-Method" class="headerlink" title="1.1. Operator-Splitting Method"></a>1.1. Operator-Splitting Method</h3><p><strong>Reference:</strong> Harris M J. Fast fluid dynamics simulation on the GPU[J]. SIGGRAPH Courses, 2005, 220(10.1145): 1198555-1198790.<br>&ensp;&ensp;The smoke simulation solves an incompressible NS equation expressed as</p>
-<script type="math/tex; mode=display">\frac{\partial \mathbf{u} }{\partial t}=-\left( \mathbf{u}\cdot \nabla  \right)\mathbf{u}-\frac{1}{\rho }\nabla p+\nu { {\nabla }^{2} }\mathbf{u}+\mathbf{F} \tag {1.1.1}</script><p>, where <strong>u</strong> is the velocity field and for an incompressible fluid, it satisfies</p>
-<script type="math/tex; mode=display">\nabla \cdot \mathbf{u}=0. \tag {1.1.2}</script><p>With the Operator-Splitting Method, the solution of the NS equation is calculated via composition of transformations on the state. In other words, each component of the NS equation is a step that takes a field as input, and produces a new field as output. $\color{red}{[Fast Fluid Dynamics Simulation on the GPU.]}$ Define an operator <strong>S</strong> that is equivalent to the solution of NS equation over a single time step. Then, the operator S can be decomposed into the operators for advection <strong>A</strong>, diffusion <strong>D</strong>, force application <strong>F</strong>, and projection <strong>P</strong>.</p>
-<center><img src="/2022/02/09/NVIDIA-intern-paper-md/1.1.1_1.png" width="50%" height="50%"></center>
-
-<p>&ensp;&ensp;After <strong>F</strong>, <strong>D</strong>, and <strong>A</strong> operations, we can get a divergent velocity field <strong>w</strong>. Then we can get the velocity field <strong>u</strong> with zero divergence by adopting the Helmholtz-Hodge Decomposition Theorem.</p>
-<script type="math/tex; mode=display">\mathbf{w}=\mathbf{u}+\nabla p \tag {1.1.3}</script><p>This process is called the projection corresponding to <strong>P</strong>. A projection operation is always needed to guarantee the incompressibility of the fluid.<br>&ensp;&ensp;If we apply the divergence operator to both sides of the above equation, we obtain</p>
-<script type="math/tex; mode=display">\nabla \cdot \mathbf{u}+{ {\nabla }^{2} }p={ {\nabla }^{2} }p=\nabla \cdot \mathbf{w}. \tag {1.1.4}</script><p>Note that for an incompressible fluid, we have $\nabla \cdot \mathbf{u}=0$. Then, it becomes a Poisson equation for the pressure of the fluid, sometimes called the Poisson-pressure equation. With this equation, we can get the pressure p, and then use <strong>w</strong> and p to compute the new divergence-free velocity field <strong>u</strong> by</p>
-<script type="math/tex; mode=display">\mathbf{w}=\mathbf{u}+\nabla p. \tag {1.1.5}</script>
+          查看需要密码。请联系shao_study@163.com
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/02/09/NVIDIA-intern-paper-md/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -648,6 +734,12 @@
           <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>
 </div>

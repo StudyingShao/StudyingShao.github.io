@@ -27,13 +27,13 @@
 <meta property="og:site_name" content="邵大宝的学习Blog">
 <meta property="og:description" content="CUDA学习随记 假如想在 warp 内通过 shared memory 做 reduction, 并且假设数据在 shared memory 已经 ready，大家觉得代码这样写有问题吗？  1. NVIDIA DEVELOPER BLOG: Using CUDA Warp-Level Primitives2. CUDA Binary Utilities3. CUDA C++ Programmi">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/cuda-1/reduce_shfl_down.png">
-<meta property="og:image" content="http://example.com/cuda-1/NVIDIA%20GPU%20architecture.jpg">
+<meta property="og:image" content="http://example.com/2022/02/10/cuda-1/reduce_shfl_down.png">
+<meta property="og:image" content="http://example.com/2022/02/10/cuda-1/NVIDIA%20GPU%20architecture.jpg">
 <meta property="article:published_time" content="2022-02-10T05:55:56.000Z">
-<meta property="article:modified_time" content="2022-02-10T17:07:14.891Z">
+<meta property="article:modified_time" content="2022-02-10T17:23:25.409Z">
 <meta property="article:author" content="Jiang Shao">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/cuda-1/reduce_shfl_down.png">
+<meta name="twitter:image" content="http://example.com/2022/02/10/cuda-1/reduce_shfl_down.png">
 
 <link rel="canonical" href="http://example.com/2022/02/10/cuda-1/">
 
@@ -121,6 +121,11 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
@@ -184,7 +189,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-11 01:07:14" itemprop="dateModified" datetime="2022-02-11T01:07:14+08:00">2022-02-11</time>
+                <time title="Modified: 2022-02-11 01:23:25" itemprop="dateModified" datetime="2022-02-11T01:23:25+08:00">2022-02-11</time>
               </span>
 
           
@@ -207,7 +212,7 @@
 <p><strong>SIMT: Single Instruction, Multiple Thread</strong><br>In a SIMT architecture, rather than <font color="red">a single thread issuing vector instructions applied to data vectors</font>, <font color="red">multiple threads issue common instructions to arbitrary data</font>.<br>多个线程发射相同的指令作用于任意数据。矢量线程发射标量指令作用于多个标量数据。</p>
 <p>NVIDIA GPUs execute warps of 32 parallel threads using SIMT, which enables each thread to access its own registers, to load and store from divergent addresses, and to follow divergent control flow paths. The CUDA compiler and the GPU work together to ensure the threads of a warp execute the same instruction sequences together as frequently as possible to maximize performance.<br>利用SIMT架构执行以32个并行线程为单位的warps，每个线程访问自己的寄存器，从不同地址存取数据，执行分歧控制流路径。</p>
 <p>While the high performance obtained by warp execution happens behind the scene, many CUDA programs can achieve even higher performance by using explicit warp-level programming.<br>由warp执行所带来的高性能往往发生在幕后，而CUDA程序还可以通过显式warp级别编程来达到更好的性能。</p>
-<center><img src="/cuda-1/reduce_shfl_down.png" width="100%" height="100%"><font color="#708090" size="2">Part of a warp-level parallel reduction using shfl_down_sync().</font></center>
+<center><img src="/2022/02/10/cuda-1/reduce_shfl_down.png" width="100%" height="100%"><font color="#708090" size="2">Part of a warp-level parallel reduction using shfl_down_sync().</font></center>
 
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> FULL_MASK 0xffffffff</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> offset = <span class="number">16</span>; offset &gt; <span class="number">0</span>; offset /= <span class="number">2</span>)</span><br><span class="line">    val += __shfl_down_sync(FULL_MASK, val, offset);</span><br></pre></td></tr></table></figure>
 <p><a target="_blank" rel="noopener" href="http://xh.5156edu.com/page/z1015m9220j18754.html">颜色表及html代码</a><br>一个使用warp内向下shuffle函数实现reduction操作的示例。</p>
@@ -229,7 +234,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __shfl_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> val, <span class="type">int</span> src_line, <span class="type">int</span> width=warpSize);</span><br><span class="line"><span class="type">int</span> __shfl_down_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> var, <span class="type">unsigned</span> detla, <span class="type">int</span> width=warpSize);</span><br><span class="line"><span class="type">int</span> __ballot_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> predicate);</span><br></pre></td></tr></table></figure>
 <p>Each thread that calls __ballot_sync() receives a bit mask representing all the threads in the warp that pass a true value for the predicate argument.</p>
 <p>On Volta and later GPU architectures, the data exchange primitives can be used in thread-divergent branches: branches where some threads in the warp take a different path than the others.<br>Volta以及之后的架构支持Independent Thread Scheduling，允许同一warp内的线程执行分歧分支，不再严格保证warp内的同步。</p>
-<center><img src="/cuda-1/NVIDIA%20GPU%20architecture.jpg" width="100%" height="100%"><font color="#708090" size="2">NVIDIA GPU architecture history, Volta之后最新的架构为Turing</font></center>
+<center><img src="/2022/02/10/cuda-1/NVIDIA%20GPU%20architecture.jpg" width="100%" height="100%"><font color="#708090" size="2">NVIDIA GPU architecture history, Volta之后最新的架构为Turing</font></center>
 
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (threadIdx.x % <span class="number">2</span>) &#123;</span><br><span class="line">    val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Listing 4 shows an example where all the threads in a warp get the value of val from the thread at lane 0. The even- and odd-numbered threads take different branches of an if statement.<br><strong>shfl_sync()用于获取指定lane ID（代码中为lane 0）中寄存器中的数据。示例中，warp内所有线程获取lane 0中的val变量值，而奇数线程与偶数线程分别执行一条if语句的不同分支。可以看到mask参数这里给定FULL_MASK，这是由于不管是基数线程还是偶数线程，都会执行到一条</strong>shfl_sync(FULL_MASK, val, 0)指令，因此对这32个warp lane同步并不会导致死锁。</p>
@@ -257,8 +262,8 @@
       <i class="fa fa-chevron-left"></i> NVIDIA_intern_paper.md
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/02/10/cuda-2/" rel="next" title="cuda-2">
-      cuda-2 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/02/10/cuda-2/" rel="next" title="关于Warp Shuffle Functions *_sync 首个参数mask的作用">
+      关于Warp Shuffle Functions *_sync 首个参数mask的作用 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -335,6 +340,12 @@
           <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>
 </div>
