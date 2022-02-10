@@ -20,28 +20,35 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="邵大宝的学习Blog">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="CUDA学习随记 假如想在 warp 内通过 shared memory 做 reduction, 并且假设数据在 shared memory 已经 ready，大家觉得代码这样写有问题吗？  1. NVIDIA DEVELOPER BLOG: Using CUDA Warp-Level Primitives2. CUDA Binary Utilities3. CUDA C++ Programmi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cuda_1">
+<meta property="og:url" content="http://example.com/2022/02/10/cuda-1/index.html">
 <meta property="og:site_name" content="邵大宝的学习Blog">
+<meta property="og:description" content="CUDA学习随记 假如想在 warp 内通过 shared memory 做 reduction, 并且假设数据在 shared memory 已经 ready，大家觉得代码这样写有问题吗？  1. NVIDIA DEVELOPER BLOG: Using CUDA Warp-Level Primitives2. CUDA Binary Utilities3. CUDA C++ Programmi">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/cuda-1/reduce_shfl_down.png">
+<meta property="og:image" content="http://example.com/cuda-1/NVIDIA%20GPU%20architecture.jpg">
+<meta property="article:published_time" content="2022-02-10T05:55:56.000Z">
+<meta property="article:modified_time" content="2022-02-10T12:26:32.001Z">
 <meta property="article:author" content="Jiang Shao">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/cuda-1/reduce_shfl_down.png">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2022/02/10/cuda-1/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>邵大宝的学习Blog</title>
+  <title>cuda_1 | 邵大宝的学习Blog</title>
   
 
 
@@ -140,9 +147,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -158,10 +166,9 @@
       <meta itemprop="name" content="邵大宝的学习Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/10/cuda-1/" class="post-title-link" itemprop="url">cuda_1</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          cuda_1
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -185,7 +192,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="CUDA学习随记"><a href="#CUDA学习随记" class="headerlink" title="CUDA学习随记"></a>CUDA学习随记</h1><blockquote>
+        <h1 id="CUDA学习随记"><a href="#CUDA学习随记" class="headerlink" title="CUDA学习随记"></a>CUDA学习随记</h1><blockquote>
 <p>假如想在 warp 内通过 shared memory 做 reduction, 并且假设数据在 shared memory 已经 ready，大家觉得代码这样写有问题吗？</p>
 </blockquote>
 <p><a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/using-cuda-warp-level-primitives/">1. NVIDIA DEVELOPER BLOG: Using CUDA Warp-Level Primitives</a><br><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-binary-utilities/index.html">2. CUDA Binary Utilities</a><br><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">3. CUDA C++ Programming Guide</a></p>
@@ -323,235 +330,30 @@
 <p>Listing 4 shows an example where all the threads in a warp get the value of val from the thread at lane 0. The even- and odd-numbered threads take different branches of an if statement.<br>__shfl_sync()用于获取指定lane ID（代码中为lane 0）中寄存器中的数据。示例中，warp内所有线程获取lane 0中的val变量值，而奇数线程与偶数线程分别执行一条if语句的不同分支。可以看到mask参数给定FULL_MASK</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> tid = threadIdx.x;</span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">16</span>]; __syncwarp();</span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">8</span>];  __syncwarp();</span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">4</span>];  __syncwarp();</span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">2</span>];  __syncwarp();</span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">1</span>];  __syncwarp();</span><br></pre></td></tr></table></figure>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/09/NVIDIA-intern-paper-md/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jiang Shao">
-      <meta itemprop="description" content="">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邵大宝的学习Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/09/NVIDIA-intern-paper-md/" class="post-title-link" itemprop="url">NVIDIA_intern_paper.md</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-09 23:02:28" itemprop="dateCreated datePublished" datetime="2022-02-09T23:02:28+08:00">2022-02-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-10 02:16:39" itemprop="dateModified" datetime="2022-02-10T02:16:39+08:00">2022-02-10</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation"><a href="#Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation" class="headerlink" title="Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation"></a>Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation</h1><h2 id="1-Smoke-Simulation-Method"><a href="#1-Smoke-Simulation-Method" class="headerlink" title="1. Smoke Simulation Method"></a>1. Smoke Simulation Method</h2><h3 id="1-1-Operator-Splitting-Method"><a href="#1-1-Operator-Splitting-Method" class="headerlink" title="1.1. Operator-Splitting Method"></a>1.1. Operator-Splitting Method</h3><p><strong>Reference:</strong> Harris M J. Fast fluid dynamics simulation on the GPU[J]. SIGGRAPH Courses, 2005, 220(10.1145): 1198555-1198790.<br>&ensp;&ensp;The smoke simulation solves an incompressible NS equation expressed as</p>
-<script type="math/tex; mode=display">\frac{\partial \mathbf{u} }{\partial t}=-\left( \mathbf{u}\cdot \nabla  \right)\mathbf{u}-\frac{1}{\rho }\nabla p+\nu { {\nabla }^{2} }\mathbf{u}+\mathbf{F} \tag {1.1.1}</script><p>, where <strong>u</strong> is the velocity field and for an incompressible fluid, it satisfies</p>
-<script type="math/tex; mode=display">\nabla \cdot \mathbf{u}=0. \tag {1.1.2}</script><p>With the Operator-Splitting Method, the solution of the NS equation is calculated via composition of transformations on the state. In other words, each component of the NS equation is a step that takes a field as input, and produces a new field as output. $\color{red}{[Fast Fluid Dynamics Simulation on the GPU.]}$ Define an operator <strong>S</strong> that is equivalent to the solution of NS equation over a single time step. Then, the operator S can be decomposed into the operators for advection <strong>A</strong>, diffusion <strong>D</strong>, force application <strong>F</strong>, and projection <strong>P</strong>.</p>
-<center><img src="/2022/02/09/NVIDIA-intern-paper-md/1.1.1_1.png" width="50%" height="50%"></center>
-
-<p>&ensp;&ensp;After <strong>F</strong>, <strong>D</strong>, and <strong>A</strong> operations, we can get a divergent velocity field <strong>w</strong>. Then we can get the velocity field <strong>u</strong> with zero divergence by adopting the Helmholtz-Hodge Decomposition Theorem.</p>
-<script type="math/tex; mode=display">\mathbf{w}=\mathbf{u}+\nabla p \tag {1.1.3}</script><p>This process is called the projection corresponding to <strong>P</strong>. A projection operation is always needed to guarantee the incompressibility of the fluid.<br>&ensp;&ensp;If we apply the divergence operator to both sides of the above equation, we obtain</p>
-<script type="math/tex; mode=display">\nabla \cdot \mathbf{u}+{ {\nabla }^{2} }p={ {\nabla }^{2} }p=\nabla \cdot \mathbf{w}. \tag {1.1.4}</script><p>Note that for an incompressible fluid, we have $\nabla \cdot \mathbf{u}=0$. Then, it becomes a Poisson equation for the pressure of the fluid, sometimes called the Poisson-pressure equation. With this equation, we can get the pressure p, and then use <strong>w</strong> and p to compute the new divergence-free velocity field <strong>u</strong> by</p>
-<script type="math/tex; mode=display">\mathbf{w}=\mathbf{u}+\nabla p. \tag {1.1.5}</script>
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/09/NVIDIA-intern-paper-md/" rel="prev" title="NVIDIA_intern_paper.md">
+      <i class="fa fa-chevron-left"></i> NVIDIA_intern_paper.md
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/09/GAMES101/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jiang Shao">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邵大宝的学习Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/09/GAMES101/" class="post-title-link" itemprop="url">hexo_blog.md</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-09 22:03:18" itemprop="dateCreated datePublished" datetime="2022-02-09T22:03:18+08:00">2022-02-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-10 02:21:24" itemprop="dateModified" datetime="2022-02-10T02:21:24+08:00">2022-02-10</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Geometry-part3"><a href="#Geometry-part3" class="headerlink" title="Geometry part3"></a>Geometry part3</h1><ol>
-<li>mesh subdivision 网格细化</li>
-<li>mesh simplification 网格粗化</li>
-<li>mesh regularization 网格正则化，使三角形趋于一致</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/1970/01/01/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jiang Shao">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邵大宝的学习Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/1970/01/01/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 1970-01-01 08:00:00" itemprop="dateCreated datePublished" datetime="1970-01-01T08:00:00+08:00">1970-01-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-09 19:43:51" itemprop="dateModified" datetime="2022-02-09T19:43:51+08:00">2022-02-09</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
@@ -604,6 +406,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">CUDA学习随记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Synchronized-Data-Exchange"><span class="nav-number">1.1.</span> <span class="nav-text">Synchronized Data Exchange</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -704,59 +507,6 @@
   
 
   
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 

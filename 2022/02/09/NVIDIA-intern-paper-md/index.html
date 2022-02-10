@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2022/02/09/NVIDIA-intern-paper-md/1.1.1_1.png">
 <meta property="article:published_time" content="2022-02-09T15:02:28.000Z">
-<meta property="article:modified_time" content="2022-02-09T16:40:13.497Z">
+<meta property="article:modified_time" content="2022-02-09T18:16:39.601Z">
 <meta property="article:author" content="Jiang Shao">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2022/02/09/NVIDIA-intern-paper-md/1.1.1_1.png">
@@ -183,7 +183,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-10 00:40:13" itemprop="dateModified" datetime="2022-02-10T00:40:13+08:00">2022-02-10</time>
+                <time title="Modified: 2022-02-10 02:16:39" itemprop="dateModified" datetime="2022-02-10T02:16:39+08:00">2022-02-10</time>
               </span>
 
           
@@ -197,7 +197,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation"><a href="#Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation" class="headerlink" title="Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation"></a>Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation</h1><h1 id="1-Smoke-Simulation-Method"><a href="#1-Smoke-Simulation-Method" class="headerlink" title="1. Smoke Simulation Method"></a>1. Smoke Simulation Method</h1><h2 id="1-1-Operator-Splitting-Method"><a href="#1-1-Operator-Splitting-Method" class="headerlink" title="1.1. Operator-Splitting Method"></a>1.1. Operator-Splitting Method</h2><p><strong>Reference:</strong> Harris M J. Fast fluid dynamics simulation on the GPU[J]. SIGGRAPH Courses, 2005, 220(10.1145): 1198555-1198790.<br>&ensp;&ensp;The smoke simulation solves an incompressible NS equation expressed as</p>
+        <h1 id="Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation"><a href="#Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation" class="headerlink" title="Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation"></a>Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation</h1><h2 id="1-Smoke-Simulation-Method"><a href="#1-Smoke-Simulation-Method" class="headerlink" title="1. Smoke Simulation Method"></a>1. Smoke Simulation Method</h2><h3 id="1-1-Operator-Splitting-Method"><a href="#1-1-Operator-Splitting-Method" class="headerlink" title="1.1. Operator-Splitting Method"></a>1.1. Operator-Splitting Method</h3><p><strong>Reference:</strong> Harris M J. Fast fluid dynamics simulation on the GPU[J]. SIGGRAPH Courses, 2005, 220(10.1145): 1198555-1198790.<br>&ensp;&ensp;The smoke simulation solves an incompressible NS equation expressed as</p>
 <script type="math/tex; mode=display">\frac{\partial \mathbf{u} }{\partial t}=-\left( \mathbf{u}\cdot \nabla  \right)\mathbf{u}-\frac{1}{\rho }\nabla p+\nu { {\nabla }^{2} }\mathbf{u}+\mathbf{F} \tag {1.1.1}</script><p>, where <strong>u</strong> is the velocity field and for an incompressible fluid, it satisfies</p>
 <script type="math/tex; mode=display">\nabla \cdot \mathbf{u}=0. \tag {1.1.2}</script><p>With the Operator-Splitting Method, the solution of the NS equation is calculated via composition of transformations on the state. In other words, each component of the NS equation is a step that takes a field as input, and produces a new field as output. $\color{red}{[Fast Fluid Dynamics Simulation on the GPU.]}$ Define an operator <strong>S</strong> that is equivalent to the solution of NS equation over a single time step. Then, the operator S can be decomposed into the operators for advection <strong>A</strong>, diffusion <strong>D</strong>, force application <strong>F</strong>, and projection <strong>P</strong>.</p>
 <center><img src="/2022/02/09/NVIDIA-intern-paper-md/1.1.1_1.png" width="50%" height="50%"></center>
@@ -220,10 +220,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/02/09/hexo-blog-md/" rel="prev" title="hexo_blog.md">
+    <a href="/2022/02/09/GAMES101/" rel="prev" title="hexo_blog.md">
       <i class="fa fa-chevron-left"></i> hexo_blog.md
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/10/cuda-1/" rel="next" title="cuda_1">
+      cuda_1 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -282,7 +285,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation"><span class="nav-number">1.</span> <span class="nav-text">Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Smoke-Simulation-Method"><span class="nav-number">2.</span> <span class="nav-text">1. Smoke Simulation Method</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-Operator-Splitting-Method"><span class="nav-number">2.1.</span> <span class="nav-text">1.1. Operator-Splitting Method</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation"><span class="nav-number">1.</span> <span class="nav-text">Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Smoke-Simulation-Method"><span class="nav-number">1.1.</span> <span class="nav-text">1. Smoke Simulation Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Operator-Splitting-Method"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1. Operator-Splitting Method</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -296,7 +299,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
