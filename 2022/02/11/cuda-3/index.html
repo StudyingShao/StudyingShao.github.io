@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Memory Fence与SynchronizationCUDA C++ Programming Guide Synchronization FunctionsB.6. Synchronization Functions 1void __syncthreads(); waits until all threads in the thread block have reached this poin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CUDA学习随记 Memory Fence与Synchronization">
+<meta property="og:url" content="http://example.com/2022/02/11/cuda-3/index.html">
+<meta property="og:site_name" content="邵大宝的学习Blog">
+<meta property="og:description" content="Memory Fence与SynchronizationCUDA C++ Programming Guide Synchronization FunctionsB.6. Synchronization Functions 1void __syncthreads(); waits until all threads in the thread block have reached this poin">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-11T09:13:37.000Z">
+<meta property="article:modified_time" content="2022-02-11T10:44:06.952Z">
+<meta property="article:author" content="Jiang Shao">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/02/11/cuda-3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>CUDA学习随记 Memory Fence与Synchronization | 邵大宝的学习Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">邵大宝的学习Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">最爱严小跳</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/11/cuda-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CUDA学习随记 Memory Fence与Synchronization
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-11 17:13:37 / Modified: 18:44:06" itemprop="dateCreated datePublished" datetime="2022-02-11T17:13:37+08:00">2022-02-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">CUDA学习随记</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0/Memory-Fence%E4%B8%8ESynchronization/" itemprop="url" rel="index"><span itemprop="name">Memory Fence与Synchronization</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Memory-Fence与Synchronization"><a href="#Memory-Fence与Synchronization" class="headerlink" title="Memory Fence与Synchronization"></a>Memory Fence与Synchronization</h1><p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">CUDA C++ Programming Guide</a></p>
+<h2 id="Synchronization-Functions"><a href="#Synchronization-Functions" class="headerlink" title="Synchronization Functions"></a>Synchronization Functions</h2><p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#synchronization-functions">B.6. Synchronization Functions</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __syncthreads();</span><br></pre></td></tr></table></figure>
+<p>waits until all threads in the thread block have reached this point and all global and shared memory accesses made by these threads prior to <strong>syncthreads() are visible to all threads in the block.<br>等待block中所有线程到达（<strong>指令同步</strong>），并使得</strong>syncthreads()前所有线程的gmem和smem访存对block内所有线程可见（<strong>内存顺序，访存可见性</strong>）。这个可见包含了另一层含义，就是所有内存写入，保证真实的写到了对应的物理内存上，而不仅仅是驻留在Cache中。</p>
+<p>__syncthreads() is used to coordinate communication between the threads of the same block. When some threads within a block access the same addresses in shared or global memory, there are potential read-after-write, write-after-read, or write-after-write hazards for some of these memory accesses. These data hazards can be avoided by synchronizing threads in-between these accesses.</p>
+<p><strong>syncthreads() is allowed in conditional code but only if the conditional evaluates identically across the entire thread block, otherwise the code execution is likely to hang or produce unintended side effects.<br>必须block内的所有线程都能同时执行到</strong>syncthreads()否则会造成死锁。</p>
+<p>Devices of compute capability 2.x and higher support three variations of <strong>syncthreads() described below.<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __syncthreads_count(<span class="type">int</span> predicate);</span><br></pre></td></tr></table></figure><br>is identical to </strong>syncthreads() with the additional feature that it evaluates predicate for all threads of the block and returns the number of threads for which predicate evaluates to non-zero.<br>除了同步之外，还会返回block中predicate为非0（true）的threads的数量。（作为函数的返回值）用于判断block中满足条件线程的个数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __syncthreads_and(<span class="type">int</span> predicate);</span><br></pre></td></tr></table></figure>
+<p>is identical to __syncthreads() with the additional feature that it evaluates predicate for all threads of the block and returns non-zero if and only if predicate evaluates to non-zero for all of them.<br>除了同步，当且仅当block中所有threads的predicate都为非0，函数返回一个非0值。用于判断block中所有线程是否都满足条件。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __syncthreads_or(<span class="type">int</span> predicate);</span><br></pre></td></tr></table></figure>
+<p>is identical to __syncthreads() with the additional feature that it evaluates predicate for all threads of the block and returns non-zero if and only if predicate evaluates to non-zero for any of them.<br>除了同步，block中任一thread的predicate非0，那么函数就返回一个非0值。用于判断block中是否具有满足条件的线程。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __syncwarp(<span class="type">unsigned</span> mask=<span class="number">0xffffffff</span>);</span><br></pre></td></tr></table></figure>
+<p>will cause the executing thread to wait until all warp lanes named in mask have executed a <strong>syncwarp() (with the same mask) before resuming execution. All non-exited threads named in mask must execute a corresponding </strong>syncwarp() with the same mask, or the result is undefined.<br>用于同步warp内部所有被mask所指定的线程，Pascal及以下架构没用，因为其warp是完全同步执行的。<br>所有mask标记的线程必须执行到一个具有相同mask的__syncwarp() ，否则会产生未定义结果。</p>
+<p>Executing <strong>syncwarp() guarantees memory ordering among threads participating in the barrier. Thus, threads within a warp that wish to communicate via memory can store to memory, execute </strong>syncwarp(), and then safely read values stored by other threads in the warp.<br>执行__syncwarp()会保证所有被mask标记的warp内线程的memory order，线程间可安全的互相访存。（<strong>内存顺序，访存可见性</strong>）</p>
+<p>Note: For .target sm_6x or below, all threads in mask must execute the same <strong>syncwarp() in convergence, and the union of all values in mask must be equal to the active mask. Otherwise, the behavior is undefined.<br>sm_6x及以下的设备（Pascal架构及以下），mask中指定的所有线程必须同步执行同一个</strong>syncwarp()，且mask必须与__active_mask()函数返回的当前active mask一致。否则会导致undefined behavior。</p>
+<h2 id="Memory-Fence-Functions"><a href="#Memory-Fence-Functions" class="headerlink" title="Memory Fence Functions"></a>Memory Fence Functions</h2><p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#memory-fence-functions">B.5. Memory Fence Functions</a></p>
+<p>The CUDA programming model assumes a device with a weakly-ordered memory model, that is the order in which a CUDA thread writes data to shared memory, global memory, page-locked host memory, or the memory of a peer device is not necessarily the order in which the data is observed being written by another CUDA or host thread. It is undefined behaviour for two threads read from or write to the same memory location without synchronization.<br>CUDA本身具有弱内存顺序模型weakly-ordered memory model，就是说一个CUDA线程的访存顺序，与另一个线程或者主机线程看到的访存顺序未必一致。如果在不进行同步的情况下，使用两个线程对同一个内存地址进行操作，结果将是未定义的。</p>
+<p>In the following example, thread 1 executes writeXY(), while thread 2 executes readXY().</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">__device__ <span class="type">int</span> X = <span class="number">1</span>, Y = <span class="number">2</span>;</span><br><span class="line"><span class="function">__device__ <span class="type">void</span> <span class="title">writeXY</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    X = <span class="number">10</span>;</span><br><span class="line">    Y = <span class="number">20</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">__device__ <span class="type">void</span> <span class="title">readXY</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> B = Y;</span><br><span class="line">    <span class="type">int</span> A = X;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The two threads read and write from the same memory locations X and Y simultaneously. Any data-race is undefined behaviour, and has no defined semantics. The resulting values for A and B can be anything.<br>两个线程一个写一个读，得到的结果可以是任意情况。虽然在writeXY代码中看似是先执行X = 10，再执行Y = 20。</p>
+<ol>
+<li>经过编译器的优化之后，对本线程来说，这个顺序不被保证。</li>
+<li>另一个线程看到的顺序可能与本线程的执行顺序不同。</li>
+<li>考虑两个线程执行的先后顺序，时间差异等情况。</li>
+</ol>
+<p>就造成了多种多样的结果。</p>
+<p>Memory fence functions can be used to enforce some ordering on memory accesses. The memory fence functions differ in the scope in which the orderings are enforced but they are independent of the accessed memory space (shared memory, global memory, page-locked host memory, and the memory of a peer device).<br>Memory fence functions此时就是用来强制规定访存顺序的。Memory fence functions根据限制访存顺序的范围不同而有所不同，但与访存的内存类型无关，对所有内存均起到相同的作用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __threadfence_block();</span><br></pre></td></tr></table></figure>
+<p>ensures that:<br>All writes to all memory made by the calling thread before the call to <strong>threadfence_block() are observed by <strong>all threads in the block of the calling thread</strong> as occurring before all writes to all memory made by the calling thread after the call to </strong>threadfence_block();<br>在所有block中的线程看来，范围是<strong>block</strong><br>调用线程的在__threadfence_block()前后的写入保持原有顺序。<br>仅仅是保证了同block内其他线程观察到的顺序。</p>
+<p>All reads from all memory made by the calling thread before the call to <strong>threadfence_block() are ordered before all reads from all memory made by the calling thread after the call to </strong>threadfence_block().<br>保证调用线程__threadfence_block()前后的内存读取顺序。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __threadfence();</span><br></pre></td></tr></table></figure>
+<p>acts as <strong>threadfence_block() for all threads in the block of the calling thread and also ensures that no writes to all memory made by the calling thread after the call to </strong>threadfence() are observed by <strong>any thread in the device</strong> as occurring before any write to all memory made by the calling thread before the call to <strong>threadfence().<br>功能与</strong>threadfence_block()一致，范围是<strong>整个Device</strong>。</p>
+<p>Note that for this ordering guarantee to be true, the observing threads must truly observe the memory and not cached versions of it; this is ensured by using the volatile keyword as detailed in Volatile Qualifier.<br>为了保证这个观察到的内存顺序是真实的，观察的线程必须观察到对应的memory而不是这个memory的cache。而实现这个条件的方法是添加volatile关键字。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __threadfence_system();</span><br></pre></td></tr></table></figure>
+<p>acts as <strong>threadfence_block() for all threads in the block of the calling thread and also ensures that all writes to all memory made by the calling thread before the call to </strong>threadfence_system() are observed by <strong>all threads in the device, host threads, and all threads in peer devices</strong> as occurring before all writes to all memory made by the calling thread after the call to __threadfence_system().<br>范围是<strong>整个Device，Host和Peer Device</strong>（多卡协同）。</p>
+<p>__threadfence_system() is only supported by devices of compute capability 2.x and higher.</p>
+<p>In the previous code sample, we can insert fences in the codes as follows:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">__device__ <span class="type">int</span> X = <span class="number">1</span>, Y = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="function">__device__ <span class="type">void</span> <span class="title">writeXY</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    X = <span class="number">10</span>;</span><br><span class="line">    __threadfence();</span><br><span class="line">    Y = <span class="number">20</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">__device__ <span class="type">void</span> <span class="title">readXY</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> B = Y;</span><br><span class="line">    __threadfence();</span><br><span class="line">    <span class="type">int</span> A = X;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过插入__threadfence()，使得block内所有线程观察到的XY写入顺序不变（包括自身）。观察线程读取YX的顺序也不便，先读Y再读X。所以可能的情况就只剩下两个线程指令执行的先后顺序不同导致的结果差异。</p>
+<p>For this code, the following outcomes can be observed:<br>A equal to 1 and B equal to 2, 先读了，还没写<br>A equal to 10 and B equal to 2, B读的时候Y还没写，A读的时候X写完了<br>A equal to 10 and B equal to 20. 读的时候都写完了</p>
+<p>The fourth outcome is not possible, because the frist write must be visible before the second write. If thread 1 and 2 belong to the same block, it is enough to use <strong>threadfence_block(). If thread 1 and 2 do not belong to the same block, </strong>threadfence() must be used if they are CUDA threads from the same device and __threadfence_system() must be used if they are CUDA threads from two different devices.</p>
+<p>A common use case is when <strong>threads consume some data produced by other threads</strong> as illustrated by the following code sample of a kernel that computes the sum of an array of N numbers in one call. Each block first sums a subset of the array and stores the result in global memory. When all blocks are done, the last block done reads each of these partial sums from global memory and sums them to obtain the final result. In order to determine which block is finished last, each block atomically increments a counter to signal that it is done with computing and storing its partial sum (see Atomic Functions about atomic functions). The last block is the one that receives the counter value equal to gridDim.x-1. <strong>If no fence is placed between storing the partial sum and incrementing the counter, the counter might increment before the partial sum is stored and therefore, might reach gridDim.x-1 and let the last block start reading partial sums before they have been actually updated in memory.</strong></p>
+<p>Memory fence functions only affect the ordering of memory operations by a thread; they do not ensure that these memory operations are visible to other threads (like <strong>syncthreads() does for threads within a block (see Synchronization Functions)). In the code sample below, <strong>the visibility of memory operations on the result variable is ensured by declaring it as volatile</strong> (see Volatile Qualifier).<br>Memory fence仅保证内存顺序，不保证可见性，就是说不保证一定写入到了真实的内存而不是内存的Cache，还不保证在观察时刻已经写入了（没有指令同步）。这点与</strong>syncthreads()对block的同步不同，后者保证所有对gmem和smem的读写对block内所有线程可见（只要你观察，一定能看到结果）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">__device__ <span class="type">unsigned</span> <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">__shared__ <span class="type">bool</span> isLastBlockDone;</span><br><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">sum</span><span class="params">(<span class="type">const</span> <span class="type">float</span>* array, <span class="type">unsigned</span> <span class="type">int</span> N,</span></span></span><br><span class="line"><span class="params"><span class="function">                    <span class="keyword">volatile</span> <span class="type">float</span>* result)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// Each block sums a subset of the input array.</span></span><br><span class="line">    <span class="type">float</span> partialSum = <span class="built_in">calculatePartialSum</span>(array, N);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (threadIdx.x == <span class="number">0</span>) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Thread 0 of each block stores the partial sum</span></span><br><span class="line">        <span class="comment">// to global memory. The compiler will use </span></span><br><span class="line">        <span class="comment">// a store operation that bypasses the L1 cache</span></span><br><span class="line">        <span class="comment">// since the &quot;result&quot; variable is declared as</span></span><br><span class="line">        <span class="comment">// volatile. This ensures that the threads of</span></span><br><span class="line">        <span class="comment">// the last block will read the correct partial</span></span><br><span class="line">        <span class="comment">// sums computed by all other blocks.</span></span><br><span class="line">        result[blockIdx.x] = partialSum;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Thread 0 makes sure that the incrementation</span></span><br><span class="line">        <span class="comment">// of the &quot;count&quot; variable is only performed after</span></span><br><span class="line">        <span class="comment">// the partial sum has been written to global memory.</span></span><br><span class="line">        __threadfence();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Thread 0 signals that it is done.</span></span><br><span class="line">        <span class="type">unsigned</span> <span class="type">int</span> value = <span class="built_in">atomicInc</span>(&amp;count, gridDim.x);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Thread 0 determines if its block is the last</span></span><br><span class="line">        <span class="comment">// block to be done.</span></span><br><span class="line">        isLastBlockDone = (value == (gridDim.x - <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Synchronize to make sure that each thread reads</span></span><br><span class="line">    <span class="comment">// the correct value of isLastBlockDone.</span></span><br><span class="line">    __syncthreads();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (isLastBlockDone) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// The last block sums the partial sums</span></span><br><span class="line">        <span class="comment">// stored in result[0 .. gridDim.x-1]</span></span><br><span class="line">        <span class="type">float</span> totalSum = <span class="built_in">calculateTotalSum</span>(result);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (threadIdx.x == <span class="number">0</span>) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Thread 0 of last block stores the total sum</span></span><br><span class="line">            <span class="comment">// to global memory and resets the count</span></span><br><span class="line">            <span class="comment">// varialble, so that the next kernel call</span></span><br><span class="line">            <span class="comment">// works properly.</span></span><br><span class="line">            result[<span class="number">0</span>] = totalSum;</span><br><span class="line">            count = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/10/cuda-2/" rel="prev" title="CUDA学习随记 关于Warp Shuffle Functions *_sync 首个参数mask的作用">
+      <i class="fa fa-chevron-left"></i> CUDA学习随记 关于Warp Shuffle Functions *_sync 首个参数mask的作用
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Memory-Fence%E4%B8%8ESynchronization"><span class="nav-number">1.</span> <span class="nav-text">Memory Fence与Synchronization</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Synchronization-Functions"><span class="nav-number">1.1.</span> <span class="nav-text">Synchronization Functions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Memory-Fence-Functions"><span class="nav-number">1.2.</span> <span class="nav-text">Memory Fence Functions</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jiang Shao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jiang Shao</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

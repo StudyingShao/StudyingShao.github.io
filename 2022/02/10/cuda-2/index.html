@@ -22,13 +22,13 @@
 
   <meta name="description" content="关于Warp Shuffle Functions *_sync 首个参数mask的作用首先来看CUDA 9.0之前的Warp Shuffle Functions形式。1234T __shfl(T var,int srcLane,int width&#x3D;warpSize)T __shfl_up(T var,unsigned int delta,int width&#x3D;warpSize)T __shfl_do">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于Warp Shuffle Functions *_sync 首个参数mask的作用">
+<meta property="og:title" content="CUDA学习随记 关于Warp Shuffle Functions *_sync 首个参数mask的作用">
 <meta property="og:url" content="http://example.com/2022/02/10/cuda-2/index.html">
 <meta property="og:site_name" content="邵大宝的学习Blog">
 <meta property="og:description" content="关于Warp Shuffle Functions *_sync 首个参数mask的作用首先来看CUDA 9.0之前的Warp Shuffle Functions形式。1234T __shfl(T var,int srcLane,int width&#x3D;warpSize)T __shfl_up(T var,unsigned int delta,int width&#x3D;warpSize)T __shfl_do">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-02-10T14:22:15.000Z">
-<meta property="article:modified_time" content="2022-02-10T17:49:15.871Z">
+<meta property="article:modified_time" content="2022-02-11T09:08:02.851Z">
 <meta property="article:author" content="Jiang Shao">
 <meta name="twitter:card" content="summary">
 
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>关于Warp Shuffle Functions *_sync 首个参数mask的作用 | 邵大宝的学习Blog</title>
+  <title>CUDA学习随记 关于Warp Shuffle Functions *_sync 首个参数mask的作用 | 邵大宝的学习Blog</title>
   
 
 
@@ -169,7 +169,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          关于Warp Shuffle Functions *_sync 首个参数mask的作用
+          CUDA学习随记 关于Warp Shuffle Functions *_sync 首个参数mask的作用
         </h1>
 
         <div class="post-meta">
@@ -186,8 +186,21 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-11 01:49:15" itemprop="dateModified" datetime="2022-02-11T01:49:15+08:00">2022-02-11</time>
+                <time title="Modified: 2022-02-11 17:08:02" itemprop="dateModified" datetime="2022-02-11T17:08:02+08:00">2022-02-11</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">CUDA学习随记</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0/%E5%85%B3%E4%BA%8EWarp-Shuffle-Functions-sync-%E9%A6%96%E4%B8%AA%E5%8F%82%E6%95%B0mask%E7%9A%84%E4%BD%9C%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">关于Warp Shuffle Functions *_sync 首个参数mask的作用</span></a>
+                </span>
+            </span>
 
           
 
@@ -326,7 +339,12 @@
 <p>The following code may cause a stall.<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="keyword">if</span> (threadIdx.x % <span class="number">2</span>) &#123;</span><br><span class="line">  val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">  …</span><br><span class="line">&gt;&#125;</span><br><span class="line">&gt;<span class="keyword">else</span> &#123;</span><br><span class="line">  …</span><br><span class="line">&gt;&#125;</span><br></pre></td></tr></table></figure><br>因此我猜这里所说的undefined behavior应该就是死锁，由于FULL_MASK要求同步warp中的32个lane，而控制流导致有的lane永远不会执行到这里，因此造成死锁。这与在if条件语句中使用block内同步函数<strong>syncthreads()所导致的死锁原理相似。<br>Listing 4中的代码合法的原因是，不管是odd还是even线程，都会执行到一条</strong>shfl_sync(FULL_MASK, val, 0)指令，这两条指令的mask都是FULL_MASK，因此对这32个warp lane同步并不会导致死锁。这个道理类似__syncwarp()。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __syncwarp(<span class="type">unsigned</span> mask=FULL_MASK);</span><br></pre></td></tr></table></figure><br>用于同步warp中的线程，同步哪些由mask指定。</p>
 </blockquote>
 <p>The <strong>syncwarp() primitive causes the executing thread to wait until all threads specified in mask have executed **a </strong>syncwarp() (with the same mask)** before resuming execution. It also provides a memory fence to allow threads to communicate via memory before and after calling the primitive.</p>
-<p>只要mask指定的线程执行到了具有相同mask的<strong>syncwarp()即可继续执行，并非是一定位于同一个控制流分支的</strong>syncwarp()。</p>
+<p>只要mask指定的线程执行到了具有相同mask的<strong>syncwarp()即可继续执行，并非是一定位于同一个控制流分支的</strong>syncwarp()。但这仅适用于sm_6x（不包含）以上的设备，也就是Pascal架构（sm_60）之后。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">CUDA C++ Programming Guide</a>中有一段警告：</p>
+<blockquote>
+<p>For .target sm_6x or below, all threads in mask must execute the same __syncwarp() in convergence, and the union of all values in mask must be equal to the active mask. Otherwise, the behavior is undefined.</p>
+</blockquote>
+<p>sm_6x及以下的设备，mask中指定的所有线程必须同步执行同一个<strong>syncwarp()，且mask必须与</strong>active_mask()函数返回的当前active mask一致。否则会导致undefined behavior。</p>
 
     </div>
 
@@ -342,10 +360,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/02/10/cuda-1/" rel="prev" title="cuda_1">
-      <i class="fa fa-chevron-left"></i> cuda_1
+    <a href="/2022/02/10/cuda-1/" rel="prev" title="CUDA学习随记 Using CUDA Warp-Level Primitives">
+      <i class="fa fa-chevron-left"></i> CUDA学习随记 Using CUDA Warp-Level Primitives
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/11/cuda-3/" rel="next" title="CUDA学习随记 Memory Fence与Synchronization">
+      CUDA学习随记 Memory Fence与Synchronization <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -418,14 +439,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>
