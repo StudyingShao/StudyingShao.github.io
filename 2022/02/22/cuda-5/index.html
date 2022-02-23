@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="CUDA学习随记5 Asynchronous copy cp.async1. PTX (Parallel Thread Execution) ISA (Instruction Set Architecture)2. CUDA Binary Utilities (用于查询SASS code) An asynchronous copy operation copies data from one st">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CUDA学习随记5 Asynchronous copy cp.async">
+<meta property="og:url" content="http://example.com/2022/02/22/cuda-5/index.html">
+<meta property="og:site_name" content="邵大宝的学习Blog">
+<meta property="og:description" content="CUDA学习随记5 Asynchronous copy cp.async1. PTX (Parallel Thread Execution) ISA (Instruction Set Architecture)2. CUDA Binary Utilities (用于查询SASS code) An asynchronous copy operation copies data from one st">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/02/22/cuda-5/LDGSTS%20access%20and%20bypass.png">
+<meta property="article:published_time" content="2022-02-22T13:51:12.000Z">
+<meta property="article:modified_time" content="2022-02-22T16:19:20.660Z">
+<meta property="article:author" content="Jiang Shao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/02/22/cuda-5/LDGSTS%20access%20and%20bypass.png">
+
+<link rel="canonical" href="http://example.com/2022/02/22/cuda-5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>CUDA学习随记5 Asynchronous copy cp.async | 邵大宝的学习Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">邵大宝的学习Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">最爱严小跳</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/22/cuda-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CUDA学习随记5 Asynchronous copy cp.async
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-22 21:51:12" itemprop="dateCreated datePublished" datetime="2022-02-22T21:51:12+08:00">2022-02-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-23 00:19:20" itemprop="dateModified" datetime="2022-02-23T00:19:20+08:00">2022-02-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">CUDA学习随记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="CUDA学习随记5-Asynchronous-copy-cp-async"><a href="#CUDA学习随记5-Asynchronous-copy-cp-async" class="headerlink" title="CUDA学习随记5 Asynchronous copy cp.async"></a>CUDA学习随记5 Asynchronous copy cp.async</h1><p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#data-movement-and-conversion-instructions-asynchronous-copy">1. PTX (Parallel Thread Execution) ISA (Instruction Set Architecture)</a><br><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-binary-utilities/index.html">2. CUDA Binary Utilities (用于查询SASS code)</a></p>
+<p>An asynchronous copy operation copies data from one state space to another asynchronously without blocking the executing thread.<br>Initiation of an asynchronous copy operation simply dispatches the copy operation from the source memory location to the destination memory location.<br>异步拷贝，不阻塞线程，仅发起一个异步拷贝请求。</p>
+<p>There are two ways to wait for the completion of an asynchronous copy operation:<br>两种方式等待异步拷贝操作完成：</p>
+<ol>
+<li>使用<strong>cp.async-groups</strong><br>a. Initiate asynchronous copy operations.<br>b. Commit copy operations into a cp.async-group. cp.async.commit_group<br>c. Wait for cp.async-group to complete the copy. cp.async.wait_group<br>d. Once the cp.async-group completes, the writes performed by the copy operation in that cp.async-group are made visible to the thread that initiated the copy operations.</li>
+<li>使用<strong>mbarrier</strong>对象<br>a. Initiate asynchronous copy operations.<br>b. Make an mbarrier object track the asynchronous copy operations.<br>c. Wait for the mbarrier object to complete the phase using mbarrier.test_wait.<br>d. Once mbarrier.test_wait returns True, the writes performed by the copy operation are made visible to all the threads which waited on the mbarrier object.</li>
+</ol>
+<p>A sequence of asynchronous copy operations initiated by a thread can be batched into a per-thread group referred to as cp.async-group.<br>由单个线程发出的一系列异步拷贝操作可以打包为a per-thread group，称为cp.async-group。</p>
+<p>A commit operation creates a cp.async-group containing all prior asynchronous copy operations initiated by the executing thread but none of the asynchronous copy operations following the commit operation. A committed asynchronous copy operation belongs to a single cp.async-group.<br>创建一个cp.async-group将包含所有由本线程发出的之前的异步拷贝操作，不包括之后的。每个异步拷贝操作仅属于一个cp.async-group。<br>由于执行到cp.async-group时，其之前的所有异步拷贝操作均已完成，因此下一个cp.async-group仅包含两条cp.async-group之间的新发出的异步拷贝操作，所以说每个异步拷贝操作仅属于一个cp.async-group。</p>
+<p>When a cp.async-group completes, all the asynchronous copy operations belonging in that group are complete and the executing thread that initiated copy operations can read copied results. All cp.async-groups committed by an executing thread always complete in the order in which they were committed. There is no ordering between asynchronous copy operations within a cp.async-group.<br>当cp.async-group完成时，其所包含的所有异步拷贝操作均已完成，发出异步拷贝请求的线程（也就是当前线程）可以安全读取拷贝结果。线程发射的cp.async-groups永远按照顺序完成，而cp.async-group中包含的异步拷贝操作的执行顺序是随机的。</p>
+<p>Writes performed by an asynchronous copy operation are visible to the thread that initiated the asynchronous copy operation only after the cp.async-group completes or mbarrier object tracking the asynchronous copy has completed the phase.<br>仅当cp.async-group完成 or mbarrier追踪到异步拷贝完成，当前线程才能安全读取由当前线程发出的异步拷贝操作写入的数据（数据可见）。</p>
+<p>Once an asynchronous copy operation is initaited, modifiying the source memory location or reading from the destination memory location before the asynchronous copy operation completes, will cause unpredictable results.<br>一旦一个异步拷贝操作被发起，不等待异步拷贝操作完成就 修改源内存地址中的数据 or 就读取目标内存地址中的数据，将会产生unpredictable results。</p>
+<h4 id="cp-async"><a href="#cp-async" class="headerlink" title="cp.async"></a>cp.async</h4><p>Initiates an asynchronous copy operation from one state space to another.<br>发起一个异步拷贝操作。<br>Operand src specifies a location in the global state space and dst specifies a location in the shared state space.<br>异步拷贝只能是从global mem拷贝到shared mem。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cp.async.ca.shared.global&#123;.level::cache_hint&#125;&#123;.level::prefetch_size&#125;</span><br><span class="line">                         [dst], [src], cp-size&#123;, src-size&#125;&#123;, cache-policy&#125; ;</span><br><span class="line">cp.async.cg.shared.global&#123;.level::cache_hint&#125;&#123;.level::prefetch_size&#125;</span><br><span class="line">                         [dst], [src], <span class="number">16</span>&#123;, src-size&#125;&#123;, cache-policy&#125; ;</span><br><span class="line">cp.async.ca.shared.global&#123;.level::cache_hint&#125;&#123;.level::prefetch_size&#125;</span><br><span class="line">                         [dst], [src], cp-size&#123;, ignore-src&#125;&#123;, cache-policy&#125; ;</span><br><span class="line">cp.async.cg.shared.global&#123;.level::cache_hint&#125;&#123;.level::prefetch_size&#125;</span><br><span class="line">                         [dst], [src], <span class="number">16</span>&#123;, ignore-src&#125;&#123;, cache-policy&#125; ;</span><br></pre></td></tr></table></figure><br>The <strong>.cg</strong> qualifier indicates caching of data only at global level cache L2 and not at L1 whereas <strong>.ca</strong> qualifier indicates caching of data at all levels including L1 cache. Cache operator are treated as performance hints only.<br><strong>.cg</strong>表示仅用L2 cache，数据传输绕过L1 cache与register。对应LDGSTS.BYPASS。<br><strong>.ca</strong>表示同时使用L1 cache与L2 cache，数据传输仅绕过register。对应LDGSTS.ACCESS。<br>这俩标识符只是对编译器的建议，具体用不用要看编译器的意思。实际上具体使用哪种取决于传输数据的大小与对齐方式。4 Bytes-&gt;access，16 Bytes-&gt;bypass。</p>
+<p>Operand cp-size is an integer constant which specifies the size of data in bytes to be copied to the destination dst. cp-size can only be 4, 8 and 16.<br>cp-size指定了传输数据的大小（in bytes），可以是4、8、16，可以看到cp-size最小是4，而.cg指令cp-size直接指定为16，正好符合上面的说法。</p>
+<center><img src="/2022/02/22/cuda-5/LDGSTS%20access%20and%20bypass.png" width="100%" height="100%"><font color="#708090" size="2">Two types of LDGSTS: access and bypass.</font></center>
+
+<h4 id="cp-async-commit-group"><a href="#cp-async-commit-group" class="headerlink" title="cp.async.commit_group"></a>cp.async.commit_group</h4><p>Commits all prior initiated but uncommitted cp.async instructions into a cp.async-group.<br>将之前的未被commit的cp.async commit到一个cp.async-group。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp.async.commit_group;</span><br></pre></td></tr></table></figure>
+<p>这条PTX code所产生的SASS code就是<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LDGDEPBAR <span class="comment">//Global Load Dependency Barrier</span></span><br></pre></td></tr></table></figure><br>会导致一个很大的stall long scoreboard。</p>
+<h4 id="cp-async-wait-group-cp-async-wait-all"><a href="#cp-async-wait-group-cp-async-wait-all" class="headerlink" title="cp.async.wait_group/cp.async.wait_all"></a>cp.async.wait_group/cp.async.wait_all</h4><p>Wait for completion of prior asynchronous copy operations.<br>等待先前的异步拷贝操作完成。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp.async.wait_group N;</span><br><span class="line">cp.async.wait_all; <span class="comment">//等价于cp.async.wait_group 0;</span></span><br></pre></td></tr></table></figure>
+<p>如果N为0，那么这条PTX code所产生的SASS code就是<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DEPBAR.LE SB0, <span class="number">0x0</span> ;</span><br><span class="line"></span><br></pre></td></tr></table></figure><br>DEPBAR的作用是等某个Scoreboard的计数不为0的情况（比如DEPBAR.LE SB5, 0x6 ;表示stall直至第5个Scoreboard的值降到6或以下）</p>
+<p>SB指的就是scoreboard，由于是。记录cp.async-group的数量（一个counter）与每个cp.async-group所对应的cp.async (LDGSTS)的数量。每次一个cp.async-group完成，counter - 1。counter的数量刚好对应N的值。<br>N标明等待只有N或更少个cp.async-group未完成才继续。如果是0，那么就是等待只有0个未完成，代表等待所有的cp.async-group完成。由于cp.async-group是保持发射顺序的，因此N等待的永远是倒数的N个cp.async-group，就是最近发射的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Example of .wait_all:</span></span><br><span class="line">cp.async.ca.shared.global [shrd1], [gbl1], <span class="number">4</span>;</span><br><span class="line">cp.async.cg.shared.global [shrd2], [gbl2], <span class="number">16</span>;</span><br><span class="line">cp.async.wait_all;  <span class="comment">// waits for all prior cp.async to complete</span></span><br></pre></td></tr></table></figure>
+<p>cp.async.wait_all等待前面所有的cp.async完成。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Example of .wait_group :</span></span><br><span class="line">cp.async.ca.shared.global [shrd3], [gbl3], <span class="number">8</span>;</span><br><span class="line">cp.async.commit_group;  <span class="comment">// End of group 1</span></span><br><span class="line"></span><br><span class="line">cp.async.cg.shared.global [shrd4], [gbl4], <span class="number">16</span>;</span><br><span class="line">cp.async.commit_group;  <span class="comment">// End of group 2</span></span><br><span class="line"></span><br><span class="line">cp.async.cg.shared.global [shrd5], [gbl5], <span class="number">16</span>;</span><br><span class="line">cp.async.commit_group;  <span class="comment">// End of group 3</span></span><br><span class="line"></span><br><span class="line">cp.async.wait_group <span class="number">1</span>;  <span class="comment">// waits for group 1 and group 2 to complete</span></span><br></pre></td></tr></table></figure>
+<p>cp.async.wait_group 1 允许有一个cp.async-group未完成，按照顺序，此条指令等待group 1 and 2完成。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/20/cuda-4/" rel="prev" title="CUDA学习随记4 Volta’s Independent Thread Scheduling">
+      <i class="fa fa-chevron-left"></i> CUDA学习随记4 Volta’s Independent Thread Scheduling
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B05-Asynchronous-copy-cp-async"><span class="nav-number">1.</span> <span class="nav-text">CUDA学习随记5 Asynchronous copy cp.async</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cp-async"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">cp.async</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cp-async-commit-group"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">cp.async.commit_group</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cp-async-wait-group-cp-async-wait-all"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">cp.async.wait_group&#x2F;cp.async.wait_all</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jiang Shao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jiang Shao</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Volta’s Independent Thread SchedulingInside Volta: The World’s Most Advanced Data Center GPU High Performance Computing (HPC) is a fundamental pillar of modern science. From predicting weather, to dis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CUDA学习随记4 Volta’s Independent Thread Scheduling">
+<meta property="og:url" content="http://example.com/2022/02/20/cuda-4/index.html">
+<meta property="og:site_name" content="邵大宝的学习Blog">
+<meta property="og:description" content="Volta’s Independent Thread SchedulingInside Volta: The World’s Most Advanced Data Center GPU High Performance Computing (HPC) is a fundamental pillar of modern science. From predicting weather, to dis">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/02/20/cuda-4/Volta%20GV100%20architecture.png">
+<meta property="og:image" content="http://example.com/2022/02/20/cuda-4/Volta%20GV100%20SM.png">
+<meta property="og:image" content="http://example.com/2022/02/20/cuda-4/FP_INT.png">
+<meta property="og:image" content="http://example.com/2022/02/20/cuda-4/CUDA_cores.png">
+<meta property="og:image" content="http://example.com/2022/02/20/cuda-4/CUDA_cores_1.png">
+<meta property="og:image" content="http://example.com/2022/02/20/cuda-4/Tensor%20Core%204x4x4%20matrix%20multiply%20and%20accumulate.png">
+<meta property="og:image" content="http://example.com/2022/02/20/cuda-4/independent%20thread%20scheduling%201.png">
+<meta property="og:image" content="http://example.com/2022/02/20/cuda-4/independent%20thread%20scheduling%202.png">
+<meta property="og:image" content="http://example.com/2022/02/20/cuda-4/independent%20thread%20scheduling%203.png">
+<meta property="og:image" content="http://example.com/2022/02/20/cuda-4/independent%20thread%20scheduling%204.png">
+<meta property="og:image" content="http://example.com/2022/02/20/cuda-4/a%20double-linked%20list%20with%20locks.png">
+<meta property="article:published_time" content="2022-02-20T12:09:48.000Z">
+<meta property="article:modified_time" content="2022-02-23T08:24:30.023Z">
+<meta property="article:author" content="Jiang Shao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/02/20/cuda-4/Volta%20GV100%20architecture.png">
+
+<link rel="canonical" href="http://example.com/2022/02/20/cuda-4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>CUDA学习随记4 Volta’s Independent Thread Scheduling | 邵大宝的学习Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">邵大宝的学习Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">最爱严小跳</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/20/cuda-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CUDA学习随记4 Volta’s Independent Thread Scheduling
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-20 20:09:48" itemprop="dateCreated datePublished" datetime="2022-02-20T20:09:48+08:00">2022-02-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-23 16:24:30" itemprop="dateModified" datetime="2022-02-23T16:24:30+08:00">2022-02-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">CUDA学习随记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Volta’s-Independent-Thread-Scheduling"><a href="#Volta’s-Independent-Thread-Scheduling" class="headerlink" title="Volta’s Independent Thread Scheduling"></a>Volta’s Independent Thread Scheduling</h1><p><a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/inside-volta/">Inside Volta: The World’s Most Advanced Data Center GPU</a></p>
+<p>High Performance Computing (HPC) is a fundamental pillar of modern science. From predicting weather, to discovering drugs, to finding new energy sources, researchers use large computing systems to simulate and predict our world. AI extends traditional HPC by allowing researchers to analyze large volumes of data for rapid insights where simulation alone cannot fully predict the real world.<br>高性能计算HPC是现代科学的基本支柱。从天气预测到药物研究，再到获取新能源，研究人员使用大型的计算系统来模拟与预测我们的世界。人工智能AI通过允许研究人员分析大量的数据以便快速获得洞察，拓展了传统的高性能计算，用于仅靠模拟不能完全预测现实世界的情况。<br>Computational Science for scientific simulation.<br>Data Science for finding insights in data.</p>
+<center><img src="/2022/02/20/cuda-4/Volta%20GV100%20architecture.png" width="100%" height="100%"><font color="#708090" size="2">Volta GV100 Full GPU with 84 SM Units.</font></center>
+
+<p><strong>每块 GV100 包含：</strong><br>6 x Graphics Processing Clusters (GPCs)<br>每个GPC包含 7 x Texture Processing Clusters (TPCs)，共 42<br>每个TPC包含 2 x Streaming Multiprocessors (SMs)，共 84<br>8 x 512-bit Memory Controllers(4096 bits total) 用于与显存进行数据交换</p>
+<p><strong>每个 SM 包含：</strong><br>64 FP32 Cores<br>64 INT32 Cores<br>32 FP64 Cores<br><em>8 new Tensor Cores</em><br>4 texture units</p>
+<center><img src="/2022/02/20/cuda-4/Volta%20GV100%20SM.png" width="100%" height="100%"><font color="#708090" size="2">Volta GV100 Full GPU with 84 SM Units.</font></center>
+
+<p><strong>每个SM被划分为四个部份partitions，每个部份包含：</strong><br>8 FP64 Cores<br>16 INT32 Cores<br>16 FP32 Cores<br>2 new mixed-precision Tensor Cores for deep learning matrix arithmetic<br>a new L0 instruction cache<br>a warp scheduler<br>a dispatch unit<br>a 64 KB Register File</p>
+<p>Unlike Pascal GPUs, which could not execute FP32 and INT32 instructions simultaneously, the Volta GV100 SM includes separate FP32 and INT32 cores, allowing simultaneous execution of FP32 and INT32 operations at full throughput, while also increasing instruction issue throughput. </p>
+<p>Pascal GPU所有的CUDA核心都是FP32+INT32混合核心，这种核心每个周期只能进行浮点运算或整型运算的一种。整块SM分区（具有一个warp scheduler）同时切换，这块分区某一时刻只能进行FP或INT运算的一种。</p>
+<p>Volta/Turing GPU单独开辟了一条INT型通道，其具有独立的FP32与INT32核心，可同时执行FP32与INT32操作。</p>
+<blockquote>
+<p>关于NVIDIA三代GPU架构CUDA核心的变化（Pascal, Turing, Ampere）<br><a target="_blank" rel="noopener" href="https://weibo.com/tv/show/1034:4548031207637036?from=old_pc_videoshow">微博 林亦LYi: 什么是「显卡测不准原理」</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1a64y1F7Gp?from=search&amp;seid=665276990359275781&amp;spm_id_from=333.337.0.0">B站 林亦LYi: 什么是「显卡测不准原理」</a></p>
+</blockquote>
+<center><img src="/2022/02/20/cuda-4/FP_INT.png" width="100%" height="100%"><font color="#708090" size="2">Floating Point vs Integer.</font></center>
+<center><img src="/2022/02/20/cuda-4/CUDA_cores.png" width="100%" height="100%"><font color="#708090" size="2">SM of Volta & Turing</font></center>
+
+<blockquote>
+<p>RTX20系显卡使用Turing架构，而RTX30系显卡使用Ampere架构。<br>图中可以看出，FP32核心要比INT32核心更大一些，这是由于用于浮点型运算的核心要更复杂一些，也只有FP32核心才被称为CUDA核心。<br>Turing架构中，INT32核心和FP32核心是独立的，每个SM中各有64个。<br>Ampere架构中，除了64个FP32核心，原有的64个INT32核心转变为了64个FP32+INT32核心，而这部分核心也算作CUDA核心，因此每个SM上共有64+64=128个CUDA核心。<br>FP32+INT32核心在一个周期内，只能进行浮点型或整数型运算的一种。二选一。混合核心并不能提供完全的浮点运算能力。程序的整型运算越多，浮点运算能力就会下降越明显。这是由于混合核心在FP32与INT32核心间的切换导致的。每次切换时，以SM中的一块partition为单位切换，partition中的所有混合核心同时切换。</p>
+</blockquote>
+<center><img src="/2022/02/20/cuda-4/CUDA_cores_1.png" width="100%" height="100%"><font color="#708090" size="2">SM of Volta & Turing</font></center>
+
+<blockquote>
+<p>Pascal架构中所有CUDA核心都是混合核心，SM每个分区一个时刻只能进行一种运算。<br>Turing架构中为INT型单独开辟一条通道，可同时执行INT型运算与FP运算，但这样INT型运算性能过剩，多数时间都在摸鱼。<br>Ampere架构中把INT型核心又换回了混合核心，这样就避免了INT型核心空闲的问题。</p>
+</blockquote>
+<h2 id="Tensor-Cores"><a href="#Tensor-Cores" class="headerlink" title="Tensor Cores"></a>Tensor Cores</h2><p>Matrix-Matrix multiplication (BLAS GEMM) operations are at the core of neural network training and inferencing, and are used to multiply large matrices of input data and weights in the connected layers of the network.<br>矩阵乘操作是神经网络训练和推理的核心，被用于做输入数据和对应权重矩阵的乘法。<br>BLAS: Basic Linear Algebra Subprograms 基本线性代数子程序<br>GEMM: General Matrix Multiplication 通用矩阵乘法</p>
+<p>Each Tensor Core provides a 4x4x4 matrix processing array which performs the operation $\textbf{D} = \textbf{A} \times \textbf{B} + \textbf{C}$, where $\textbf{A}$, $\textbf{B}$, $\textbf{C}$, and $\textbf{D}$ are 4×4 matrices as shown below. The matrix multiply inputs $\textbf{A}$ and $\textbf{B}$ are FP16 matrices, while the accumulation matrices $\textbf{C}$ and $\textbf{D}$ may be FP16 or FP32 matrices.<br>每个Tensor Core提供一个4x4x4的矩阵处理阵列，分别包括ABCD四个4x4的矩阵，乘法矩阵AB是FP16的，而加法矩阵CD可以是FP16也可以是FP32。</p>
+<center><img src="/2022/02/20/cuda-4/Tensor%20Core%204x4x4%20matrix%20multiply%20and%20accumulate.png" width="100%" height="100%"><font color="#708090" size="2">Tensor Core 4x4x4 matrix multiply and accumulate.</font></center>
+
+<p>Each Tensor Core performs 64 floating point FMA mixed-precision operations per clock.<br>FMA: Fused Multiply Add/Accumulate 融合乘加<br>4x4 矩阵乘$\textbf{A} \times \textbf{B}$，一共做 4x4x4 = 64次乘法，4x4x3 = 48次加法。结果矩阵加一个 4x4 矩阵$\textbf{C}$。整个计算一共64次乘，64次加，因此为64 FMA operations。<br>D00 = A00<em>B00 + C00 FMA<br>D00 = A01</em>B10 + D00 FMA<br>D00 = A02<em>B20 + D00 FMA<br>D00 = A03</em>B30 + D00 FMA<br>结果矩阵$\textbf{D}$中一个数对应4次FMA。</p>
+<p>During program execution, multiple Tensor Cores are used concurrently by a full warp of execution. The threads within a warp provide a larger 16x16x16 matrix operation to be processed by the Tensor Cores. CUDA exposes these operations as Warp-Level Matrix Operations in the CUDA C++ API. These C++ interfaces provide specialized matrix load, matrix multiply and accumulate, and matrix store operations to efficiently utilize Tensor Cores in CUDA C++ programs.<br>多个Tensor cores被一个完整的warp同时使用，为Warp-Level Matrix Operations，包括matrix load, matrix multiply and accumulate, and matrix store operations。</p>
+<p>In addition to CUDA C++ interfaces to program Tensor Cores directly, CUDA 9 cuBLAS and cuDNN libraries include new library interfaces to make use of Tensor Cores for deep learning applications and frameworks.<br>除了CUDA C++之外，CUDA 9.0中的cuBLAS与cuDNN库也提供了调用Tensor core的接口。</p>
+<p>从Volta开始，L1 data cache与shared mem合并为一块内存。共享128 KB/SM的内存空间。<br>The new combined L1 data cache and shared memory subsystem of the Volta SM significantly improves performance while also simplifying programming and reducing the tuning required to attain at or near-peak application performance.<br>这样做在提升了程序性能的同时，简化了编程，也减少了达到峰值性能所需的调优。<br>narrows the gap between applications that are manually tuned to keep data in shared memory and those that access data in device memory directly.<br>由于现在L1与shared mem实际为一块内存，具有相同的特性，因此也缩小了人为使用shared mem优化程序与直接访问device mem的程序性能差距。<br>allow L1 cache operations to attain the benefits of shared memory performance. Shared memory provides high bandwidth and low latency, but the CUDA programmer needs to explicitly manage this memory. Volta narrows the gap between applications that explicitly manage shared memory and those that access data in device memory directly.<br>Shared mem带宽高延迟低，但需要人为控制。因此合并L1与shared mem可以使得L1 cache获得shared mem的特性，从而缩小直接访问device mem与人为使用shared mem的性能差距，简化编程。</p>
+<h2 id="Independent-Thread-Scheduling"><a href="#Independent-Thread-Scheduling" class="headerlink" title="Independent Thread Scheduling"></a>Independent Thread Scheduling</h2><p>Volta GV100 is the first GPU to support independent thread scheduling, which enables finer-grain synchronization and cooperation between parallel threads in a program.<br>Volta GV100是首个支持独立线程调度的GPU。</p>
+<h4 id="Prior-NVIDIA-GPU-SIMT-Models"><a href="#Prior-NVIDIA-GPU-SIMT-Models" class="headerlink" title="Prior NVIDIA GPU SIMT Models"></a>Prior NVIDIA GPU SIMT Models</h4><p>Pascal and earlier NVIDIA GPUs execute <strong>groups of 32 threads, known as warps</strong>, in SIMT (Single Instruction, Multiple Thread) fashion. The Pascal warp uses <strong>a single program counter shared amongst all 32 threads</strong>, combined with an “<strong>active mask</strong>” that specifies which threads of the warp are active at any given time.  This means that divergent execution paths leave some threads inactive, <strong>serializing execution</strong> for different portions of the warp as shown below. The original mask is stored until the warp reconverges at the end of the divergent section, at which point the mask is restored and the threads run together once again.<br>warp中的32个线程共享同一个程序计数器（也称为指令指针，或指令地址寄存器），同步执行相同的指令，同时使用一个mask标记当前哪些线程是active的。当遇到分支路径时，顺序执行不同的分支并屏蔽掉不在此路径上的线程。在分支部份开始时切换顺序执行，在分支结束时重新同步reconverge所有线程。</p>
+<center><img src="/2022/02/20/cuda-4/independent%20thread%20scheduling%201.png" width="100%" height="100%"><font color="#708090" size="2">Thread scheduling under the SIMT warp execution model of Pascal and earlier NVIDIA GPUs.</font></center>
+
+<p>如图所示，会先执行其中一个分支直到结束，屏蔽掉不在这条分支上的线程，再开始执行另一条分支，在分支结束时所有线程重新同步。</p>
+<p>The Pascal SIMT execution model maximizes efficiency by reducing the quantity of resources required to track thread state and by aggressively reconverging threads to maximize parallelism. Tracking thread state in aggregate for the whole warp, however, means that when the execution pathway diverges, the threads which take different branches lose concurrency until they reconverge. This loss of concurrency means that threads from the same warp in divergent regions or different states of execution cannot signal each other or exchange data. This presents an inconsistency in which threads from different warps continue to run concurrently, but diverged threads from the same warp run sequentially until they reconverge. This means, for example, that algorithms requiring fine-grained sharing of data guarded by locks or mutexes can easily lead to deadlock, depending on which warp the contending threads come from. Therefore, on Pascal and earlier GPUs, programmers have to avoid fine-grained synchronization or rely on lock-free or warp-aware algorithms.<br>The Pascal SIMT execution model通过减少记录线程状态所需资源（同一warp同步执行，只记录一个active mask）、积极同步线程最大化并行度（分支结束即立刻同步warp中的线程）来最大化效率。<br>串行化逐个执行分支，也就意味着同一个warp中执行不同分支的线程之间失去了并行性，彼此不能通信、交换数据。但不同warp中的线程仍然是同步的，分支仅屏蔽掉本warp中的一部分线程而执行另一部分，这就显示出一种矛盾。这也就阻止了更细粒度（warp-level）的编程，同一个warp中不同线程交换数据使用锁或互斥体很容易导致死锁问题（一个线程等待另一个线程，但另一个线程需要等待本线程执行完毕才能执行，互相等待导致死锁）。</p>
+<h4 id="Volta-SIMT-Model"><a href="#Volta-SIMT-Model" class="headerlink" title="Volta SIMT Model"></a>Volta SIMT Model</h4><p>enabling equal concurrency between all threads, regardless of warp.<br>maintaining execution state per thread, including the program counter and call stack.<br>Volta通过维护每一个线程的执行状态，包括程序计数器（指令地址寄存器）和调用栈，在所有线程间实现了相同的并发性，即同一个warp中的线程也是并发的。</p>
+<center><img src="/2022/02/20/cuda-4/independent%20thread%20scheduling%202.png" width="100%" height="100%"><font color="#708090" size="2">Volta (bottom) independent thread scheduling architecture block diagram compared to Pascal and earlier architectures (top).</font></center>
+
+<p>Volta maintains per-thread scheduling resources such as program counter (PC) and call stack (S), while earlier architectures maintained these resources per warp.<br>Volta每个线程维护一个program counter (PC) and call stack (S)，而之前的架构每个warp维护一个。</p>
+<p>To maximize parallel efficiency, Volta includes a <strong>schedule optimizer</strong> which determines how to group <strong>active threads from the same warp</strong> together into SIMT units. Threads can now diverge and reconverge at sub-warp granularity, and Volta will still <strong>group together threads which are executing the same code and run them in parallel</strong>.</p>
+<center><img src="/2022/02/20/cuda-4/independent%20thread%20scheduling%203.png" width="100%" height="100%"><font color="#708090" size="2">Volta independent thread scheduling enables interleaved execution of statements from divergent branches.</font></center>
+
+<p>Statements from the if and else branches in the program can now be interleaved in time.<br>if else分支中的语句现在可以交错执行。<br>Note that execution is still SIMT: at any given clock cycle CUDA cores execute the same instruction for all active threads in a warp just as before, retaining the execution efficiency of previous architectures.<br>仍然是SIMT执行架构，单指令流多线程。每个clock cycle，所有active threads在CUDA cores上执行相同的指令。<br>Importantly, Volta’s ability to independently schedule threads within a warp makes it possible to implement complex, <strong>fine-grained algorithms (sub-warp)</strong> and data structures in a more natural way. While the scheduler supports independent execution of threads, it optimizes non-synchronizing code to maintain <strong>as much convergence as possible</strong> for maximum SIMT efficiency.<br>Independently schedule threads within a warp，使得位于不同分支的语句（由不同active threads执行）可以交错执行，从而warp中的线程具有concurrency，可以互相同步、交换数据，使得sub-warp算法成为可能。Scheduler尽可能地优化非同步代码，以实现最大化的convergence（并行性越好，SIMT efficiency越高）。</p>
+<p>It is interesting to note that the Figure does not show execution of statement Z by all threads in the warp at the same time. This is because the scheduler must conservatively assume that Z may produce data required by other divergent branches of execution in which case it would be unsafe to automatically enforce reconvergence. In the common case where A, B, X, and Y do not consist of synchronizing operations, the scheduler can identify that it is safe for the warp to naturally reconverge on Z, as on prior architectures.<br>从图中可以看出，位于if else分支语句之外的Z语句，并没有被所有线程同步执行。也就是说在divergence结束的部份，warp中的线程并不一定会reconverge。<br>这是由于编译器保守地假定本线程中的Z语句会产生其他divergent线程执行所需要的数据，如果同步会导致其他线程一直处于等待这部分数据的情况unsafe。一般情况下，如果if else中的指令未包含同步操作，scheduler能识别出在执行Z之前reconverge是safe的，那么就会reconverge，从而提高并行性提高SIMT efficiency。<br>但divergence之后是否reconverge warp中的线程是编译器擅自做主，没保证，最安全的还是人为使用CUDA 9 新引入的__syncwarp()函数to force reconvergence同步all threads in a warp。</p>
+<center><img src="/2022/02/20/cuda-4/independent%20thread%20scheduling%204.png" width="100%" height="100%"><font color="#708090" size="2">Programs can use explicit synchronization __syncwarp() to reconverge threads in a warp.</font></center>
+
+<p>In this case, the divergent portions of the warp might not execute Z together, but all execution pathways from threads within a warp will complete before any thread reaches the statement after the <strong>syncwarp(). Similarly, placing the call to </strong>syncwarp() before the execution of Z would force reconvergence before executing Z, potentially enabling greater SIMT efficiency if the developer knows that this is safe for their application.<br>到达__syncwarp()时，所有warp中的divergent portions执行完毕，在此处reconverge。</p>
+<h4 id="Starvation-Free-Algorithms"><a href="#Starvation-Free-Algorithms" class="headerlink" title="Starvation-Free Algorithms"></a>Starvation-Free Algorithms</h4><p>Starvation-free algorithms are a key pattern enabled by independent thread scheduling.</p>
+<p>Starvation: 并发进程永久地无法获得执行工作所需的某个资源的情况。饥饿可能会导致程序无效或不正确，因为无法获得资源的线程没有正确地完成工作。<br>Starvation-Free: 无饥饿。<strong>某个线程，总是可以获取到某个资源，获取资源的时间不作限制，可长可短，只要能获取到即可</strong>。取决于线程之间是否有优先级的存在，如果系统允许高优先级的线程插队，这样有可能导致低优先级线程产生饥饿，资源被高优先级线程一直锁住，导致低优先级线程一直无法访问。Starvation-Free的线程可以是阻塞的，可以spinning on a lock等待数据可供访问。</p>
+<p>Starvation-Free Algorithms are concurrent computing algorithms that are guaranteed to execute correctly so long as the system ensures that <strong>all threads have adequate access to a contended resource</strong>.<br>并发算法，需要保证所有线程对竞争资源都具有充分的访问权限。</p>
+<p>Inserting nodes into a doubly-linked list in a multithreaded application.<br>在一个多线程应用中，向一个双向链表中插入节点。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__device__ <span class="type">void</span> <span class="title">insert_after</span><span class="params">(Node *a, Node *b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *c;</span><br><span class="line">    <span class="built_in">lock</span>(a); <span class="built_in">lock</span>(a-&gt;next);</span><br><span class="line">    c = a-&gt;next;</span><br><span class="line"></span><br><span class="line">    a-&gt;next = b;</span><br><span class="line">    b-&gt;prev = a;</span><br><span class="line"></span><br><span class="line">    b-&gt;next = c;</span><br><span class="line">    c-&gt;prev = b;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">unlock</span>(c); <span class="built_in">unlock</span>(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>双向链表，前后节点都要记录。<br>a -&gt; a_next(c)<br>a -&gt; b -&gt; a_next(c)<br>由于要修改a与a_next中的数据，因此首先锁定这两个节点，修改之后解锁。</p>
+<p>each element of a doubly linked list has at least three components: a next pointer, a previous pointer, and a lock providing the owner <strong>exclusive access</strong> to update the node.<br>独占访问权</p>
+<center><img src="/2022/02/20/cuda-4/a%20double-linked%20list%20with%20locks.png" width="100%" height="100%"><font color="#708090" size="2">A doubly-linked list with fine-grained locks. Per-node locks are acquired (left) before inserting node B into the list (right).</font></center>
+
+<p>Independent thread scheduling in Volta ensures that even if a thread T0 currently holds the lock for node A, another thread T1 in the same warp can successfully wait for the lock to become available without impeding the progress of thread T0. Note, however, that because active threads in a warp execute together, threads spinning on a lock may degrade the performance of the thread holding the lock.<br>Volta的独立线程调度机制使得，即便一个thread T0正持有node A的lock（正在使用node A的数据，其他线程不可访问，需等待T0使用完毕之后unlock），相同warp中的另一个线程T1也可以在不干扰线程T0的情况下等到lock解锁。<br>解释一下，这是由于独立线程调度允许在divergent branches之间交替执行，但也是屏蔽掉不在这条path上的线程。因此此时T0正在持有lock，而T1正在spinning on the lock，等待使用状态。正是由于这样的原因，当T1 spinning的时候，T0是被屏蔽了的，而T0执行的时候，T1是被屏蔽的。因此这里说spinning on a lock的线程会影响此时holding the lock的线程的性能。<br>若没有独立线程调度机制，这种算法无法实现，原因是同一warp中的线程只能执行相同的指令，要么就是被屏蔽掉了。当两线程同时access node A，一个成功hold the lock，另一个只能spin on the lock。而由于发生divergent时，不同分支是交替执行的，无法确保哪个优先执行，有可能执行到spinning状态，这时另一个线程是处于一直被屏蔽状态的，没有机会unlock，导致程序挂起。</p>
+<p>It is also important to note that the use of a per-node lock in the above example is critical for performance on the GPU. Traditional doubly-linked list implementations may use a coarse-grained lock that provides exclusive access to the entire structure, rather than separately protecting individual nodes. This approach typically leads to poor performance in applications with many threads—Volta may have up to 163,840 concurrent threads—caused by extremely high contention for the lock. By using a fine-grained lock on each node, the average per-node contention in large lists will usually be low except under certain pathological node insertion patterns.</p>
+<p>使用这种per-node lock对GPU执行性能收益很大（除非是那种病态访问情况：线程间访问的节点非常集中）。传统双向链表只能用更粗粒度的lock，提供对整个structure的独占访问权，而不是单独检测每个node。当有数量非常庞大的线程时，线程间竞争非常激烈，并行就完全退化为了串行。</p>
+<p><a target="_blank" rel="noopener" href="https://images.nvidia.cn/content/volta-architecture/pdf/volta-architecture-whitepaper.pdf">Tesla V100 architecture white paper</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/16/ComSys-1/" rel="prev" title="计算机系统学习随记 原子操作是如何实现的">
+      <i class="fa fa-chevron-left"></i> 计算机系统学习随记 原子操作是如何实现的
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/22/cuda-5/" rel="next" title="CUDA学习随记5 Asynchronous copy cp.async">
+      CUDA学习随记5 Asynchronous copy cp.async <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Volta%E2%80%99s-Independent-Thread-Scheduling"><span class="nav-number">1.</span> <span class="nav-text">Volta’s Independent Thread Scheduling</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Tensor-Cores"><span class="nav-number">1.1.</span> <span class="nav-text">Tensor Cores</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Independent-Thread-Scheduling"><span class="nav-number">1.2.</span> <span class="nav-text">Independent Thread Scheduling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Prior-NVIDIA-GPU-SIMT-Models"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">Prior NVIDIA GPU SIMT Models</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Volta-SIMT-Model"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">Volta SIMT Model</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Starvation-Free-Algorithms"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">Starvation-Free Algorithms</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jiang Shao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jiang Shao</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
