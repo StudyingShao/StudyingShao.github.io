@@ -151,6 +151,394 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/25/GAMES101-Geometry-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/25/GAMES101-Geometry-1/" class="post-title-link" itemprop="url">GAMES101 Geometry part1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-25 17:05:59" itemprop="dateCreated datePublished" datetime="2022-02-25T17:05:59+08:00">2022-02-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-26 17:56:38" itemprop="dateModified" datetime="2022-02-26T17:56:38+08:00">2022-02-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GAMES101/" itemprop="url" rel="index"><span itemprop="name">GAMES101</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="GAMES101-Geometry-part1"><a href="#GAMES101-Geometry-part1" class="headerlink" title="GAMES101 Geometry part1"></a>GAMES101 Geometry part1</h1><p><strong>表示几何形状的方式：</strong></p>
+<p>隐式表示：</p>
+<ol>
+<li>algebraic surface 代数曲面</li>
+<li>level set 水平集</li>
+<li>distance functions 距离函数</li>
+<li>…</li>
+</ol>
+<p>显式表示：</p>
+<ol>
+<li>point cloud 点云</li>
+<li>polygon mesh 多边形网格</li>
+<li>subdivision, NURBS 样条曲线</li>
+<li>…</li>
+</ol>
+<p><strong>隐式表示</strong>基于对点的划分。所有的点满足特定的关系。<br>缺点：Sampling Can Be Hard，由于只知道点所满足的关系，因此想要知道组成几何的点比较困难。<br>优点：Inside/Outside Tests Easy，判断空间中一个点是否在曲面内很容易，直接代入到几何的约束关系中。</p>
+<p><strong>显示表示</strong>是直接给出所有组成几何的点，或者依据参数映射给出所有点。<br>优点：Sampling Is Easy<br>缺点：Inside/Outside Test Hard</p>
+<h2 id="Implicit-Representations-in-Computer-Graphics-计算机图形学中几何的隐式表示方法"><a href="#Implicit-Representations-in-Computer-Graphics-计算机图形学中几何的隐式表示方法" class="headerlink" title="Implicit Representations in Computer Graphics 计算机图形学中几何的隐式表示方法"></a>Implicit Representations in Computer Graphics 计算机图形学中几何的隐式表示方法</h2><h3 id="Algebraic-Surfaces-Implicit-代数表面"><a href="#Algebraic-Surfaces-Implicit-代数表面" class="headerlink" title="Algebraic Surfaces (Implicit) 代数表面"></a>Algebraic Surfaces (Implicit) 代数表面</h3><p>Surface is zero set of a polynomial in x, y, z.<br>表面为多项式的零集。（使得一个多项式等于0的所有值的集合）</p>
+<p>${ {x}^{2} }+{ {y}^{2} }+{ {z}^{2} }-1=0$<br>${ {\left( R-\sqrt{ { {x}^{2} }+{ {y}^{2} } } \right)}^{2} }+{ {z}^{2} }-{ {r}^{2} }=0$<br>${ {\left( { {x}^{2} }+\frac{9}{4}{ {y}^{2} }+{ {z}^{2} }-1 \right)}^{3} }-{ {x}^{2} }{ {z}^{3} }-\frac{9}{80}{ {y}^{2} }{ {z}^{3} }=0$</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-1/1.png" width="100%" height="100%"></center>
+
+<h3 id="Constructive-Solid-Geometry-Implicit-构造实体几何"><a href="#Constructive-Solid-Geometry-Implicit-构造实体几何" class="headerlink" title="Constructive Solid Geometry (Implicit) 构造实体几何"></a>Constructive Solid Geometry (Implicit) 构造实体几何</h3><p>Combine implicit geometry via Boolean operations.<br>通过布尔运算构造几何。并集、交集、差集</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-1/2.png" width="100%" height="100%"></center>
+
+<h3 id="Distance-Functions-Implicit-距离函数"><a href="#Distance-Functions-Implicit-距离函数" class="headerlink" title="Distance Functions (Implicit) 距离函数"></a>Distance Functions (Implicit) 距离函数</h3><p>Gradually blend surfaces together using Distance functions. 使用距离函数逐渐混合表面。</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-1/3.png" width="100%" height="100%"><img src="/2022/02/25/GAMES101-Geometry-1/3_1.png" width="100%" height="100%"></center>
+
+<p><strong>Distance functions: 距离函数</strong><br>giving minimum distance (could be signed distance)<br>from anywhere to object.<br>给出任意位置到物体的最小距离（垂直于表面），可以是有符号的距离，为负代表在物体内部。</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-1/4.png" width="100%" height="100%"></center>
+
+<p>逐渐混合的原理是，如图例所示，对于区域中一个边界来说，边界左侧为负（视为边界内部）右侧为正（视为边界外部）。<strong>SDF为0代表边界</strong>，图AB正负所占区域各不相同，blend之后相当于对AB中边界的一个线性插值（对0的位置的插值）。</p>
+<h3 id="Level-Set-Methods-implicit-水平集"><a href="#Level-Set-Methods-implicit-水平集" class="headerlink" title="Level Set Methods (implicit) 水平集"></a>Level Set Methods (implicit) 水平集</h3><p>对于复杂形状来说，描述边界的方程很难得到，因此对空间进行采样，给出空间中各个点的距离值。这样边界就可以通过插值方式得到（距离为0的地方）。</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-1/5.png" width="100%" height="100%"></center>
+
+<h3 id="Fractals-Implicit-分形"><a href="#Fractals-Implicit-分形" class="headerlink" title="Fractals (Implicit) 分形"></a>Fractals (Implicit) 分形</h3><p>Exhibit self-similarity, detail at all scales.<br>自相似特性 </p>
+<h3 id="隐式描述几何形状的优缺点"><a href="#隐式描述几何形状的优缺点" class="headerlink" title="隐式描述几何形状的优缺点"></a>隐式描述几何形状的优缺点</h3><p>优点：</p>
+<ol>
+<li>紧凑的表示方法（比如一个函数）</li>
+<li>对于特定的查询非常方便（比如在物体内外、点到边界的距离）</li>
+<li>方便表面与光线求交点</li>
+<li>对于一些简单形状，描述准确、无采样误差</li>
+<li>易于处理拓扑结构的变化（比如流体：拓扑结构多变且多样）</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>对复杂形状来说隐式描述相对困难</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/25/GAMES101-Geometry-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/25/GAMES101-Geometry-2/" class="post-title-link" itemprop="url">GAMES101 Geometry part2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-25 17:03:43" itemprop="dateCreated datePublished" datetime="2022-02-25T17:03:43+08:00">2022-02-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-26 18:23:04" itemprop="dateModified" datetime="2022-02-26T18:23:04+08:00">2022-02-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GAMES101/" itemprop="url" rel="index"><span itemprop="name">GAMES101</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="GAMES101-Geometry-part2"><a href="#GAMES101-Geometry-part2" class="headerlink" title="GAMES101 Geometry part2"></a>GAMES101 Geometry part2</h1><h2 id="Explicit-Representations-in-Computer-Graphics-计算机图形学中几何的显式表示方法"><a href="#Explicit-Representations-in-Computer-Graphics-计算机图形学中几何的显式表示方法" class="headerlink" title="Explicit Representations in Computer Graphics 计算机图形学中几何的显式表示方法"></a>Explicit Representations in Computer Graphics 计算机图形学中几何的显式表示方法</h2><p><strong>Curves</strong></p>
+<ul>
+<li>Bezier curves 贝塞尔曲线<br>— De Casteljau’s algorithm 德卡斯特里奥算法</li>
+<li>B-splines, etc. B样条曲线</li>
+</ul>
+<p><strong>Surfaces</strong></p>
+<ul>
+<li>Bezier surfaces 贝塞尔曲面</li>
+<li>Triangles &amp; quads 三角形网格与四边形网格<br>— Subdivision, simplification, regularization 细化，粗化，正则化</li>
+</ul>
+<h3 id="Point-Cloud-Explicit-点云"><a href="#Point-Cloud-Explicit-点云" class="headerlink" title="Point Cloud (Explicit) 点云"></a>Point Cloud (Explicit) 点云</h3><ol>
+<li>Easiest representation: list of points (x,y,z)<br>最简单的表示方法，点列表</li>
+<li>Easily represent any kind of geometry<br>很容易表示任何形状</li>
+<li>Useful for LARGE datasets (&gt;&gt;1 point/pixel)<br>适用于于大型数据集，每个像素都有远大于1个点</li>
+<li>Often converted into polygon mesh<br>经常被转化为多边形网络</li>
+<li>Difficult to draw in undersampled regions<br>对采样不足的区域很难绘制（指点比较稀疏的区域，每个像素包含的点太少、甚至可能没有）</li>
+</ol>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/1.png" width="50%" height="50%"></center>
+
+<h3 id="Polygon-Mesh-Explicit-多边形网络"><a href="#Polygon-Mesh-Explicit-多边形网络" class="headerlink" title="Polygon Mesh (Explicit) 多边形网络"></a>Polygon Mesh (Explicit) 多边形网络</h3><ol>
+<li>Store vertices &amp; polygons (often triangles or quads)<br>存储顶点和多边形（三角形、四边形居多）</li>
+<li>Easier to do processing / simulation, adaptive sampling<br>易于处理、模拟、自适应采样</li>
+<li>More complicated data structures<br>更复杂的数据结构</li>
+<li>Perhaps most common representation in graphics<br>图形学中目前最常用的表示方法</li>
+</ol>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/2.png" width="100%" height="100%"></center>
+
+<h4 id="The-Wavefront-Object-File-obj-Format"><a href="#The-Wavefront-Object-File-obj-Format" class="headerlink" title="The Wavefront Object File (.obj) Format"></a>The Wavefront Object File (.obj) Format</h4><p>描述多边形网格的文件格式。<br>Commonly used in Graphics research.<br>Just a text file that specifies vertices, normals, texture<br>coordinates and their connectivities.<br>是一个txt文件，指定了多边形网络的<strong>顶点</strong>、<strong>法线</strong>、<strong>纹理坐标</strong>与<strong>顶点之间的连接关系</strong>。</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/3.png" width="100%" height="100%"></center>
+
+<p>文件中：<br>v代表vertices顶点坐标<br>vt代表各个顶点对应的纹理坐标<br>vn代表各个顶点对应的法线方向<br>f则代表face，指顶点之间的连接方式从而组成一个面，格式为v/vt/vn</p>
+<h3 id="Bezier-Curves-贝塞尔曲线"><a href="#Bezier-Curves-贝塞尔曲线" class="headerlink" title="Bézier Curves 贝塞尔曲线"></a>Bézier Curves 贝塞尔曲线</h3><p>Defining Cubic Bézier Curve With Tangents<br>使用切线定义三次贝塞尔曲线</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/4.png" width="70%" height="70%"></center>
+
+<p>P为一系列控制点，用于定义曲线。指明了曲线要满足的一些性质。</p>
+<ol>
+<li>曲线由P0开始，到P3结束</li>
+<li>在P0处曲线沿着P0P1为切线，切线长度为t0</li>
+<li>在P3处曲线沿着P2P3为切线，切线程度为t1</li>
+</ol>
+<h4 id="de-Casteljau-Algorithm"><a href="#de-Casteljau-Algorithm" class="headerlink" title="de Casteljau Algorithm"></a>de Casteljau Algorithm</h4><p>用于绘制贝塞尔曲线</p>
+<p>Consider three points (quadratic Bezier)<br>考虑三个控制点的情况（二次贝塞尔曲线）</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/5_1.png" width="50%"><img src="/2022/02/25/GAMES101-Geometry-2/5_2.png" width="50%"></center>
+
+<p>三次线性插值，根据同一个t得到对应位置。<br>$b_{0}^{1}={ {b}_{0} }+({ {b}_{1} }-{ {b}_{0} })<em>t$<br>$b_{1}^{1}={ {b}_{1} }+({ {b}_{2} }-{ {b}_{1} })</em>t$<br>$b_{0}^{2}=b_{0}^{1}+(b_{1}^{1}-b_{0}^{1})*t$</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45333934/article/details/108274320">公式渲染错误：Nunjucks Error 解决方案</a></p>
+<script type="math/tex; mode=display">b_{0}^{2}={ {(1-t)}^{2} }{ {b}_{0} }+2t(1-t){ {b}_{1} }+{ {t}^{2} }{ {b}_{2} }</script><p>Four input points in total (Cubic Bézier Curve)<br>相同的递归线性插值</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/9.png" width="90%"></center>
+
+<center><img src="/2022/02/25/GAMES101-Geometry-2/6.png" width="100%"></center>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/7.png" width="50%"><img src="/2022/02/25/GAMES101-Geometry-2/7_2.png" width="50%"></center>
+
+<p><strong>通用贝塞尔曲线公式</strong><br><strong>Bernstein polynomial 伯恩斯坦多项式</strong></p>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/8.png" width="50%"></center>
+
+<script type="math/tex; mode=display">\left( \begin{align}
+  & n \nonumber \\
+ & i \nonumber \\
+\end{align} \right)=\frac{n!}{i!(n-i)!}</script><p><strong>Bernstein form of a Bézier curve of order n:</strong><br><strong>n阶贝塞尔曲线伯恩斯坦形式（n+1个控制点）：</strong></p>
+<script type="math/tex; mode=display">{ {b}^{n} }(t)=\sum\limits_{i=0}^{n}{ { {b}_{i} }B_{i}^{n}(t)}</script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/25/GAMES101-RayTracing-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/25/GAMES101-RayTracing-1/" class="post-title-link" itemprop="url">GAMES101_RayTracing_1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-25 16:44:37 / Modified: 16:47:04" itemprop="dateCreated datePublished" datetime="2022-02-25T16:44:37+08:00">2022-02-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GAMES101/" itemprop="url" rel="index"><span itemprop="name">GAMES101</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="GAMES101-RayTracing"><a href="#GAMES101-RayTracing" class="headerlink" title="GAMES101 RayTracing"></a>GAMES101 RayTracing</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/23/cuda-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/23/cuda-6/" class="post-title-link" itemprop="url">CUDA学习随记6 Asynchronous Barrier</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-23 21:41:50 / Modified: 22:04:22" itemprop="dateCreated datePublished" datetime="2022-02-23T21:41:50+08:00">2022-02-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">CUDA学习随记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CUDA学习随记6-Asynchronous-Barrier"><a href="#CUDA学习随记6-Asynchronous-Barrier" class="headerlink" title="CUDA学习随记6 Asynchronous Barrier"></a>CUDA学习随记6 Asynchronous Barrier</h1><p><a target="_blank" rel="noopener" href="https://singvision.net/2015/01/06/cuda-%e8%bd%af%e4%bb%b6%e6%8a%bd%e8%b1%a1%e7%9a%84%e5%b9%bb%e5%bd%b1%e8%83%8c%e5%90%8e/">CUDA, 软件抽象的幻影背后</a><br><a target="_blank" rel="noopener" href="https://singvision.net/2015/01/08/cuda-%e8%bd%af%e4%bb%b6%e6%8a%bd%e8%b1%a1%e7%9a%84%e5%b9%bb%e5%bd%b1%e8%83%8c%e5%90%8e-%e4%b9%8b%e4%ba%8c/">CUDA, 软件抽象的幻影背后 之二</a><br><a target="_blank" rel="noopener" href="https://singvision.net/2015/01/13/cuda-%e8%bd%af%e4%bb%b6%e6%8a%bd%e8%b1%a1%e7%9a%84%e5%b9%bb%e5%bd%b1%e8%83%8c%e5%90%8e-%e4%b9%8b%e4%b8%89/">CUDA, 软件抽象的幻影背后 之三</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#aw-barrier">CUDA C++ Programming Guide: B.25. Asynchronous Barrier</a><br><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#parallel-synchronization-and-communication-instructions-mbarrier">PTX ISA: 9.7.12.11. Parallel Synchronization and Communication Instructions: mbarrier</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/22/cuda-5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -986,235 +1374,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/09/NVIDIA-intern-paper-md/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jiang Shao">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邵大宝的学习Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/09/NVIDIA-intern-paper-md/" class="post-title-link" itemprop="url">NVIDIA Intern Paper 1 Smoke Simulation Method</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-09 23:02:28" itemprop="dateCreated datePublished" datetime="2022-02-09T23:02:28+08:00">2022-02-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-11 15:11:38" itemprop="dateModified" datetime="2022-02-11T15:11:38+08:00">2022-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation/" itemprop="url" rel="index"><span itemprop="name">Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation/1-Smoke-Simulation-Method/" itemprop="url" rel="index"><span itemprop="name">1 Smoke Simulation Method</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation"><a href="#Cuda-Performance-Optimization-of-a-Multigrid-Poisson-Solver-for-Smoke-Simulation" class="headerlink" title="Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation"></a>Cuda Performance Optimization of a Multigrid Poisson Solver for Smoke Simulation</h1><h2 id="1-Smoke-Simulation-Method"><a href="#1-Smoke-Simulation-Method" class="headerlink" title="1. Smoke Simulation Method"></a>1. Smoke Simulation Method</h2><h3 id="1-1-Operator-Splitting-Method"><a href="#1-1-Operator-Splitting-Method" class="headerlink" title="1.1. Operator-Splitting Method"></a>1.1. Operator-Splitting Method</h3><p><strong>Reference:</strong> Harris M J. Fast fluid dynamics simulation on the GPU[J]. SIGGRAPH Courses, 2005, 220(10.1145): 1198555-1198790.<br>&ensp;&ensp;The smoke simulation solves an incompressible NS equation expressed as</p>
-<script type="math/tex; mode=display">\frac{\partial \mathbf{u} }{\partial t}=-\left( \mathbf{u}\cdot \nabla  \right)\mathbf{u}-\frac{1}{\rho }\nabla p+\nu { {\nabla }^{2} }\mathbf{u}+\mathbf{F} \tag {1.1.1}</script><p>, where <strong>u</strong> is the velocity field and for an incompressible fluid, it satisfies</p>
-<script type="math/tex; mode=display">\nabla \cdot \mathbf{u}=0. \tag {1.1.2}</script><p>With the Operator-Splitting Method, the solution of the NS equation is calculated via composition of transformations on the state. In other words, each component of the NS equation is a step that takes a field as input, and produces a new field as output. $\color{red}{[Fast Fluid Dynamics Simulation on the GPU.]}$ Define an operator <strong>S</strong> that is equivalent to the solution of NS equation over a single time step. Then, the operator S can be decomposed into the operators for advection <strong>A</strong>, diffusion <strong>D</strong>, force application <strong>F</strong>, and projection <strong>P</strong>.</p>
-<center><img src="/2022/02/09/NVIDIA-intern-paper-md/1.1.1_1.png" width="50%" height="50%"></center>
-
-<p>&ensp;&ensp;After <strong>F</strong>, <strong>D</strong>, and <strong>A</strong> operations, we can get a divergent velocity field <strong>w</strong>. Then we can get the velocity field <strong>u</strong> with zero divergence by adopting the Helmholtz-Hodge Decomposition Theorem.</p>
-<script type="math/tex; mode=display">\mathbf{w}=\mathbf{u}+\nabla p \tag {1.1.3}</script><p>This process is called the projection corresponding to <strong>P</strong>. A projection operation is always needed to guarantee the incompressibility of the fluid.<br>&ensp;&ensp;If we apply the divergence operator to both sides of the above equation, we obtain</p>
-<script type="math/tex; mode=display">\nabla \cdot \mathbf{u}+{ {\nabla }^{2} }p={ {\nabla }^{2} }p=\nabla \cdot \mathbf{w}. \tag {1.1.4}</script><p>Note that for an incompressible fluid, we have $\nabla \cdot \mathbf{u}=0$. Then, it becomes a Poisson equation for the pressure of the fluid, sometimes called the Poisson-pressure equation. With this equation, we can get the pressure p, and then use <strong>w</strong> and p to compute the new divergence-free velocity field <strong>u</strong> by</p>
-<script type="math/tex; mode=display">\mathbf{w}=\mathbf{u}+\nabla p. \tag {1.1.5}</script>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/09/GAMES101/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jiang Shao">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邵大宝的学习Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/09/GAMES101/" class="post-title-link" itemprop="url">hexo_blog.md</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-09 22:03:18" itemprop="dateCreated datePublished" datetime="2022-02-09T22:03:18+08:00">2022-02-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-10 02:21:24" itemprop="dateModified" datetime="2022-02-10T02:21:24+08:00">2022-02-10</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Geometry-part3"><a href="#Geometry-part3" class="headerlink" title="Geometry part3"></a>Geometry part3</h1><ol>
-<li>mesh subdivision 网格细化</li>
-<li>mesh simplification 网格粗化</li>
-<li>mesh regularization 网格正则化，使三角形趋于一致</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/1970/01/01/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jiang Shao">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邵大宝的学习Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/1970/01/01/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 1970-01-01 08:00:00" itemprop="dateCreated datePublished" datetime="1970-01-01T08:00:00+08:00">1970-01-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-09 19:43:51" itemprop="dateModified" datetime="2022-02-09T19:43:51+08:00">2022-02-09</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 
 
@@ -1279,14 +1443,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>

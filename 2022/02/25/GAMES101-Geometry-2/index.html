@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="GAMES101 Geometry part2Explicit Representations in Computer Graphics 计算机图形学中几何的显式表示方法Curves  Bezier curves 贝塞尔曲线— De Casteljau’s algorithm 德卡斯特里奥算法 B-splines, etc. B样条曲线  Surfaces  Bezier surfaces 贝塞尔">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GAMES101 Geometry part2">
+<meta property="og:url" content="http://example.com/2022/02/25/GAMES101-Geometry-2/index.html">
+<meta property="og:site_name" content="邵大宝的学习Blog">
+<meta property="og:description" content="GAMES101 Geometry part2Explicit Representations in Computer Graphics 计算机图形学中几何的显式表示方法Curves  Bezier curves 贝塞尔曲线— De Casteljau’s algorithm 德卡斯特里奥算法 B-splines, etc. B样条曲线  Surfaces  Bezier surfaces 贝塞尔">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/02/25/GAMES101-Geometry-2/1.png">
+<meta property="og:image" content="http://example.com/2022/02/25/GAMES101-Geometry-2/2.png">
+<meta property="og:image" content="http://example.com/2022/02/25/GAMES101-Geometry-2/3.png">
+<meta property="og:image" content="http://example.com/2022/02/25/GAMES101-Geometry-2/4.png">
+<meta property="og:image" content="http://example.com/2022/02/25/GAMES101-Geometry-2/5_1.png">
+<meta property="og:image" content="http://example.com/2022/02/25/GAMES101-Geometry-2/5_2.png">
+<meta property="og:image" content="http://example.com/2022/02/25/GAMES101-Geometry-2/9.png">
+<meta property="og:image" content="http://example.com/2022/02/25/GAMES101-Geometry-2/6.png">
+<meta property="og:image" content="http://example.com/2022/02/25/GAMES101-Geometry-2/7.png">
+<meta property="og:image" content="http://example.com/2022/02/25/GAMES101-Geometry-2/7_2.png">
+<meta property="og:image" content="http://example.com/2022/02/25/GAMES101-Geometry-2/8.png">
+<meta property="article:published_time" content="2022-02-25T09:03:43.000Z">
+<meta property="article:modified_time" content="2022-02-26T10:23:04.611Z">
+<meta property="article:author" content="Jiang Shao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/02/25/GAMES101-Geometry-2/1.png">
+
+<link rel="canonical" href="http://example.com/2022/02/25/GAMES101-Geometry-2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>GAMES101 Geometry part2 | 邵大宝的学习Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">邵大宝的学习Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">最爱严小跳</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/25/GAMES101-Geometry-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GAMES101 Geometry part2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-25 17:03:43" itemprop="dateCreated datePublished" datetime="2022-02-25T17:03:43+08:00">2022-02-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-26 18:23:04" itemprop="dateModified" datetime="2022-02-26T18:23:04+08:00">2022-02-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GAMES101/" itemprop="url" rel="index"><span itemprop="name">GAMES101</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="GAMES101-Geometry-part2"><a href="#GAMES101-Geometry-part2" class="headerlink" title="GAMES101 Geometry part2"></a>GAMES101 Geometry part2</h1><h2 id="Explicit-Representations-in-Computer-Graphics-计算机图形学中几何的显式表示方法"><a href="#Explicit-Representations-in-Computer-Graphics-计算机图形学中几何的显式表示方法" class="headerlink" title="Explicit Representations in Computer Graphics 计算机图形学中几何的显式表示方法"></a>Explicit Representations in Computer Graphics 计算机图形学中几何的显式表示方法</h2><p><strong>Curves</strong></p>
+<ul>
+<li>Bezier curves 贝塞尔曲线<br>— De Casteljau’s algorithm 德卡斯特里奥算法</li>
+<li>B-splines, etc. B样条曲线</li>
+</ul>
+<p><strong>Surfaces</strong></p>
+<ul>
+<li>Bezier surfaces 贝塞尔曲面</li>
+<li>Triangles &amp; quads 三角形网格与四边形网格<br>— Subdivision, simplification, regularization 细化，粗化，正则化</li>
+</ul>
+<h3 id="Point-Cloud-Explicit-点云"><a href="#Point-Cloud-Explicit-点云" class="headerlink" title="Point Cloud (Explicit) 点云"></a>Point Cloud (Explicit) 点云</h3><ol>
+<li>Easiest representation: list of points (x,y,z)<br>最简单的表示方法，点列表</li>
+<li>Easily represent any kind of geometry<br>很容易表示任何形状</li>
+<li>Useful for LARGE datasets (&gt;&gt;1 point/pixel)<br>适用于于大型数据集，每个像素都有远大于1个点</li>
+<li>Often converted into polygon mesh<br>经常被转化为多边形网络</li>
+<li>Difficult to draw in undersampled regions<br>对采样不足的区域很难绘制（指点比较稀疏的区域，每个像素包含的点太少、甚至可能没有）</li>
+</ol>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/1.png" width="50%" height="50%"></center>
+
+<h3 id="Polygon-Mesh-Explicit-多边形网络"><a href="#Polygon-Mesh-Explicit-多边形网络" class="headerlink" title="Polygon Mesh (Explicit) 多边形网络"></a>Polygon Mesh (Explicit) 多边形网络</h3><ol>
+<li>Store vertices &amp; polygons (often triangles or quads)<br>存储顶点和多边形（三角形、四边形居多）</li>
+<li>Easier to do processing / simulation, adaptive sampling<br>易于处理、模拟、自适应采样</li>
+<li>More complicated data structures<br>更复杂的数据结构</li>
+<li>Perhaps most common representation in graphics<br>图形学中目前最常用的表示方法</li>
+</ol>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/2.png" width="100%" height="100%"></center>
+
+<h4 id="The-Wavefront-Object-File-obj-Format"><a href="#The-Wavefront-Object-File-obj-Format" class="headerlink" title="The Wavefront Object File (.obj) Format"></a>The Wavefront Object File (.obj) Format</h4><p>描述多边形网格的文件格式。<br>Commonly used in Graphics research.<br>Just a text file that specifies vertices, normals, texture<br>coordinates and their connectivities.<br>是一个txt文件，指定了多边形网络的<strong>顶点</strong>、<strong>法线</strong>、<strong>纹理坐标</strong>与<strong>顶点之间的连接关系</strong>。</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/3.png" width="100%" height="100%"></center>
+
+<p>文件中：<br>v代表vertices顶点坐标<br>vt代表各个顶点对应的纹理坐标<br>vn代表各个顶点对应的法线方向<br>f则代表face，指顶点之间的连接方式从而组成一个面，格式为v/vt/vn</p>
+<h3 id="Bezier-Curves-贝塞尔曲线"><a href="#Bezier-Curves-贝塞尔曲线" class="headerlink" title="Bézier Curves 贝塞尔曲线"></a>Bézier Curves 贝塞尔曲线</h3><p>Defining Cubic Bézier Curve With Tangents<br>使用切线定义三次贝塞尔曲线</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/4.png" width="70%" height="70%"></center>
+
+<p>P为一系列控制点，用于定义曲线。指明了曲线要满足的一些性质。</p>
+<ol>
+<li>曲线由P0开始，到P3结束</li>
+<li>在P0处曲线沿着P0P1为切线，切线长度为t0</li>
+<li>在P3处曲线沿着P2P3为切线，切线程度为t1</li>
+</ol>
+<h4 id="de-Casteljau-Algorithm"><a href="#de-Casteljau-Algorithm" class="headerlink" title="de Casteljau Algorithm"></a>de Casteljau Algorithm</h4><p>用于绘制贝塞尔曲线</p>
+<p>Consider three points (quadratic Bezier)<br>考虑三个控制点的情况（二次贝塞尔曲线）</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/5_1.png" width="50%"><img src="/2022/02/25/GAMES101-Geometry-2/5_2.png" width="50%"></center>
+
+<p>三次线性插值，根据同一个t得到对应位置。<br>$b_{0}^{1}={ {b}_{0} }+({ {b}_{1} }-{ {b}_{0} })<em>t$<br>$b_{1}^{1}={ {b}_{1} }+({ {b}_{2} }-{ {b}_{1} })</em>t$<br>$b_{0}^{2}=b_{0}^{1}+(b_{1}^{1}-b_{0}^{1})*t$</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45333934/article/details/108274320">公式渲染错误：Nunjucks Error 解决方案</a></p>
+<script type="math/tex; mode=display">b_{0}^{2}={ {(1-t)}^{2} }{ {b}_{0} }+2t(1-t){ {b}_{1} }+{ {t}^{2} }{ {b}_{2} }</script><p>Four input points in total (Cubic Bézier Curve)<br>相同的递归线性插值</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/9.png" width="90%"></center>
+
+<center><img src="/2022/02/25/GAMES101-Geometry-2/6.png" width="100%"></center>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/7.png" width="50%"><img src="/2022/02/25/GAMES101-Geometry-2/7_2.png" width="50%"></center>
+
+<p><strong>通用贝塞尔曲线公式</strong><br><strong>Bernstein polynomial 伯恩斯坦多项式</strong></p>
+<center><img src="/2022/02/25/GAMES101-Geometry-2/8.png" width="50%"></center>
+
+<script type="math/tex; mode=display">\left( \begin{align}
+  & n \nonumber \\
+ & i \nonumber \\
+\end{align} \right)=\frac{n!}{i!(n-i)!}</script><p><strong>Bernstein form of a Bézier curve of order n:</strong><br><strong>n阶贝塞尔曲线伯恩斯坦形式（n+1个控制点）：</strong></p>
+<script type="math/tex; mode=display">{ {b}^{n} }(t)=\sum\limits_{i=0}^{n}{ { {b}_{i} }B_{i}^{n}(t)}</script>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/25/GAMES101-RayTracing-1/" rel="prev" title="GAMES101_RayTracing_1">
+      <i class="fa fa-chevron-left"></i> GAMES101_RayTracing_1
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/25/GAMES101-Geometry-1/" rel="next" title="GAMES101 Geometry part1">
+      GAMES101 Geometry part1 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GAMES101-Geometry-part2"><span class="nav-number">1.</span> <span class="nav-text">GAMES101 Geometry part2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Explicit-Representations-in-Computer-Graphics-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B8%AD%E5%87%A0%E4%BD%95%E7%9A%84%E6%98%BE%E5%BC%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">Explicit Representations in Computer Graphics 计算机图形学中几何的显式表示方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Point-Cloud-Explicit-%E7%82%B9%E4%BA%91"><span class="nav-number">1.1.1.</span> <span class="nav-text">Point Cloud (Explicit) 点云</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Polygon-Mesh-Explicit-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E7%BB%9C"><span class="nav-number">1.1.2.</span> <span class="nav-text">Polygon Mesh (Explicit) 多边形网络</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Wavefront-Object-File-obj-Format"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">The Wavefront Object File (.obj) Format</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bezier-Curves-%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF"><span class="nav-number">1.1.3.</span> <span class="nav-text">Bézier Curves 贝塞尔曲线</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#de-Casteljau-Algorithm"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">de Casteljau Algorithm</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jiang Shao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jiang Shao</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
