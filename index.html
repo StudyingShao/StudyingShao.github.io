@@ -151,6 +151,153 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/GAMES101-RayTracing-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/28/GAMES101-RayTracing-2/" class="post-title-link" itemprop="url">GAMES101-RayTracing-2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-28 17:21:15" itemprop="dateCreated datePublished" datetime="2022-02-28T17:21:15+08:00">2022-02-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/GAMES101-Geometry-Assignment4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/28/GAMES101-Geometry-Assignment4/" class="post-title-link" itemprop="url">GAMES101 Geometry Assignment4</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-28 14:23:33 / Modified: 17:37:52" itemprop="dateCreated datePublished" datetime="2022-02-28T14:23:33+08:00">2022-02-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GAMES101-%E7%8E%B0%E4%BB%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">GAMES101-现代计算机图形学入门</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="GAMES101-Geometry-Assignment4"><a href="#GAMES101-Geometry-Assignment4" class="headerlink" title="GAMES101 Geometry Assignment4"></a>GAMES101 Geometry Assignment4</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7f10f51bce47">hexo 博客添加pdf 插件1</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/111452a36e94">hexo 博客添加pdf 插件2</a></p>
+<ol>
+<li>安装插件<br>npm install —save hexo-pdf</li>
+<li>在md文件中添加pdf</li>
+</ol>
+</blockquote>
+<p>作业要求：<br><div class="pdfobject-container" data-target="pdf/assignment4.pdf" data-height="500px"></div></p>
+<object data="GAMES101-Geometry-Assignment4/assignment4.pdf" type="application/pdf" width="50%" height="50%">
+
+<h2 id="cv-Mat数据类型"><a href="#cv-Mat数据类型" class="headerlink" title="cv::Mat数据类型"></a>cv::Mat数据类型</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/czsnooker/article/details/118345494">OpenCV基础类型4—cv::Mat详解</a><br>cv::Mat是OpenCV定义的用于表示任意维度的稠密数组，OpenCV使用它来存储和传递图像。</p>
+<p>由于cv::Mat要用于存储图像，它里面的元素可以是“像素”，对于像素，OpenCV定义了专门的数据格式来描述它们。<br>基本数据类型 + 通道数<br>CV_{8U, 16S, 16U, 32S, 32F, 64F}C{1, 2, 3}</p>
+<p>数据类型前面的数字，对应数据类型的bit数。<br>8U:unsigned char;<br>16S: short int;<br>16U: unsigned short int;<br>32F: float;<br>64F: double.</p>
+<p>{1，2，3}代表通道数。<br>彩色图像每个像素需要存储B、G、R（蓝、绿、红）3个信息，需要3个位置， 每一个称为一个“颜色通道”。<br>灰度图像无颜色，只有一个通道，故常为CV_8UC1。由黑到白。</p>
+<p>作业中cv::Mat构造函数：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cv::Mat window = cv::<span class="built_in">Mat</span>(<span class="number">700</span>, <span class="number">700</span>, CV_8UC3, cv::<span class="built_in">Scalar</span>(<span class="number">0</span>));</span><br></pre></td></tr></table></figure><br>对应图像高（行数）700-row，宽（列数）700-col， 数据类型：CV_8UC3（unsigned char，彩色三通道），初始值为cv::Scalar(0)代表纯黑色。</p>
+<p><strong>访问元素</strong><br>直接访问，使用模板函数at&lt;&gt;()</p>
+<p>单通道, 尖括号里面的类型照着文章开头介绍的类型对应关系输入<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这里数据类型为CV_32FC1，对应float，单通道，所以使用at&lt;float&gt;</span></span><br><span class="line">cv::Mat img = cv::Mat::<span class="built_in">ones</span>(<span class="number">240</span>, <span class="number">320</span>, CV_32FC1);</span><br><span class="line"><span class="type">float</span> elem = img.<span class="built_in">at</span>&lt;<span class="type">float</span>&gt;(<span class="number">10</span>, <span class="number">10</span>);</span><br></pre></td></tr></table></figure></p>
+<p>多通道，Vec3b代表固定向量类。<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/czsnooker/article/details/118314514?spm=1001.2014.3001.5501">利用固定向量类访问</a><br>OpenCV中固定向量模板类cv::Vec&lt;&gt;别名命名规则：<br>cv::Vec{2,3,4,6}{b, s ,w , i, f, d}<br>{2,3,4,6}代表向量的长度。<br>{b, s ,w , i, f, d}表示向量内数据类型。分别对应：<br>b：unsigned char;<br>s：short int;<br>w：unsigned short;<br>i：int;<br>f：float;<br>d：double.</p>
+<p>注意类型之间的对应，固定向量与Mat的代表字母有一点差异<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//cv::Mat元素类型CV_8UC3，对应unsigned char彩色三通道，因此使用固定向量类型cv::Vec3b，长度3向量，数据类型unsigned char</span></span><br><span class="line"><span class="function">cv::Mat <span class="title">img1</span><span class="params">(<span class="number">480</span>, <span class="number">640</span>, CV_8UC3, cv::Scalar(<span class="number">255</span>,<span class="number">255</span>,<span class="number">0</span>))</span></span>;</span><br><span class="line">cv::Vec3b elem = img1.<span class="built_in">at</span>&lt;cv::Vec3b&gt;(<span class="number">10</span>, <span class="number">10</span>);</span><br><span class="line">elem_B = elem[<span class="number">0</span>]; <span class="comment">//蓝色通道数值---255</span></span><br><span class="line">elem_G = elem[<span class="number">1</span>]; <span class="comment">//绿色通道数值---255</span></span><br><span class="line">elem_R = elem[<span class="number">2</span>]; <span class="comment">//红色通道---0</span></span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>要求你的实现将Bézier 曲线绘制为绿色。</p>
+</blockquote>
+<p>绿色对应RGB(0, 255, 0)。</p>
+<h2 id="作业代码"><a href="#作业代码" class="headerlink" title="作业代码"></a>作业代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> t_step 0.001f</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CONTROL_POINTS_NUM 6</span></span><br><span class="line"></span><br><span class="line">std::vector&lt;cv::Point2f&gt; control_points;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mouse_handler</span><span class="params">(<span class="type">int</span> event, <span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span> flags, <span class="type">void</span> *userdata)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (event == cv::EVENT_LBUTTONDOWN &amp;&amp; control_points.<span class="built_in">size</span>() &lt; CONTROL_POINTS_NUM) </span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Left button of the mouse is clicked - position (&quot;</span> &lt;&lt; x &lt;&lt; <span class="string">&quot;, &quot;</span></span><br><span class="line">        &lt;&lt; y &lt;&lt; <span class="string">&quot;)&quot;</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">        control_points.<span class="built_in">emplace_back</span>(x, y);</span><br><span class="line">    &#125;     </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">naive_bezier</span><span class="params">(<span class="type">const</span> std::vector&lt;cv::Point2f&gt; &amp;points, cv::Mat &amp;window)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> &amp;p_0 = points[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">auto</span> &amp;p_1 = points[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">auto</span> &amp;p_2 = points[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">auto</span> &amp;p_3 = points[<span class="number">3</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">double</span> t = <span class="number">0.0</span>; t &lt;= <span class="number">1.0</span>; t += <span class="number">0.001</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">auto</span> point = std::<span class="built_in">pow</span>(<span class="number">1</span> - t, <span class="number">3</span>) * p_0 + <span class="number">3</span> * t * std::<span class="built_in">pow</span>(<span class="number">1</span> - t, <span class="number">2</span>) * p_1 +</span><br><span class="line">                 <span class="number">3</span> * std::<span class="built_in">pow</span>(t, <span class="number">2</span>) * (<span class="number">1</span> - t) * p_2 + std::<span class="built_in">pow</span>(t, <span class="number">3</span>) * p_3;</span><br><span class="line"></span><br><span class="line">        window.<span class="built_in">at</span>&lt;cv::Vec3b&gt;(point.y, point.x)[<span class="number">2</span>] = <span class="number">255</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//计算阶乘</span></span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">Factorial</span><span class="params">(<span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1.0f</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">float</span> result = <span class="number">1.0f</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">size_t</span> i = n; i &gt; <span class="number">0</span>; i--)</span><br><span class="line">        &#123;</span><br><span class="line">            result *= i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">cv::Point2f <span class="title">recursive_bezier</span><span class="params">(<span class="type">const</span> std::vector&lt;cv::Point2f&gt; &amp;control_points, <span class="type">float</span> t)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// <span class="doctag">TODO:</span> Implement de Casteljau&#x27;s algorithm</span></span><br><span class="line">    <span class="function">cv::Point2f <span class="title">point_</span><span class="params">(<span class="number">0.f</span>, <span class="number">0.f</span>)</span></span>;</span><br><span class="line">    <span class="type">int</span> n = control_points.<span class="built_in">size</span>() - <span class="number">1</span>;<span class="comment">//贝塞尔曲线阶数为控制点个数-1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i &lt; n + <span class="number">1</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//伯恩斯坦多项式</span></span><br><span class="line">        <span class="type">float</span> Bni = <span class="built_in">Factorial</span>(n) / <span class="built_in">Factorial</span>(i) / <span class="built_in">Factorial</span>(n - i) * <span class="built_in">powf</span>(t, i) * <span class="built_in">pow</span>(<span class="number">1</span> - t, n - i);</span><br><span class="line">        <span class="comment">//std::cout &lt;&lt; Bni &lt;&lt; std::endl;</span></span><br><span class="line">        point_ += Bni * control_points[i];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> point_;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">bezier</span><span class="params">(<span class="type">const</span> std::vector&lt;cv::Point2f&gt; &amp;control_points, cv::Mat &amp;window)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// <span class="doctag">TODO:</span> Iterate through all t = 0 to t = 1 with small steps, and call de Casteljau&#x27;s </span></span><br><span class="line">    <span class="comment">// recursive Bezier algorithm.</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">float</span> t = <span class="number">0</span>; t &lt; <span class="number">1</span>; t+=t_step)</span><br><span class="line">    &#123;</span><br><span class="line">        cv::Point2f point_ = <span class="built_in">recursive_bezier</span>(control_points, t);</span><br><span class="line">        window.<span class="built_in">at</span>&lt;cv::Vec3b&gt;(point_.y, point_.x)[<span class="number">1</span>] = <span class="number">255</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cv::Mat window = cv::<span class="built_in">Mat</span>(<span class="number">700</span>, <span class="number">700</span>, CV_8UC3, cv::<span class="built_in">Scalar</span>(<span class="number">0</span>));<span class="comment">//黑色屏幕</span></span><br><span class="line">    <span class="comment">//cv::Mat window = cv::Mat(700, 700, CV_8UC3, cv::Scalar(0,255,0));//绿色屏幕</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    cv::<span class="built_in">cvtColor</span>(window, window, cv::COLOR_BGR2RGB);</span><br><span class="line">    cv::<span class="built_in">namedWindow</span>(<span class="string">&quot;Bezier Curve&quot;</span>, cv::WINDOW_AUTOSIZE);</span><br><span class="line"></span><br><span class="line">    cv::<span class="built_in">setMouseCallback</span>(<span class="string">&quot;Bezier Curve&quot;</span>, mouse_handler, <span class="literal">nullptr</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> key = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">while</span> (key != <span class="number">27</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;point : control_points) </span><br><span class="line">        &#123;</span><br><span class="line">            cv::<span class="built_in">circle</span>(window, point, <span class="number">3</span>, &#123;<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>&#125;, <span class="number">3</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (control_points.<span class="built_in">size</span>() == CONTROL_POINTS_NUM) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//naive_bezier(control_points, window);</span></span><br><span class="line">            <span class="built_in">bezier</span>(control_points, window);</span><br><span class="line"></span><br><span class="line">            cv::<span class="built_in">imshow</span>(<span class="string">&quot;Bezier Curve&quot;</span>, window);</span><br><span class="line">            cv::<span class="built_in">imwrite</span>(<span class="string">&quot;my_bezier_curve.png&quot;</span>, window);</span><br><span class="line">            key = cv::<span class="built_in">waitKey</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        cv::<span class="built_in">imshow</span>(<span class="string">&quot;Bezier Curve&quot;</span>, window);</span><br><span class="line">        key = cv::<span class="built_in">waitKey</span>(<span class="number">20</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></object>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/25/GAMES101-Geometry-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -182,7 +329,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-26 17:56:38" itemprop="dateModified" datetime="2022-02-26T17:56:38+08:00">2022-02-26</time>
+                <time title="Modified: 2022-02-28 14:24:03" itemprop="dateModified" datetime="2022-02-28T14:24:03+08:00">2022-02-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -190,7 +337,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GAMES101/" itemprop="url" rel="index"><span itemprop="name">GAMES101</span></a>
+                  <a href="/categories/GAMES101-%E7%8E%B0%E4%BB%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">GAMES101-现代计算机图形学入门</span></a>
                 </span>
             </span>
 
@@ -302,7 +449,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-28 00:37:12" itemprop="dateModified" datetime="2022-02-28T00:37:12+08:00">2022-02-28</time>
+                <time title="Modified: 2022-02-28 14:24:13" itemprop="dateModified" datetime="2022-02-28T14:24:13+08:00">2022-02-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -310,7 +457,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GAMES101/" itemprop="url" rel="index"><span itemprop="name">GAMES101</span></a>
+                  <a href="/categories/GAMES101-%E7%8E%B0%E4%BB%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">GAMES101-现代计算机图形学入门</span></a>
                 </span>
             </span>
 
@@ -408,9 +555,10 @@
 
 <p>逐段贝塞尔曲线：每四个控制点，定义一段三阶贝塞尔曲线。对于图中第一段来说，控制点为1234，曲线起止与14控制点。</p>
 <h5 id="Piecewise-Bezier-Curve-–-Continuity-连续性"><a href="#Piecewise-Bezier-Curve-–-Continuity-连续性" class="headerlink" title="Piecewise Bézier Curve – Continuity 连续性"></a>Piecewise Bézier Curve – Continuity 连续性</h5><p>如何使两端曲线连接处光滑，起止点连接（值连续），起止点处切线方向一致，且切线大小相同（导数连续）。</p>
-<p><strong>C0连续：</strong>起止点连接</p>
+<p><strong>C0连续</strong>：起止点连接</p>
 <center><img src="/2022/02/25/GAMES101-Geometry-2/14.png" width="100%"></center>
-**C1连续：**切线连续，两端切线方向相反，长度相同。
+
+<p><strong>C1连续</strong>：切线连续，两端切线方向相反，长度相同。</p>
 <center><img src="/2022/02/25/GAMES101-Geometry-2/15.png" width="100%"></center>
 
 <h3 id="Bezier-Surfaces-贝塞尔曲面"><a href="#Bezier-Surfaces-贝塞尔曲面" class="headerlink" title="Bézier Surfaces 贝塞尔曲面"></a>Bézier Surfaces 贝塞尔曲面</h3><center><img src="/2022/02/25/GAMES101-Geometry-2/16.png" width="100%"></center>
@@ -426,6 +574,142 @@
 <center><img src="/2022/02/25/GAMES101-Geometry-2/17.png" width="100%"></center>
 <center><img src="/2022/02/25/GAMES101-Geometry-2/18.png" width="100%"></center>
 
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/25/GAMES101-Geometry-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/25/GAMES101-Geometry-3/" class="post-title-link" itemprop="url">GAMES101 Geometry part3</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-25 17:02:43" itemprop="dateCreated datePublished" datetime="2022-02-25T17:02:43+08:00">2022-02-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-28 17:01:37" itemprop="dateModified" datetime="2022-02-28T17:01:37+08:00">2022-02-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GAMES101-%E7%8E%B0%E4%BB%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">GAMES101-现代计算机图形学入门</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="GAMES101-Geometry-part3"><a href="#GAMES101-Geometry-part3" class="headerlink" title="GAMES101 Geometry part3"></a>GAMES101 Geometry part3</h1><ol>
+<li>mesh subdivision 网格细化</li>
+<li>mesh simplification 网格粗化</li>
+<li>mesh regularization 网格正则化，使三角形趋于一致</li>
+</ol>
+<h2 id="Mesh-Subdivision"><a href="#Mesh-Subdivision" class="headerlink" title="Mesh Subdivision"></a>Mesh Subdivision</h2><p>两步操作：</p>
+<ol>
+<li>创建更多的三角形</li>
+<li>移动这些三角形的位置</li>
+</ol>
+<h3 id="Loop-Subdivision-与循环无关，发明人叫Loop，仅适用于三角形网格"><a href="#Loop-Subdivision-与循环无关，发明人叫Loop，仅适用于三角形网格" class="headerlink" title="Loop Subdivision (与循环无关，发明人叫Loop，仅适用于三角形网格)"></a>Loop Subdivision (与循环无关，发明人叫Loop，仅适用于三角形网格)</h3><p>连接三角形三条边的中点，则原本的一个三角形转变为四个。</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-3/1.png" width="100%" height="100%"></center>
+
+<p><strong>新顶点</strong>和<strong>原有顶点</strong>具有不同的更新策略。（区分为两类）</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-3/2.png" width="100%" height="100%"></center>
+
+<p>其中新顶点的更新要考虑到新顶点所在边所对应的两个三角形。AB为新顶点所在边，被两个三角形共有。</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-3/3.png" width="100%" height="100%"></center>
+
+<p>对于旧顶点，由于顶点是位于三角形顶点上的，因此会被多个三角形共有，其值的更新就要考虑到周围所有的三角形。n指顶点的度，也就是顶点所连接的边的数量，对应有多少个相邻顶点。u为一个与n有关的值。从公式看，除了相邻顶点，旧顶点值的更新还需用到自身的值，权重为(1-n*u)。而周围点权重为u*n，n体现在sum中。</p>
+<h3 id="Catmull-Clark-Subdivision（General-Mesh，任意网格都适用）"><a href="#Catmull-Clark-Subdivision（General-Mesh，任意网格都适用）" class="headerlink" title="Catmull-Clark Subdivision（General Mesh，任意网格都适用）"></a>Catmull-Clark Subdivision（General Mesh，任意网格都适用）</h3><p>引入概念：<br>奇异点extraordinary vertex：度不为4的点（连接边数不为4）</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-3/4.png" width="100%" height="100%"></center>
+
+<p>连接每个面的中点与每条边的中点。</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-3/5.png" width="100%" height="100%"></center>
+
+<p>得到的新网格有两个特性。</p>
+<ol>
+<li>得到的所有面均为四边形面，所有的非四边形面全部消失。</li>
+<li>原来的奇异点不变，其对应的度也不变。（连接面中点与边中点，与这个顶点无关）</li>
+<li>新增加的奇异点的数量等于原来非四边形面的数量。（多边形每条边都与面中点相连，中点的度就等于多边形的边数）</li>
+<li>由于做完一次Catmull-Clark Subdivision后，所有面均为四边形面。因此下一次再做Catmull-Clark Subdivision后，奇异点数量不变。</li>
+</ol>
+<center><img src="/2022/02/25/GAMES101-Geometry-3/6_1.png" width="50%" height="50%"><img src="/2022/02/25/GAMES101-Geometry-3/6_2.png" width="50%" height="50%"></center>
+
+<p>细分之后点被分为三类，各自对应不同的update policy。<br>新点：1面中点、2边中点，3旧顶点。</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-3/7.png" width="100%" height="100%"></center>
+
+<h2 id="Mesh-Simplification"><a href="#Mesh-Simplification" class="headerlink" title="Mesh Simplification"></a>Mesh Simplification</h2><ol>
+<li>减少三角形的数量</li>
+<li>保持整体形状</li>
+</ol>
+<h3 id="Edge-Collapse-边坍缩"><a href="#Edge-Collapse-边坍缩" class="headerlink" title="Edge Collapse 边坍缩"></a>Edge Collapse 边坍缩</h3><p>把一条边的两个顶点捏在一起，使一条边消失。</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-3/8.png" width="100%" height="100%"></center>
+
+<p>两个问题：</p>
+<ol>
+<li>坍缩后的顶点应该取在哪？</li>
+<li>应该坍缩网格中的哪些边？</li>
+</ol>
+<p>对于第一个问题，如果仅仅取坍缩边顶点的平均值，如图所示，显而易见的并不能很好地保留原先的形状。所以引入一个度量<br><strong>Quadric Error Metrics 二次误差度量</strong><br>到坍缩前相关的各个面的square distance (L2 distance)的和最小的点，作为新顶点。<br>square distance (L2 distance)：指欧几里德距离，直线距离。</p>
+<center><img src="/2022/02/25/GAMES101-Geometry-3/9.png" width="100%" height="100%"></center>
+
+<p>对于第二个问题，应该坍缩哪些边？<br>最终目的是尽可能地保持原有形状，那么就先对每条边，计算坍缩对应边之后，新顶点的Quadric Error Metrics二次误差度量。从小到大开始坍缩。<br>带来的新问题：每次坍缩会影响周围其他边的二次误差度量。-&gt;每次坍缩完一条边之后，更新受到影响的边的二次误差度量。<br>那么就需要一种数据结构，除了能提供当前极值之外，还得能动态地以最小代价修改任意元素（快速搜索，快速增删）。-&gt;堆（优先级队列）<br>这种做法得到的其实不是全局最优解，而是每一次都取<strong>局部最优解</strong>（每次坍缩当前二次误差度量最小的边），是一种<strong>贪心算法</strong>，能得到近似最优解。</p>
+<blockquote>
+<h4 id="优先级队列-priority-queue"><a href="#优先级队列-priority-queue" class="headerlink" title="优先级队列 priority queue"></a>优先级队列 priority queue</h4><p>最高优先级元素先出。</p>
+<ol>
+<li>非线性数据结构，由完全二叉树构造而成，完全二叉树可由一维数组实现。</li>
+<li>堆中某个节点的值，总是不大于/不小于其父节点的值</li>
+<li>大顶堆（根节点最大），小顶堆（根节点最小）</li>
+</ol>
+<p>由于堆是由完全二叉树构造而成，因此除了堆本身的性质（能快速提供最大值/最小值）之外，还具备二叉树的优点（二叉树具备了数组和链表的优点：快速查找，支持动态插入/删除）。</p>
+</blockquote>
 
       
     </div>
@@ -468,17 +752,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-02-25 16:44:37 / Modified: 16:47:04" itemprop="dateCreated datePublished" datetime="2022-02-25T16:44:37+08:00">2022-02-25</time>
+              <time title="Created: 2022-02-25 16:44:37" itemprop="dateCreated datePublished" datetime="2022-02-25T16:44:37+08:00">2022-02-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-28 14:24:23" itemprop="dateModified" datetime="2022-02-28T14:24:23+08:00">2022-02-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GAMES101/" itemprop="url" rel="index"><span itemprop="name">GAMES101</span></a>
+                  <a href="/categories/GAMES101-%E7%8E%B0%E4%BB%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">GAMES101-现代计算机图形学入门</span></a>
                 </span>
             </span>
 
@@ -911,511 +1201,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/11/cuda-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jiang Shao">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邵大宝的学习Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/11/cuda-3/" class="post-title-link" itemprop="url">CUDA学习随记3 Memory Fence与Synchronization</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-11 17:13:37" itemprop="dateCreated datePublished" datetime="2022-02-11T17:13:37+08:00">2022-02-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-22 21:52:48" itemprop="dateModified" datetime="2022-02-22T21:52:48+08:00">2022-02-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">CUDA学习随记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Memory-Fence与Synchronization"><a href="#Memory-Fence与Synchronization" class="headerlink" title="Memory Fence与Synchronization"></a>Memory Fence与Synchronization</h1><p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">CUDA C++ Programming Guide</a></p>
-<h2 id="Synchronization-Functions"><a href="#Synchronization-Functions" class="headerlink" title="Synchronization Functions"></a>Synchronization Functions</h2><p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#synchronization-functions">B.6. Synchronization Functions</a></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __syncthreads();</span><br></pre></td></tr></table></figure>
-<p>waits until all threads in the thread block have reached this point and all global and shared memory accesses made by these threads prior to <strong>syncthreads() are visible to all threads in the block.<br>等待block中所有线程到达（<strong>指令同步</strong>），并使得</strong>syncthreads()前所有线程的gmem和smem访存对block内所有线程可见（<strong>内存顺序，访存可见性</strong>）。这个可见包含了另一层含义，就是所有内存写入，保证真实的写到了对应的物理内存上，而不仅仅是驻留在Cache中。</p>
-<p>__syncthreads() is used to coordinate communication between the threads of the same block. When some threads within a block access the same addresses in shared or global memory, there are potential read-after-write, write-after-read, or write-after-write hazards for some of these memory accesses. These data hazards can be avoided by synchronizing threads in-between these accesses.</p>
-<p><strong>syncthreads() is allowed in conditional code but only if the conditional evaluates identically across the entire thread block, otherwise the code execution is likely to hang or produce unintended side effects.<br>必须block内的所有线程都能同时执行到</strong>syncthreads()否则会造成死锁。</p>
-<p>Devices of compute capability 2.x and higher support three variations of <strong>syncthreads() described below.<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __syncthreads_count(<span class="type">int</span> predicate);</span><br></pre></td></tr></table></figure><br>is identical to </strong>syncthreads() with the additional feature that it evaluates predicate for all threads of the block and returns the number of threads for which predicate evaluates to non-zero.<br>除了同步之外，还会返回block中predicate为非0（true）的threads的数量。（作为函数的返回值）用于判断block中满足条件线程的个数。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __syncthreads_and(<span class="type">int</span> predicate);</span><br></pre></td></tr></table></figure>
-<p>is identical to __syncthreads() with the additional feature that it evaluates predicate for all threads of the block and returns non-zero if and only if predicate evaluates to non-zero for all of them.<br>除了同步，当且仅当block中所有threads的predicate都为非0，函数返回一个非0值。用于判断block中所有线程是否都满足条件。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __syncthreads_or(<span class="type">int</span> predicate);</span><br></pre></td></tr></table></figure>
-<p>is identical to __syncthreads() with the additional feature that it evaluates predicate for all threads of the block and returns non-zero if and only if predicate evaluates to non-zero for any of them.<br>除了同步，block中任一thread的predicate非0，那么函数就返回一个非0值。用于判断block中是否具有满足条件的线程。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __syncwarp(<span class="type">unsigned</span> mask=<span class="number">0xffffffff</span>);</span><br></pre></td></tr></table></figure>
-<p>will cause the executing thread to wait until all warp lanes named in mask have executed a <strong>syncwarp() (with the same mask) before resuming execution. All non-exited threads named in mask must execute a corresponding </strong>syncwarp() with the same mask, or the result is undefined.<br>用于同步warp内部所有被mask所指定的线程，Pascal及以下架构没用，因为其warp是完全同步执行的。<br>所有mask标记的线程必须执行到一个具有相同mask的__syncwarp() ，否则会产生未定义结果。</p>
-<p>Executing <strong>syncwarp() guarantees memory ordering among threads participating in the barrier. Thus, threads within a warp that wish to communicate via memory can store to memory, execute </strong>syncwarp(), and then safely read values stored by other threads in the warp.<br>执行__syncwarp()会保证所有被mask标记的warp内线程的memory order，线程间可安全的互相访存。（<strong>内存顺序，访存可见性</strong>）</p>
-<p>Note: For .target sm_6x or below, all threads in mask must execute the same <strong>syncwarp() in convergence, and the union of all values in mask must be equal to the active mask. Otherwise, the behavior is undefined.<br>sm_6x及以下的设备（Pascal架构及以下），mask中指定的所有线程必须同步执行同一个</strong>syncwarp()，且mask必须与__active_mask()函数返回的当前active mask一致。否则会导致undefined behavior。</p>
-<h2 id="Memory-Fence-Functions"><a href="#Memory-Fence-Functions" class="headerlink" title="Memory Fence Functions"></a>Memory Fence Functions</h2><p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#memory-fence-functions">B.5. Memory Fence Functions</a></p>
-<p>The CUDA programming model assumes a device with a weakly-ordered memory model, that is the order in which a CUDA thread writes data to shared memory, global memory, page-locked host memory, or the memory of a peer device is not necessarily the order in which the data is observed being written by another CUDA or host thread. It is undefined behaviour for two threads read from or write to the same memory location without synchronization.<br>CUDA本身具有弱内存顺序模型weakly-ordered memory model，就是说一个CUDA线程的访存顺序，与另一个线程或者主机线程看到的访存顺序未必一致。如果在不进行同步的情况下，使用两个线程对同一个内存地址进行操作，结果将是未定义的。</p>
-<p>In the following example, thread 1 executes writeXY(), while thread 2 executes readXY().</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">__device__ <span class="type">int</span> X = <span class="number">1</span>, Y = <span class="number">2</span>;</span><br><span class="line"><span class="function">__device__ <span class="type">void</span> <span class="title">writeXY</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    X = <span class="number">10</span>;</span><br><span class="line">    Y = <span class="number">20</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">__device__ <span class="type">void</span> <span class="title">readXY</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> B = Y;</span><br><span class="line">    <span class="type">int</span> A = X;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>The two threads read and write from the same memory locations X and Y simultaneously. Any data-race is undefined behaviour, and has no defined semantics. The resulting values for A and B can be anything.<br>两个线程一个写一个读，得到的结果可以是任意情况。虽然在writeXY代码中看似是先执行X = 10，再执行Y = 20。</p>
-<ol>
-<li>经过编译器的优化之后，对本线程来说，这个顺序不被保证。</li>
-<li>另一个线程看到的顺序可能与本线程的执行顺序不同。</li>
-<li>考虑两个线程执行的先后顺序，时间差异等情况。</li>
-</ol>
-<p>就造成了多种多样的结果。</p>
-<p>Memory fence functions can be used to enforce some ordering on memory accesses. The memory fence functions differ in the scope in which the orderings are enforced but they are independent of the accessed memory space (shared memory, global memory, page-locked host memory, and the memory of a peer device).<br>Memory fence functions此时就是用来强制规定访存顺序的。Memory fence functions根据限制访存顺序的范围不同而有所不同，但与访存的内存类型无关，对所有内存均起到相同的作用。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __threadfence_block();</span><br></pre></td></tr></table></figure>
-<p>ensures that:<br>All writes to all memory made by the calling thread before the call to <strong>threadfence_block() are observed by <strong>all threads in the block of the calling thread</strong> as occurring before all writes to all memory made by the calling thread after the call to </strong>threadfence_block();<br>在所有block中的线程看来，范围是<strong>block</strong><br>调用线程的在__threadfence_block()前后的写入保持原有顺序。<br>仅仅是保证了同block内其他线程观察到的顺序。</p>
-<p>All reads from all memory made by the calling thread before the call to <strong>threadfence_block() are ordered before all reads from all memory made by the calling thread after the call to </strong>threadfence_block().<br>保证调用线程__threadfence_block()前后的内存读取顺序。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __threadfence();</span><br></pre></td></tr></table></figure>
-<p>acts as <strong>threadfence_block() for all threads in the block of the calling thread and also ensures that no writes to all memory made by the calling thread after the call to </strong>threadfence() are observed by <strong>any thread in the device</strong> as occurring before any write to all memory made by the calling thread before the call to <strong>threadfence().<br>功能与</strong>threadfence_block()一致，范围是<strong>整个Device</strong>。</p>
-<p>Note that for this ordering guarantee to be true, the observing threads must truly observe the memory and not cached versions of it; this is ensured by using the volatile keyword as detailed in Volatile Qualifier.<br>为了保证这个观察到的内存顺序是真实的，观察的线程必须观察到对应的memory而不是这个memory的cache。而实现这个条件的方法是添加volatile关键字。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __threadfence_system();</span><br></pre></td></tr></table></figure>
-<p>acts as <strong>threadfence_block() for all threads in the block of the calling thread and also ensures that all writes to all memory made by the calling thread before the call to </strong>threadfence_system() are observed by <strong>all threads in the device, host threads, and all threads in peer devices</strong> as occurring before all writes to all memory made by the calling thread after the call to __threadfence_system().<br>范围是<strong>整个Device，Host和Peer Device</strong>（多卡协同）。</p>
-<p>__threadfence_system() is only supported by devices of compute capability 2.x and higher.</p>
-<p>In the previous code sample, we can insert fences in the codes as follows:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">__device__ <span class="type">int</span> X = <span class="number">1</span>, Y = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="function">__device__ <span class="type">void</span> <span class="title">writeXY</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    X = <span class="number">10</span>;</span><br><span class="line">    __threadfence();</span><br><span class="line">    Y = <span class="number">20</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">__device__ <span class="type">void</span> <span class="title">readXY</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> B = Y;</span><br><span class="line">    __threadfence();</span><br><span class="line">    <span class="type">int</span> A = X;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>通过插入__threadfence()，使得block内所有线程观察到的XY写入顺序不变（包括自身）。观察线程读取YX的顺序也不便，先读Y再读X。所以可能的情况就只剩下两个线程指令执行的先后顺序不同导致的结果差异。</p>
-<p>For this code, the following outcomes can be observed:<br>A equal to 1 and B equal to 2, 先读了，还没写<br>A equal to 10 and B equal to 2, B读的时候Y还没写，A读的时候X写完了<br>A equal to 10 and B equal to 20. 读的时候都写完了</p>
-<p>The fourth outcome is not possible, because the frist write must be visible before the second write. If thread 1 and 2 belong to the same block, it is enough to use <strong>threadfence_block(). If thread 1 and 2 do not belong to the same block, </strong>threadfence() must be used if they are CUDA threads from the same device and __threadfence_system() must be used if they are CUDA threads from two different devices.</p>
-<p>A common use case is when <strong>threads consume some data produced by other threads</strong> as illustrated by the following code sample of a kernel that computes the sum of an array of N numbers in one call. Each block first sums a subset of the array and stores the result in global memory. When all blocks are done, the last block done reads each of these partial sums from global memory and sums them to obtain the final result. In order to determine which block is finished last, each block atomically increments a counter to signal that it is done with computing and storing its partial sum (see Atomic Functions about atomic functions). The last block is the one that receives the counter value equal to gridDim.x-1. <strong>If no fence is placed between storing the partial sum and incrementing the counter, the counter might increment before the partial sum is stored and therefore, might reach gridDim.x-1 and let the last block start reading partial sums before they have been actually updated in memory.</strong></p>
-<p>Memory fence functions only affect the ordering of memory operations by a thread; they do not ensure that these memory operations are visible to other threads (like <strong>syncthreads() does for threads within a block (see Synchronization Functions)). In the code sample below, <strong>the visibility of memory operations on the result variable is ensured by declaring it as volatile</strong> (see Volatile Qualifier).<br>Memory fence仅保证内存顺序，不保证可见性，就是说不保证一定写入到了真实的内存而不是内存的Cache，还不保证在观察时刻已经写入了（没有指令同步）。这点与</strong>syncthreads()对block的同步不同，后者保证所有对gmem和smem的读写对block内所有线程可见（只要你观察，一定能看到结果）。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">__device__ <span class="type">unsigned</span> <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">__shared__ <span class="type">bool</span> isLastBlockDone;</span><br><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">sum</span><span class="params">(<span class="type">const</span> <span class="type">float</span>* array, <span class="type">unsigned</span> <span class="type">int</span> N,</span></span></span><br><span class="line"><span class="params"><span class="function">                    <span class="keyword">volatile</span> <span class="type">float</span>* result)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// Each block sums a subset of the input array.</span></span><br><span class="line">    <span class="type">float</span> partialSum = <span class="built_in">calculatePartialSum</span>(array, N);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (threadIdx.x == <span class="number">0</span>) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Thread 0 of each block stores the partial sum</span></span><br><span class="line">        <span class="comment">// to global memory. The compiler will use </span></span><br><span class="line">        <span class="comment">// a store operation that bypasses the L1 cache</span></span><br><span class="line">        <span class="comment">// since the &quot;result&quot; variable is declared as</span></span><br><span class="line">        <span class="comment">// volatile. This ensures that the threads of</span></span><br><span class="line">        <span class="comment">// the last block will read the correct partial</span></span><br><span class="line">        <span class="comment">// sums computed by all other blocks.</span></span><br><span class="line">        result[blockIdx.x] = partialSum;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Thread 0 makes sure that the incrementation</span></span><br><span class="line">        <span class="comment">// of the &quot;count&quot; variable is only performed after</span></span><br><span class="line">        <span class="comment">// the partial sum has been written to global memory.</span></span><br><span class="line">        __threadfence();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Thread 0 signals that it is done.</span></span><br><span class="line">        <span class="type">unsigned</span> <span class="type">int</span> value = <span class="built_in">atomicInc</span>(&amp;count, gridDim.x);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Thread 0 determines if its block is the last</span></span><br><span class="line">        <span class="comment">// block to be done.</span></span><br><span class="line">        isLastBlockDone = (value == (gridDim.x - <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Synchronize to make sure that each thread reads</span></span><br><span class="line">    <span class="comment">// the correct value of isLastBlockDone.</span></span><br><span class="line">    __syncthreads();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (isLastBlockDone) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// The last block sums the partial sums</span></span><br><span class="line">        <span class="comment">// stored in result[0 .. gridDim.x-1]</span></span><br><span class="line">        <span class="type">float</span> totalSum = <span class="built_in">calculateTotalSum</span>(result);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (threadIdx.x == <span class="number">0</span>) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Thread 0 of last block stores the total sum</span></span><br><span class="line">            <span class="comment">// to global memory and resets the count</span></span><br><span class="line">            <span class="comment">// varialble, so that the next kernel call</span></span><br><span class="line">            <span class="comment">// works properly.</span></span><br><span class="line">            result[<span class="number">0</span>] = totalSum;</span><br><span class="line">            count = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/10/cuda-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jiang Shao">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邵大宝的学习Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/10/cuda-2/" class="post-title-link" itemprop="url">CUDA学习随记2 关于Warp Shuffle Functions *_sync 首个参数mask的作用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-10 22:22:15" itemprop="dateCreated datePublished" datetime="2022-02-10T22:22:15+08:00">2022-02-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-22 21:52:52" itemprop="dateModified" datetime="2022-02-22T21:52:52+08:00">2022-02-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">CUDA学习随记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="关于Warp-Shuffle-Functions-sync-首个参数mask的作用"><a href="#关于Warp-Shuffle-Functions-sync-首个参数mask的作用" class="headerlink" title="关于Warp Shuffle Functions *_sync 首个参数mask的作用"></a>关于Warp Shuffle Functions *_sync 首个参数mask的作用</h1><p>首先来看CUDA 9.0之前的Warp Shuffle Functions形式。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">T __shfl(T var,<span class="type">int</span> srcLane,<span class="type">int</span> width=warpSize)</span><br><span class="line">T __shfl_up(T var,<span class="type">unsigned</span> <span class="type">int</span> delta,<span class="type">int</span> width=warpSize)</span><br><span class="line">T __shfl_down(T var,<span class="type">unsigned</span> <span class="type">int</span> delta,<span class="type">int</span> width=warpSize)</span><br><span class="line">T __shfl_xor(T var, <span class="type">int</span> laneMask, <span class="type">int</span> width=warpSize)</span><br></pre></td></tr></table></figure><br>再来看从CUDA 9.0开始，引入的改进的Warp Shuffle Functions形式。<br><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">CUDA C++ Programming Guide</a><br>Deprecation Notice: <strong>shfl, </strong>shfl_up, <strong>shfl_down, and </strong>shfl_xor have been deprecated as of CUDA 9.0.<br>C++官方手册中说，从CUDA 9.0开始，原有Warp Shuffle Functions被废弃，全部改用以下新形式。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">T __shfl_sync(<span class="type">unsigned</span> mask, T var, <span class="type">int</span> srcLane, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_up_sync(<span class="type">unsigned</span> mask, T var, <span class="type">unsigned</span> <span class="type">int</span> delta, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_down_sync(<span class="type">unsigned</span> mask, T var, <span class="type">unsigned</span> <span class="type">int</span> delta, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_xor_sync(<span class="type">unsigned</span> mask, T var, <span class="type">int</span> laneMask, <span class="type">int</span> width=warpSize);</span><br></pre></td></tr></table></figure><br>新形式与原有Warp Shuffle Functions功能完全一致。可以看到，与原有Warp Shuffle Functions最大的区别是新形式引入了一个变量mask。mask为一个32 bit变量，对应一个warp中的32个thread (lane)，指明参与调用的线程，也就是参与到Warp Shuffle Functions的线程集合。除此之外，可以看到每个函数后面都额外增加了一个表明同步的后缀_sync。<strong>在Pascal以及之前的架构中，我们知道一个warp中的32个线程是完全同步执行的。</strong> warp scheduler每次分别发射一条相同的指令给一个warp中的32个线程，除非遇到warp divergence情况，不在当前控制流path上的线程会被屏蔽。<br>然而，<strong>从Pascal的下一代架构——Volta架构开始，warp scheduler支持Independent Thread Scheduling，也就是说，同一个warp中的32个threads不再保证完全同步。</strong> 因此，为了保证Warp Shuffle Functions协同操作的正确性，所有参与的线程必须首先进行同步，从而保证结果的正确性。比如reduction操作的__shfl_down_sync，32个lane中的前16个先读取后16个的寄存器，必须等待操作完成之后，前8个才能再读取lane ID为8-15的lane的寄存器，以此类推。每次读取之前需要一个warp级别的同步，来保证对应的lane中寄存器的数据已经准备好。<strong>因此这些带有_sync后缀的函数首先会隐式同步所有参与到函数调用的线程，而哪些线程将参与到函数调用中，由mask的对应bit位来指定，0代表不参与，1代表参与。</strong><br>The new *_sync shfl intrinsics take in a mask indicating the threads participating in the call. A bit, representing the thread’s lane id, must be set for each participating thread to ensure they are properly converged before the intrinsic is executed by the hardware. All non-exited threads named in mask must execute the same intrinsic with the same mask, or the result is undefined.<br>那么，未被mask指定的线程呢？这里简单做一个测试。写一个kernel，并以&lt;&lt;<1,32>&gt;&gt;启动。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line"><span class="type">int</span> shfl_val = __shfl_down_sync(<span class="number">0xffffffff</span>, val, <span class="number">16</span>);</span><br></pre></td></tr></table></figure><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line"><span class="type">int</span> shfl_val = __shfl_down_sync(<span class="number">0x0000000f</span>, val, <span class="number">16</span>);</span><br></pre></td></tr></table></figure><br>观察执行后每个线程中变量shfl_val的值，可以看到传入两个不同的mask，得到的结果相同，如下所示。</1,32></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Thread ID</th>
-<th style="text-align:center">0</th>
-<th style="text-align:center">1</th>
-<th style="text-align:center">…</th>
-<th style="text-align:center">15</th>
-<th style="text-align:center">16</th>
-<th style="text-align:center">…</th>
-<th style="text-align:center">30</th>
-<th style="text-align:center">31</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><strong>shfl_val</strong></td>
-<td style="text-align:center">16</td>
-<td style="text-align:center">17</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">31</td>
-<td style="text-align:center">16</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">30</td>
-<td style="text-align:center">31</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>将参数delta由16改为8，即为每个thread读当前lane ID + 8的thread中的寄存器。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> val = threadIdx.x;</span><br><span class="line"><span class="type">int</span> shfl_val = __shfl_down_sync(<span class="number">0xffffffff</span>, val, <span class="number">8</span>);</span><br></pre></td></tr></table></figure></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Thread ID</th>
-<th style="text-align:center">0</th>
-<th style="text-align:center">1</th>
-<th style="text-align:center">…</th>
-<th style="text-align:center">7</th>
-<th style="text-align:center">8</th>
-<th style="text-align:center">…</th>
-<th style="text-align:center">14</th>
-<th style="text-align:center">15</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><strong>shfl_val</strong></td>
-<td style="text-align:center">8</td>
-<td style="text-align:center">9</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">15</td>
-<td style="text-align:center">16</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">22</td>
-<td style="text-align:center">23</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Thread ID</th>
-<th style="text-align:center">16</th>
-<th style="text-align:center">17</th>
-<th style="text-align:center">…</th>
-<th style="text-align:center">23</th>
-<th style="text-align:center">24</th>
-<th style="text-align:center">…</th>
-<th style="text-align:center">30</th>
-<th style="text-align:center">31</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><strong>shfl_val</strong></td>
-<td style="text-align:center">24</td>
-<td style="text-align:center">25</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">31</td>
-<td style="text-align:center">24</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">30</td>
-<td style="text-align:center">31</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>这也就证明了:</p>
-<ol>
-<li>__shfl_down_sync()，为lane ID小的thread读取大的thread的寄存器。越界的线程，即lane ID + 8 &gt; 31的线程返回自身寄存器中的值。</li>
-<li>mask未指定的thread也会调用warp shuffle functions，而不是不执行，但这部分线程不会被函数隐式同步，所得到的结果是undefined。</li>
-</ol>
-<p>也就是说，对于Pascal及之前的架构来说，带有_sync后缀的Warp Shuffle Functions中的参数mask没有作用。而对于从Volta开始的架构来说，mask将指定参与Warp Shuffle Functions的线程，从而告知编译器，来对这部分线程在执行时进行必要的同步，来保证结果的正确性。</p>
-<p>参考：<a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/what-does-mask-mean-in-warp-shuffle-functions-shfl-sync/67697">What does mask mean in warp shuffle functions (__shfl_sync)</a></p>
-<p>引用其中一段回答：</p>
-<blockquote>
-<p>For correctness, you must specify a mask parameter which includes the warp lanes you expect to participate. The behavior of lanes outside the mask is undefined (because, in fact, Volta provides no guarantees of warp convergence, except those the programmer specifically asks for, and therefore a warp lane with a zero bit in the mask implies that the specified lane may or may not participate.)</p>
-<p>The mask parameter says the following:</p>
-<p>“These are the warp lanes that must participate for correctness.”</p>
-<p>The compiler will generate the necessary instructions to reconverge those threads if they are not already converged.</p>
-<p>Thereafter the warp shuffle proceeds for the current state of the warp.</p>
-<p>There is no other implied behavior. Regardless of the mask, after the reconvergence step, the result of the warp shuffle operation will be the result you would get for whichever threads happen to be participating. A zero bit in the mask argument does not prevent a warp lane from participating, it merely does not guarantee that such a lane will participate if the warp is in a diverged state.</p>
-</blockquote>
-<p>mask中的0 bit位不会阻止一个warp lane参与到shuffle function的执行中，而仅仅是不保证这样一个lane在warp内具有分歧时会参与到shuffle function的执行中。换句话说，就是不会在执行前同步这个lane，如果它恰好执行到这里，那么就一起执行，如果不在不管它。</p>
-<blockquote>
-<p>There is an important caveat here. The mask parameter will create a reconvergence of the indicated threads. However it cannot cause reconvergence of threads that your code has made impossible.</p>
-<p>For example, this is illegal (will result in undefined behavior for warp 0):</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="keyword">if</span> (threadIdx.x &gt; <span class="number">3</span>)</span><br><span class="line">   __shfl_down_sync(<span class="number">0xFFFFFFFF</span>, v, offset, <span class="number">8</span>);</span><br></pre></td></tr></table></figure>
-<p>有一个重要的警告。mask参数会在shuffle function中同步指定threads，然而，并不包括代码中规定的并不能同步的线程（条件语句等造成的condition branches，控制流分叉warp divergence）。如上所示代码，对于warp 0来说，mask指定32个warp lane都要执行<strong>shfl_down_sync，因此要对warp 0中的32个线程进行同步。但if语句规定只有后28个线程会执行到这里，而前四个线程不会执行，二者冲突，会导致undefined behavior。<br>正确写法：使用</strong>ballot_sync预先得到所有参与__shfl_down_sync()的线程所对应的mask。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> mask = __ballot_sync(<span class="number">0xFFFFFFFF</span>, threadIdx.x &gt; <span class="number">3</span>);</span><br><span class="line"><span class="keyword">if</span> (threadIdx.x &gt; <span class="number">3</span>)</span><br><span class="line">    __shfl_down_sync(mask, v, offset, <span class="number">8</span>);</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<p>额外这里记录一个我自己看到的好玩儿的问题。<br><a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/using-cuda-warp-level-primitives/">developer.nvidia.com/blog/: Using CUDA Warp-Level Primitives</a>中，在Listing 4，作者写了这样一段代码：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (threadIdx.x % <span class="number">2</span>) &#123;</span><br><span class="line">    val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>配文：</p>
-<blockquote>
-<p>On Volta and later GPU architectures, the data exchange primitives can be used in thread-divergent branches: branches where some threads in the warp take a different path than the others. Listing 4 shows an example where <strong>all the threads in a warp get the value of val from the thread at lane 0. The even- and odd-numbered threads take different branches of an if statement.</strong><br>On the latest Volta (and future) GPUs, you can run library functions that use warp synchronous primitives without worrying whether the function is called in a thread-divergent branch.</p>
-</blockquote>
-<p>毫无疑问，这与我上面所说的警告有所冲突，原因在于这里FULL_MASK为0xFFFFFFFF，但对于其中一个if分支，仅有odd/even线程会访问到这里。也就是说会这会导致上文中提到的undefined behavior问题。具体这个undefined behavior是什么，在<a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/using-cuda-warp-level-primitives/148673/16">forums.developer.nvidia.com: Using CUDA Warp-Level Primitives</a>中，有人提到：</p>
-<blockquote>
-<p>In “Update Legacy Warp-Level Programming”, it says “Don’t just use FULL_MASK (i.e. 0xffffffff for 32 threads) as the mask value. If not all threads in the warp can reach the primitive according to the program logic, then using FULL_MASK may cause the program to hang.”</p>
-<p>In listing 4, regardless the thread id is even or odd, the thread in the warp will always execute one of the two __shfl_sync() statements. Therefore, FULL_MASK should be used.</p>
-<p>The following code may cause a stall.<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="keyword">if</span> (threadIdx.x % <span class="number">2</span>) &#123;</span><br><span class="line">  val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">  …</span><br><span class="line">&gt;&#125;</span><br><span class="line">&gt;<span class="keyword">else</span> &#123;</span><br><span class="line">  …</span><br><span class="line">&gt;&#125;</span><br></pre></td></tr></table></figure><br>因此我猜这里所说的undefined behavior应该就是死锁，由于FULL_MASK要求同步warp中的32个lane，而控制流导致有的lane永远不会执行到这里，因此造成死锁。这与在if条件语句中使用block内同步函数<strong>syncthreads()所导致的死锁原理相似。<br>Listing 4中的代码合法的原因是，不管是odd还是even线程，都会执行到一条</strong>shfl_sync(FULL_MASK, val, 0)指令，这两条指令的mask都是FULL_MASK，因此对这32个warp lane同步并不会导致死锁。这个道理类似__syncwarp()。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __syncwarp(<span class="type">unsigned</span> mask=FULL_MASK);</span><br></pre></td></tr></table></figure><br>用于同步warp中的线程，同步哪些由mask指定。</p>
-</blockquote>
-<p>The <strong>syncwarp() primitive causes the executing thread to wait until all threads specified in mask have executed **a </strong>syncwarp() (with the same mask)** before resuming execution. It also provides a memory fence to allow threads to communicate via memory before and after calling the primitive.</p>
-<p>只要mask指定的线程执行到了具有相同mask的<strong>syncwarp()即可继续执行，并非是一定位于同一个控制流分支的</strong>syncwarp()。但这仅适用于sm_6x（不包含）以上的设备，也就是Pascal架构（sm_60）之后。</p>
-<p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">CUDA C++ Programming Guide</a>中有一段警告：</p>
-<blockquote>
-<p>For .target sm_6x or below, all threads in mask must execute the same __syncwarp() in convergence, and the union of all values in mask must be equal to the active mask. Otherwise, the behavior is undefined.</p>
-</blockquote>
-<p>sm_6x及以下的设备，mask中指定的所有线程必须同步执行同一个<strong>syncwarp()，且mask必须与</strong>active_mask()函数返回的当前active mask一致。否则会导致undefined behavior。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/10/cuda-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jiang Shao">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邵大宝的学习Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/10/cuda-1/" class="post-title-link" itemprop="url">CUDA学习随记1 Using CUDA Warp-Level Primitives</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-10 13:55:56" itemprop="dateCreated datePublished" datetime="2022-02-10T13:55:56+08:00">2022-02-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-22 21:52:56" itemprop="dateModified" datetime="2022-02-22T21:52:56+08:00">2022-02-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">CUDA学习随记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CUDA学习随记-Using-CUDA-Warp-Level-Primitives"><a href="#CUDA学习随记-Using-CUDA-Warp-Level-Primitives" class="headerlink" title="CUDA学习随记: Using CUDA Warp-Level Primitives"></a>CUDA学习随记: Using CUDA Warp-Level Primitives</h1><p><a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/using-cuda-warp-level-primitives/">1. NVIDIA DEVELOPER BLOG: Using CUDA Warp-Level Primitives</a><br><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-binary-utilities/index.html">2. CUDA Binary Utilities</a><br><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">3. CUDA C++ Programming Guide</a></p>
-<p>primitives: 原函数、基元功能</p>
-<p><strong>SIMD: Single Instruction, Multiple Data</strong><br>In a SIMD architecture, each instruction applies the same operation in parallel across many data elements.<br>每条指令对众多数据单元并行执行相同的操作。<br>SIMD is typically implemented using processors with vector registers and execution units; a scalar thread issues vector instructions that execute in SIMD fashion.<br>通过具有矢量寄存器和执行单元的处理器实现。一个标量线程发射矢量SIMD指令作用于数据矢量。</p>
-<p><strong>SIMT: Single Instruction, Multiple Thread</strong><br>In a SIMT architecture, rather than <font color="red">a single thread issuing vector instructions applied to data vectors</font>, <font color="red">multiple threads issue common instructions to arbitrary data</font>.<br>多个线程发射相同的指令作用于任意数据。矢量线程发射标量指令作用于多个标量数据。</p>
-<p>NVIDIA GPUs execute warps of 32 parallel threads using SIMT, which enables each thread to access its own registers, to load and store from divergent addresses, and to follow divergent control flow paths. The CUDA compiler and the GPU work together to ensure the threads of a warp execute the same instruction sequences together as frequently as possible to maximize performance.<br>利用SIMT架构执行以32个并行线程为单位的warps，每个线程访问自己的寄存器，从不同地址存取数据，执行分歧控制流路径。</p>
-<p>While the high performance obtained by warp execution happens behind the scene, many CUDA programs can achieve even higher performance by using explicit warp-level programming.<br>由warp执行所带来的高性能往往发生在幕后，而CUDA程序还可以通过显式warp级别编程来达到更好的性能。</p>
-<center><img src="/2022/02/10/cuda-1/reduce_shfl_down.png" width="100%" height="100%"><font color="#708090" size="2">Part of a warp-level parallel reduction using shfl_down_sync().</font></center>
-
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> FULL_MASK 0xffffffff</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> offset = <span class="number">16</span>; offset &gt; <span class="number">0</span>; offset /= <span class="number">2</span>)</span><br><span class="line">    val += __shfl_down_sync(FULL_MASK, val, offset);</span><br></pre></td></tr></table></figure>
-<p><a target="_blank" rel="noopener" href="http://xh.5156edu.com/page/z1015m9220j18754.html">颜色表及html代码</a><br>一个使用warp内向下shuffle函数实现reduction操作的示例。</p>
-<p>A warp comprises 32 lanes, with each thread occupying one lane. For a thread at lane X in the warp, __shfl_down_sync(FULL_MASK, val, offset) gets the value of the val variable from the thread at lane X+offset of the same warp. The data exchange is performed between registers, and more efficient than going through shared memory, which requires a load, a store and an extra register to hold the address.<br>单个warp中的thread被称为一个lane。warp shuffle函数直接读取同一warp内其他lane所占有的register，相比于使用shared mem速度显而易见的更快。读取shared mem需要一个load操作，一个store操作，还需要一个额外的寄存器装地址（访存需要计算地址偏移）。</p>
-<p>CUDA 9 introduced three categories of new or updated warp-level primitives.<br>CUDA 9引入三类新的/升级的warp-level基元函数</p>
-<ol>
-<li>Synchronized data exchange: exchange data between threads in warp.<br>同步数据交换，原有warp shuffle的升级。<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__all_sync, __any_sync, __uni_sync, __ballot_sync</span><br><span class="line">__shfl_sync, __shfl_up_sync, __shfl_down_sync, __shfl_xor_sync</span><br><span class="line">__match_any_sync, __match_all_sync</span><br></pre></td></tr></table></figure></li>
-<li>Active mask query: returns a 32-bit mask indicating which threads in a warp are active with the current executing thread.<br>活动掩码查询，返回32 bit的掩码，对应32个lane，表明在当前执行中warp中的哪些线程是active的。<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__activemask</span><br></pre></td></tr></table></figure></li>
-<li>Thread synchronization: synchronize threads in a warp and provide a memory fence.<br>线程同步指令，同步warp内的所有线程，并提供一个memory fence（不保证线程间的访存结果彼此可见，仅保证了线程内部的访存顺序）。<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__syncwarp</span><br></pre></td></tr></table></figure>
-详细内容参见：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">CUDA C++ Programming Guide</a></li>
-</ol>
-<h2 id="Synchronized-Data-Exchange"><a href="#Synchronized-Data-Exchange" class="headerlink" title="Synchronized Data Exchange"></a>Synchronized Data Exchange</h2><p>Each of the “synchronized data exchange” primitives perform a collective operation among a set of threads in a warp. The set of threads that participates in invoking each primitive is specified using a 32-bit mask, which is the first argument of these primitives. 由基元函数中第一个参数mask，来指定warp中哪些线程参与调用基元函数。<br>All the participating threads must be synchronized for the collective operation to work correctly. Therefore, these primitives first synchronize the threads if they are not already synchronized. <font color="red">为了保证协同操作的正确性，所有参与的线程必须同步。</font>意思就是，在读取其他lane的寄存器之前，必须保证对应得lane已经执行到了这里，准备好了数据，才能保证正确性，否则可能读取到其他线程修改过/未修改的值，造成错误。比如reduction操作的__shfl_down_sync，32个lane中的前16个先读取后16个的寄存器，必须操作完成之后，前8个才能再读取lane ID为8-15的lane的寄存器，以此类推，每次读取之前需要一个warp级别的同步，来保证对应的lane中寄存器的数据已经准备好。因此这些基元函数首先会隐式同步线程。</p>
-<blockquote>
-<p>what should I use for the mask argument?</p>
-</blockquote>
-<p>mask指定了哪些线程需要参与到协同操作中，这部份线程通常由程序逻辑决定，在程序中早先的一些条件分支中计算得到。以reduction为例，如果vector的单元数比block中的threads数量少，对应的代码如下。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> mask = __ballot_sync(FULL_MASK, threadIdx.x &lt; NUM_ELEMENTS);</span><br><span class="line"><span class="keyword">if</span> (threadIdx.x &lt; NUM_ELEMENTS) &#123; </span><br><span class="line">    val = input[threadIdx.x]; </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> offset = <span class="number">16</span>; offset &gt; <span class="number">0</span>; offset /= <span class="number">2</span>)</span><br><span class="line">        val += __shfl_down_sync(mask, val, offset);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>ballot_sync()用于得到参与</strong>shfl_down_sync()的线程mask，而__ballot_sync()本身使用FULL_MASK (0xffffffff for 32 threads)，因为我们假定所有线程都要执行这条指令。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __shfl_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> val, <span class="type">int</span> src_line, <span class="type">int</span> width=warpSize);</span><br><span class="line"><span class="type">int</span> __shfl_down_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> var, <span class="type">unsigned</span> detla, <span class="type">int</span> width=warpSize);</span><br><span class="line"><span class="type">int</span> __ballot_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> predicate);</span><br></pre></td></tr></table></figure>
-<p>Each thread that calls __ballot_sync() receives a bit mask representing all the threads in the warp that pass a true value for the predicate argument.</p>
-<p>On Volta and later GPU architectures, the data exchange primitives can be used in thread-divergent branches: branches where some threads in the warp take a different path than the others.<br>Volta以及之后的架构支持Independent Thread Scheduling，允许同一warp内的线程执行分歧分支，不再严格保证warp内的同步。</p>
-<center><img src="/2022/02/10/cuda-1/NVIDIA%20GPU%20architecture.jpg" width="100%" height="100%"><font color="#708090" size="2">NVIDIA GPU architecture history, Volta之后最新的架构为Turing</font></center>
-
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (threadIdx.x % <span class="number">2</span>) &#123;</span><br><span class="line">    val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    val += __shfl_sync(FULL_MASK, val, <span class="number">0</span>);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Listing 4 shows an example where all the threads in a warp get the value of val from the thread at lane 0. The even- and odd-numbered threads take different branches of an if statement.<br><strong>shfl_sync()用于获取指定lane ID（代码中为lane 0）中寄存器中的数据。示例中，warp内所有线程获取lane 0中的val变量值，而奇数线程与偶数线程分别执行一条if语句的不同分支。可以看到mask参数这里给定FULL_MASK，这是由于不管是基数线程还是偶数线程，都会执行到一条</strong>shfl_sync(FULL_MASK, val, 0)指令，因此对这32个warp lane同步并不会导致死锁。</p>
-<h2 id="Active-Mask-Query"><a href="#Active-Mask-Query" class="headerlink" title="Active Mask Query"></a>Active Mask Query</h2><p><strong>activemask() returns a 32-bit unsigned int mask of all currently active threads in the calling warp. In other words, it shows the calling thread which threads in its warp are also executing the same </strong>activemask(). This is useful for the :opportunistic warp-level programming” technique we explain later, as well as for debugging and understanding program behavior.<br><strong>activemask()就是返回当前warp中所有active线程的对应mask。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Incorrect use of __activemask()</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="keyword">if</span> (threadIdx.x &lt; NUM_ELEMENTS) &#123; </span><br><span class="line">    <span class="type">unsigned</span> mask = __activemask(); </span><br><span class="line">    val = input[threadIdx.x]; </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> offset = <span class="number">16</span>; offset &gt; <span class="number">0</span>; offset /= <span class="number">2</span>)</span><br><span class="line">        val += __shfl_down_sync(mask, val, offset);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>如上代码是一种错误用法。相比于使用<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> mask = __ballot_sync(FULL_MASK, threadIdx.x &lt; NUM_ELEMENTS);</span><br></pre></td></tr></table></figure><br>来计算mask，代码中在if分支中使用<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> mask = __activemask(); </span><br></pre></td></tr></table></figure><br>来计算mask。错误的原因在于，从Volta架构开始，不再保证同一warp内所有线程的完全同步执行，而当某一个线程调用</strong>activemask()，其返回的mask是当前时刻warp中所有active threads所对应的mask，而不是所有将会执行到这里的threads所对应的mask。<br>The CUDA execution model does not guarantee that all threads taking the branch together will execute the __activemask() together. Implicit lock step execution is not guaranteed, as we will explain.</p>
-<h2 id="Warp-Synchronization"><a href="#Warp-Synchronization" class="headerlink" title="Warp Synchronization"></a>Warp Synchronization</h2><p>When threads in a warp need to perform more complicated communications or collective operations than what the data exchange primitives provide, you can use the <strong>syncwarp() primitive to synchronize threads in a warp. It is similar to the </strong>syncthreads() primitive (which synchronizes all threads in the thread block) but at finer granularity.<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __syncwarp(<span class="type">unsigned</span> mask=FULL_MASK);</span><br></pre></td></tr></table></figure><br>用于同步warp中的线程，同步哪些由mask指定。</p>
-<p>The <strong>syncwarp() primitive causes the executing thread to wait until all threads specified in mask have executed **a </strong>syncwarp() (with the same mask)<strong> before resuming execution. It also provides a </strong>memory fence** to allow threads to communicate via memory before and after calling the primitive.</p>
-<p>只要mask指定的线程执行到了具有相同mask的<strong>syncwarp()即可继续执行，并非是一定位于同一个控制流分支的</strong>syncwarp()。还额外提供一个memory fence，保证了当前线程中内存操作的顺序。<br>Memory fence functions only affect the ordering of memory operations by a thread; they do not ensure that these memory operations are visible to other threads (like <strong>syncthreads() does for threads within a block (see Synchronization Functions)).<br>Memory fence仅影响当前线程内内存操作的顺序，并不保证对其他线程的可见性。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __syncthreads();</span><br></pre></td></tr></table></figure><br>waits until all threads in the thread block have reached this point and all global and shared memory accesses made by these threads prior to </strong>syncthreads() are visible to all threads in the block.<br>等待block内所有线程到达，并保证同步指令之前的所有访存对整个block内所有线程可见。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> val = <span class="built_in">get_value</span>(…);</span><br><span class="line">__shared__ <span class="type">float</span> smem[<span class="number">4</span>][<span class="number">8</span>];</span><br><span class="line"> </span><br><span class="line"><span class="comment">// matrix with row-major indexing行主元矩阵</span></span><br><span class="line"><span class="comment">//   0  1  2  3  4  5  6  7 </span></span><br><span class="line"><span class="comment">//   8  9 10 11 12 13 14 15 </span></span><br><span class="line"><span class="comment">//  16 17 18 19 20 21 22 23</span></span><br><span class="line"><span class="comment">//  24 25 26 27 28 29 30 31</span></span><br><span class="line"><span class="type">int</span> x1 = threadIdx.x % <span class="number">8</span>;</span><br><span class="line"><span class="type">int</span> y1 = threadIdx.x / <span class="number">8</span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// matrix with column-major indexing列主元矩阵</span></span><br><span class="line"><span class="comment">//   0  4  8 12 16 20 24 28</span></span><br><span class="line"><span class="comment">//   1  5 10 13 17 21 25 29</span></span><br><span class="line"><span class="comment">//   2  6 11 14 18 22 26 30</span></span><br><span class="line"><span class="comment">//   3  7 12 15 19 23 27 31</span></span><br><span class="line"><span class="type">int</span> x2= threadIdx.x / <span class="number">4</span>;</span><br><span class="line"><span class="type">int</span> y2 = threadIdx.x % <span class="number">4</span>;</span><br><span class="line"> </span><br><span class="line">smem[y1][x1] = val;</span><br><span class="line">__syncwarp();</span><br><span class="line">val = smem[y2][x2];</span><br><span class="line"> </span><br><span class="line"><span class="built_in">use</span>(val);</span><br></pre></td></tr></table></figure>
-<p>如上是一个矩阵转置代码，可以看出作者launch block size选取4 * 8 = 32，恰好是一个warp大小。因此在将各个thread寄存器中内容存入shared mem后，使用<strong>syncwarp()同步，确保shared mem中的数据已经完全准备好，再进行读取，从而起到一个转置的作用。<br>Make sure that </strong>syncwarp() separates shared memory reads and writes to avoid race conditions.<br>通过同步分离了smem的读取和写入，避免了内存竞争。</p>
-<blockquote>
-<p>A tree sum reduction in shared memory</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> tid = threadIdx.x;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Incorrect use of __syncwarp()</span></span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">16</span>]; __syncwarp();</span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">8</span>];  __syncwarp();</span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">4</span>];  __syncwarp();</span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">2</span>];  __syncwarp();</span><br><span class="line">shmem[tid] += shmem[tid+<span class="number">1</span>];  __syncwarp();</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>假如想在 warp 内通过 shared memory 做 reduction, 并且假设数据在 shared memory 已经 ready，大家觉得代码这样写有问题吗？</p>
-</blockquote>
-<p>首先假设block中只有一个warp，size为32，且shared memory开辟了足够大，不存在越界问题，就是说shmem有48个元素。<br>对于Pascal架构及以下来说，我个人认为没有问题，因为warp中所有线程的指令是完全同步的，所有的smem读会发生在所有smem写之前进行。<br>而对于从Volta架构开始，支持warp内线程独立调度，不再保证这种完全的同步。那么由于并没有添加tid &lt; 16的条件判断，因此对于shmem[16-31]这部分内存来说，每个地址会被一个线程读取，被另一个线程写入，二者发生的顺序没有保证（race condition），因此是不正确的。改正的办法很简单，就是在拆分读写，在中间加一个同步指令，最终的结果与Pascal架构的做法一致。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> tid = threadIdx.x;</span><br><span class="line"><span class="type">int</span> v = shmem[tid];</span><br><span class="line"></span><br><span class="line">v += shmem[tid+<span class="number">16</span>]; __syncwarp();</span><br><span class="line">shmem[tid] = v;     __syncwarp();</span><br><span class="line">v += shmem[tid+<span class="number">8</span>];  __syncwarp();</span><br><span class="line">shmem[tid] = v;     __syncwarp();</span><br><span class="line">v += shmem[tid+<span class="number">4</span>];  __syncwarp();</span><br><span class="line">shmem[tid] = v;     __syncwarp();</span><br><span class="line">v += shmem[tid+<span class="number">2</span>];  __syncwarp();</span><br><span class="line">shmem[tid] = v;     __syncwarp();</span><br><span class="line">v += shmem[tid+<span class="number">1</span>];  __syncwarp();</span><br><span class="line">shmem[tid] = v;</span><br></pre></td></tr></table></figure>
-<p>The CUDA compiler may elide some of these synchronization instructions in the final generated code depending on the target architecture (e.g. on pre-Volta architectures).<br>编译器会针对目标架构在最终生成的代码中省略这样的一些同步指令，比如在Volta之前的架构上，这些架构warp完全同步执行，没有独立调度功能不需要同步指令。</p>
-<p>On the latest Volta (and future) GPUs, you can also use <strong>syncwarp() in thread-divergent branches to synchronize threads from both branches. But once they return from the primitive, the threads will become divergent again. See Listing 13 for such an example.<br>可以在分支中使用</strong>syncwarp()同步warp，一旦函数返回，这些线程重新进入不同分支。</p>
-<h2 id="Opportunistic-Warp-level-Programming"><a href="#Opportunistic-Warp-level-Programming" class="headerlink" title="Opportunistic Warp-level Programming"></a>Opportunistic Warp-level Programming</h2><p>在进入分支之前，一般需要先计算mask，然后一直向下传递这个mask。在一些library functions，你不能改变函数的interface，就无法在进行warp-level programming，因为不能向函数中传入所需要的mask。</p>
-<p>Some computations can use whatever threads happen to be executing together. We can use a technique called opportunistic warp-level programming, as the following example illustrates. </p>
-<p><a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/cuda-pro-tip-optimized-filtering-warp-aggregated-atomics/">CUDA Pro Tip: Optimized Filtering with Warp-Aggregated Atomics</a><br>On warp-aggregated atomics for more information on the algorithm<br><a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/cooperative-groups/">Cooperative Groups: Flexible CUDA Thread Programming</a><br>For discussion of how Cooperative Groups makes the implementation much simpler.</p>
-<p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-math-api/group__CUDA__MATH__INTRINSIC__INT.html">CUDA Math API</a></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>   <span class="comment">// increment the value at ptr by 1 and return the old value</span></span><br><span class="line"><span class="number">2</span>   <span class="function">__device__ <span class="type">int</span> <span class="title">atomicAggInc</span><span class="params">(<span class="type">int</span> *ptr)</span> </span>&#123;</span><br><span class="line"><span class="number">3</span>       <span class="type">int</span> mask = __match_any_sync(__activemask(), (<span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span>)ptr);</span><br><span class="line"><span class="number">4</span>       <span class="type">int</span> leader = __ffs(mask) – <span class="number">1</span>;    <span class="comment">// select a leader</span></span><br><span class="line"><span class="number">5</span>       <span class="type">int</span> res;</span><br><span class="line"><span class="number">6</span>       <span class="keyword">if</span>(<span class="built_in">lane_id</span>() == leader)                  <span class="comment">// leader does the update</span></span><br><span class="line"><span class="number">7</span>           res = <span class="built_in">atomicAdd</span>(ptr, __popc(mask));</span><br><span class="line"><span class="number">8</span>       res = __shfl_sync(mask, res, leader);    <span class="comment">// get leader’s old value</span></span><br><span class="line"><span class="number">9</span>       <span class="keyword">return</span> res + __popc(mask &amp; ((<span class="number">1</span> &lt;&lt; <span class="built_in">lane_id</span>()) – <span class="number">1</span>)); <span class="comment">//compute old value</span></span><br><span class="line"><span class="number">10</span>  &#125;</span><br></pre></td></tr></table></figure>
-<p>atomicAggInc() atomically increments the value pointed to by ptr by 1 and returns the old value. It uses the atomicAdd() function, which may incur contention. To reduce contention, atomicAggInc replaces the per-thread atomicAdd() operation with a per-warp atomicAdd().<br>函数atomicAggInc给输入指针ptr指向的变量+1，然后返回原始值。<br>直接使用atomicAdd()会引发线程间内存竞争导致顺序执行延迟（这里只有一个地址，由ptr指向）。为了减少这种内存竞争，atomicAggInc使用一个warp级别的atomicAdd()替换掉了原有的thread级别的atomicAdd()。</p>
-<p>The <strong>activemask() in line 3 finds the set of threads in the warp that are about to perform the atomic operation.<br>返回warp中将要进行原子操作的线程集合。</strong>activemask(): 返回当前warp中active threads的mask。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">int</span> __match_any_sync(<span class="type">unsigned</span> mask, T value);</span><br><span class="line"><span class="type">unsigned</span> <span class="type">int</span> __match_all_sync(<span class="type">unsigned</span> mask, T value, <span class="type">int</span> *pred);</span><br></pre></td></tr></table></figure>
-<p>__match_any_sync()返回输入的掩码mask中指定的threads中，value值相同的线程的线程的掩码。对mask进一步筛选，条件是value值相同。<br>Returns mask of threads that have same value of value in mask.</p>
-<p>__match_all_sync()，若输入的掩码mask中指定的所有threads都具有相同的value，则返回掩码、pred指向true，否则返回0、pred指向false。</p>
-<p><strong>match_any_sync() returns the bit mask of the threads that have the same value ptr, partitioning the incoming threads into groups whose members have the same ptr value.<br>返回</strong>activemask()返回的mask指定的threads中，ptr值相同的threads所构成的掩码。也就是对此时active的线程根据ptr的值进行进一步分类。<br>Returns mask if all threads in mask have the same value for value; otherwise 0 is returned. Predicate pred is set to true if all threads in mask have the same value of value; otherwise the predicate is set to false.</p>
-<p>Each group elects a leader thread (line 4), which performs the atomicAdd() (line 7) for the whole group.<br>分类得到的每组线程选取一个leader（首个mask中bit位为1的线程），并使用这个线程执行atomicAdd()，加的数量为mask中bit为1的数量，正好对应此时经过两次筛选剩下的线程数量。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__device__​ <span class="type">int</span> __ffs ( <span class="type">int</span>  x )</span><br></pre></td></tr></table></figure><br>Find the position of the least significant bit set to 1 in a 32-bit integer.<br>Bit Operations: 在一个32bit整型中找到置为1的最低有效位。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__device__​ <span class="type">int</span> __popc ( <span class="type">unsigned</span> <span class="type">int</span>  x )</span><br></pre></td></tr></table></figure><br>Count the number of bits that are set to 1 in a 32-bit integer.<br>Bit Operations: 返回一个32bit整型中为1的bit位数量。</p>
-<p>Every thread gets the old value from the leader (line 8) returned by the atomicAdd().<br>warp中其他线程通过__shfl_sync()读取leader线程中的res变量。</p>
-<p>Line 9 computes and returns the old value the current thread would get from atomicInc() if it were to call the function instead of atomicAggInc.<br>最终函数返回若线程调用atomicInc()而不是atomicAggInc()而应该得到的返回值。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">1</span> &lt;&lt; <span class="built_in">lane_id</span>())                        <span class="comment">//得到当前线程对应bit置1的mask</span></span><br><span class="line">((<span class="number">1</span> &lt;&lt; <span class="built_in">lane_id</span>()) – <span class="number">1</span>)                  <span class="comment">//得到当前线程的所有低位置1的mask</span></span><br><span class="line">mask &amp; ((<span class="number">1</span> &lt;&lt; <span class="built_in">lane_id</span>()) – <span class="number">1</span>)           <span class="comment">//保留当前线程所有低位线程所对应的mask</span></span><br><span class="line">__popc(mask &amp; ((<span class="number">1</span> &lt;&lt; <span class="built_in">lane_id</span>()) – <span class="number">1</span>))   <span class="comment">//计数</span></span><br></pre></td></tr></table></figure><br>也就是对当前warp中的线程由低到高做一个单调递增的累加。如果低位一个线程为1，那么高位所有返回值+1。</p>
-<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/54055195/activemask-vs-ballot-sync"><strong>activemask() vs </strong>ballot_sync()</a></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__ballot_sync(<span class="type">unsigned</span> mask, predicate):</span><br></pre></td></tr></table></figure>
-<p>Evaluate predicate for all non-exited threads in mask and return an integer whose Nth bit is set if and only if <strong>predicate evaluates to non-zero for the Nth thread of the warp and the Nth thread is active</strong>.<br>是一个shuffle operation，隐含一个对mask指定的线程的同步作用，没指定的不约束，行为未定义（可能执行了shuffle也可能没执行shuffle）。返回一个mask，如果输入mask中指定的线程对应predicate为true，那么对应bit置1，否则为0。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__activemask():</span><br></pre></td></tr></table></figure>
-<p>Returns a 32-bit integer mask of <strong>all currently active threads in the calling warp</strong>. The Nth bit is set if <strong>the Nth lane in the warp is active when __activemask() is called</strong>. Inactive threads are represented by 0 bits in the returned mask. Threads which have exited the program are always marked as inactive. Note that threads that are convergent at an __activemask() call are not guaranteed to be convergent at subsequent instructions unless those instructions are synchronizing warp-builtin functions.<br>仅是一个查询功能，没有任何操作，不对线程进行任何限制，仅返回当前warp中active（convergent）的线程对应的mask。</p>
-<p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#data-movement-and-conversion-instructions-shfl-sync">PTX ISA: 9.7.8.6. Data Movement and Conversion Instructions: shfl.sync</a></p>
-<p>As an additional clarification on the usage of the mask parameter, note the usage statements in the PTX guide. In particular, the mask parameter is not intended to be an exclusion method. If you wish threads to be excluded from the shuffle operation, you must use conditional code to do that. This is important in light of the following statement from the PTX guide:<br>mask仅指出哪些线程必须要进行同步、参加shuffle operation，并不会将没指定的线程排除在外。如果需要将某些线程排除在外，需要认为使用conditional code，制造divergence。</p>
-<blockquote>
-<p>The behavior of shfl.sync is undefined if the executing thread is not in the membermask.</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> mask = __match_any_sync(__activemask(), (<span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span>)ptr);</span><br></pre></td></tr></table></figure>
-<p>回看这条指令，<strong>activemask()指出当前同步的线程有哪些，以这些线程的mask为参数传给</strong>match_any_sync()，此函数进一步指出这些线程中，ptr指向的值相等的有哪些，并以这些线程为mask继续向下执行。</p>
-<p>this statement is saying “tell me which threads are converged” (i.e. the <strong>activemask() request), and then “use (at least) those threads to perform the </strong>match_all operation. This is perfectly legal and will use whatever threads happen to be converged at that point. As that listing 9 example continues, the mask computed in the above step is used in the only other warp-cooperative primitive:<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res = __shfl_sync(mask, res, leader); </span><br></pre></td></tr></table></figure><br><strong>shfl_sync()函数又带了一个对mask中指定线程的同步，就是说mask所指定的线程在</strong>match_any_sync()与__shfl_sync()之间的操作可以基本认为是同步的。</p>
-<h2 id="Implicit-Warp-Synchronous-Programming-is-Unsafe"><a href="#Implicit-Warp-Synchronous-Programming-is-Unsafe" class="headerlink" title="Implicit Warp-Synchronous Programming is Unsafe"></a>Implicit Warp-Synchronous Programming is Unsafe</h2><p>CUDA toolkits prior to version 9.0 provided a (now legacy) version of warp-level primitives. Compared with the CUDA 9 primitives, the legacy primitives do not accept a mask argument.<br>早于CUDA 9.0的版本的warp-level primitives版本没有mask参数（不需要warp同步）。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __any(<span class="type">int</span> predicate)</span><br><span class="line"><span class="type">int</span> __any_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> predicate)</span><br></pre></td></tr></table></figure><br>The mask argument, as explained previously, specifies the set of threads in a warp that must participate in the primitives. The new primitives perform intra-warp thread-level synchronization if the threads specified by the mask are not already synchronized during execution.<br>CUDA 9.0引入的新版本提供了warp内级别的线程同步，由mask指定的线程必须同步，其余线程不做要求。</p>
-<p>The legacy warp-level primitives do not allow programmers to specify the required threads and do not perform synchronization. Therefore, the threads that must participate in the warp-level operation are not explicitly expressed by the CUDA program. The correctness of such a program depends on implicit warp-synchronous behavior, which may change from one hardware architecture to another, from one CUDA toolkit release to another (due to changes in <strong>compiler optimizations</strong>, for example), or even from one run-time execution to another. Such implicit warp-synchronous programming is unsafe and may not work correctly.<br>原先的warp-level基元函数在使用时不要求指定必须参与的线程，也不进行线程同步。因此，CUDA程序没有显式指定哪些线程必须参与warp-level操作，这种程序的正确性有赖于隐式warp同步。这种程序随着架构、CUDA版本、运行时的不同可能具有不同行为。正确性无法得到保证。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Assuming all 32 threads in a warp execute line 1 together.</span></span><br><span class="line"><span class="built_in">assert</span>(__ballot(<span class="number">1</span>) == FULL_MASK);</span><br><span class="line"><span class="type">int</span> result;</span><br><span class="line"><span class="keyword">if</span> (thread_id % <span class="number">2</span>) &#123;</span><br><span class="line">    result = <span class="built_in">foo</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    result = <span class="built_in">bar</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">unsigned</span> ballot_result = __ballot(result);</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">assert</span><span class="params">( <span class="type">int</span> expression )</span></span>;</span><br></pre></td></tr></table></figure>
-<p>Evaluates an expression and, when the result is false, prints a diagnostic message and aborts the program.<br>若表达式为false，输出诊断消息并终止程序。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> __ballot_sync(<span class="type">int</span> predicate);</span><br></pre></td></tr></table></figure>
-<p><strong>ballot()是</strong>ballot_sync()的早期版本。接受一个int predicate参数。<br>return an integer whose Nth bit is set if and only if predicate evaluates to non-zero for the Nth thread of the warp.<br>返回一个整形，若第N个线程predicate为真，则整型对应bit置为1，否则为0。<br><strong>ballot(1) == FULL_MASK，毫无作用，输入参数为1，每个线程都为1。<br>foo, bar这里理解为随意两个函数，张三李四之类的<br>假设warp中的32个线程同时执行了第一次</strong>ballot()，而随后的if else导致了线程的divergence，而不同分支中函数执行时间未必一致，因此在执行到第二次<strong>ballot()时，warp的re-convergence不能保证。因此ballot_result中可能不会包含warp中所有线程的结果，而仅包含当前线程调用</strong>ballot()时convergent threads的结果。<br>在第二次<strong>ballot()之前使用</strong>syncwarp()同步整个warp也不保证正确性，这也是隐式同步implicit warp-synchronous programming，其隐含一个条件：一旦同步之后，warp中所有线程保持同步直到遇到下一次thread-divergent branch。这个虽然看似正确，但是并没有得到CUDA的官方认可。最安全的办法就是将<strong>ballot()替换为</strong>ballot_sync()，并把所有线程都标记在mask参数中。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__syncwarp();</span><br><span class="line"><span class="type">unsigned</span> ballot_result = __ballot(result);</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> ballot_result = __ballot_sync(FULL_MASK, result);</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>   v = <span class="built_in">foo</span>();</span><br><span class="line"><span class="number">2</span>   <span class="keyword">if</span> (threadIdx.x % <span class="number">2</span>) &#123;</span><br><span class="line"><span class="number">3</span>       __syncwarp();</span><br><span class="line"><span class="number">4</span>       v = __shfl(<span class="number">0</span>);       <span class="comment">// L3 will get undefined result because lane 0 </span></span><br><span class="line"><span class="number">5</span>       __syncwarp();        <span class="comment">// is not active when L3 is executed. L3 and L6</span></span><br><span class="line"><span class="number">6</span>   &#125; <span class="keyword">else</span> &#123;                 <span class="comment">// will execute divergently.</span></span><br><span class="line"><span class="number">7</span>       __syncwarp();</span><br><span class="line"><span class="number">8</span>       v = __shfl(<span class="number">0</span>);</span><br><span class="line"><span class="number">9</span>       __syncwarp();</span><br><span class="line"><span class="number">10</span>  &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__syncwarp(); </span><br><span class="line">v = __shfl(<span class="number">0</span>); </span><br><span class="line">__syncwarp(); </span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__shfl_sync(FULL_MASK, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<p>二者并不等同。</p>
-<p><strong>Reason 1:</strong><br>The <strong>syncwarp() primitive causes the executing thread to wait until all threads specified in mask have executed **a </strong>syncwarp() (with the same mask)<strong> before resuming execution. It also provides a </strong>memory fence<strong> to allow threads to communicate via memory before and after calling the primitive.<br>线程首先会同步(convergent)在line 3 &amp; 7。接下来由于if else分支的关系，threads in a warp become divergent，因此line 4执行的时候，lane 0由于不在此分支上，因此有可能是inactive的（被屏蔽了），对lane 0使用<strong>shfl()结果undefined。改用</strong>shfl_sync(FULL_MASK, 0)就会解决这个问题，此函数会强制mask中指定的所有threads converge，然后执行对应shuffle operation。
-</strong>Reason 2:<em>*<br>__syncwarp()仅能保证在执行此函数时，warp中所有threads converge，并不能保证在执行完这条代码之后，threads还能保持convergent，虽然大多数情况是convergent的，但没有得到官方认可is not guaranteed。属于implicit warp-synchronous programming。Thread convergence is guaranteed only within explicitly synchronous warp-level primitives like </em>_sync functions. 隐式同步is unsafe program，因此CUDA 9.0之后舍弃了原有的shuffle函数。</p>
-<h2 id="Update-Legacy-Warp-Level-Programming"><a href="#Update-Legacy-Warp-Level-Programming" class="headerlink" title="Update Legacy Warp-Level Programming"></a>Update Legacy Warp-Level Programming</h2><p>将原来的程序更新为使用新shuffle函数（the sync version of the primitives）的程序。<br>Any form of implicit warp-synchronous programming, such as communicating between threads of a warp without synchronization.<br>也可以选择use Cooperative Groups restructure your code。其提供了一个更高级别的编组抽象，可以任意组织线程并同步组内线程，such as multi-block synchronization。</p>
-<p>使用warp-level primitives最困难的部份就是确定函数所使用的mask（参与shuffle operations的threads）。Here are some suggestions:</p>
-<blockquote>
-<ol>
-<li><p>Don’t just use FULL_MASK (i.e. 0xffffffff for 32 threads) as the mask value. If not all threads in the warp can reach the primitive according to the program logic, then using FULL_MASK may cause the program to hang.<br>不要简单的使用FULL_MASK当mask参数传入primitives，如果warp中有threads执行不到会造成死锁hang。</p>
-</li>
-<li><p>Don’t just use <strong>activemask() as the mask value. </strong>activemask() tells you what threads happen to be convergent when the function is called, which can be different from what you want to be in the collective operation.<br>也不要简单的使用<strong>activemask()的返回值当作mask，</strong>activemask()仅仅返回当前碰巧convergent的threads，与你希望的threads可能会有出入。</p>
-</li>
-<li><p>Do analyze the program logic and understand the membership requirements. Compute the mask ahead based on your program logic.<br>分析程序逻辑，理解需求，在程序逻辑分支之前先行计算mask。</p>
-</li>
-<li><p>If your program does opportunistic warp-synchronous programming, use “detective” functions such as <strong>activemask() and </strong>match_any_sync() to find the right mask.<br>如果要在程序中使用opportunistic warp-synchronous programming（不做同步，直接查询当前active threads，再筛选出满足条件的threads，有哪些用哪些），使用一些具有查询检测功能的函数，例如<strong>activemask() and </strong>match_any_sync()，来返回满足要求的mask。</p>
-</li>
-<li><p>Use <strong>syncwarp() to separate operations with intra-warp dependences. Do not assume lock-step execution.<br>不要假定线程同步implicit synchronous，使用</strong>syncwarp()分离具有intra-warp dependences的操作。warp内前后依赖，指后续操作依赖前面操作的结果。</p>
-</li>
-</ol>
-</blockquote>
-<p>If your existing CUDA program gives a different result on Volta architecture GPUs, and you suspect the difference is caused by Volta’s new independent thread scheduling which can change warp synchronous behavior, you may want to recompile your program with <strong>nvcc options -arch=compute_60 -code=sm_70</strong>. Such compiled programs opt-in to Pascal’s thread scheduling.<br>Caused by implicit warp-synchronous programming.</p>
-<p>Volta’s new independent thread scheduling:<br><a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/inside-volta/">Inside Volta: The World’s Most Advanced Data Center GPU</a></p>
-<p>Volta independent thread scheduling enables interleaved execution of statements from divergent branches. This enables execution of fine-grain parallel algorithms where threads within a warp may synchronize and communicate.</p>
-<center><img src="/2022/02/10/cuda-1/Volta_independent_thread_scheduling.png" width="100%" height="100%"><font color="#708090" size="2">Volta_independent_thread_scheduling.</font></center>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1485,7 +1270,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
