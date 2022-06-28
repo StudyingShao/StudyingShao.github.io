@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://example.com/2022/03/01/PC-Problem-1/1.png">
 <meta property="og:image" content="http://example.com/2022/03/01/PC-Problem-1/2.png">
 <meta property="article:published_time" content="2022-03-01T06:26:03.000Z">
-<meta property="article:modified_time" content="2022-03-01T09:12:40.362Z">
+<meta property="article:modified_time" content="2022-06-23T10:58:15.002Z">
 <meta property="article:author" content="Jiang Shao">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2022/03/01/PC-Problem-1/1.png">
@@ -181,10 +181,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-03-01 14:26:03 / Modified: 17:12:40" itemprop="dateCreated datePublished" datetime="2022-03-01T14:26:03+08:00">2022-03-01</time>
+              <time title="Created: 2022-03-01 14:26:03" itemprop="dateCreated datePublished" datetime="2022-03-01T14:26:03+08:00">2022-03-01</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-06-23 18:58:15" itemprop="dateModified" datetime="2022-06-23T18:58:15+08:00">2022-06-23</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -214,8 +220,8 @@
 <p>声音延迟2s的具体原因是Realtek的省电管理出现问题，为了节省电量Realtek在不工作时会自动关闭，导致每次启动Realtek时都需要重新加载，所以说会出现声音延迟1~2s的问题。解决思路是关闭Realtk的省电管理功能。具体解决方法是：</p>
 <ul>
 <li>使用windows+R键调出运行窗口，输入regedit打开注册表编辑器</li>
-<li>按照路径寻找 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\{4d36e96c-e325-11ce-bfc1-08002be10318}\xxxx\PowerSettings</li>
-<li>其中’xxxx’是个四位数字，不同型号的电脑数字可能不一样，在暗影精灵4中’xxxx’即’0001’。验证方法为点击某个’xxxx’，右侧窗口的键值中有DriverDesc，若该DriverDesc的值为 ‘Realtk High Definition Audio’，则此’xxxx’就是我们要找的路径</li>
+<li>按照路径寻找 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\\{4d36e96c-e325-11ce-bfc1-08002be10318}\xxxx\PowerSettings</li>
+<li>其中’xxxx’是个四位数字，不同型号的电脑数字可能不一样，在暗影精灵4 win10系统中’xxxx’即’0000’。验证方法为点击某个’xxxx’，右侧窗口的键值中有DriverDesc，若该DriverDesc的值为 ‘Realtk High Definition Audio’，则此’xxxx’就是我们要找的路径</li>
 <li>找到PowerSettings中的三个二进制值并将它们修改为：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ConservationIdleTime = ff ff ff ff <span class="comment">//电池供电下音频空闲等待时间最大</span></span><br><span class="line">IdlePowerState = <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="comment">//超出空闲等待时间后，设置电源状态为D0（完全）</span></span><br><span class="line">PerformanceIdleTime = ff ff ff ff <span class="comment">//电源供电下音频空闲等待时间最大</span></span><br></pre></td></tr></table></figure>
 这些二进制值的默认值都是 00 00 00 00，有些其他的声卡驱动可能是0a 00 00 00</li>
 <li><strong>重启电脑生效</strong>（重启资源管理器不行，必须重启电脑）</li>
@@ -261,7 +267,10 @@
     <a href="/2022/02/28/GAMES101-RayTracing-2/" rel="prev" title="GAMES101 RayTracing Part 2">
       <i class="fa fa-chevron-left"></i> GAMES101 RayTracing Part 2
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/07/PC-Problem-2/" rel="next" title="Word中Mathtype公式变形问题">
+      Word中Mathtype公式变形问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -334,14 +343,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>

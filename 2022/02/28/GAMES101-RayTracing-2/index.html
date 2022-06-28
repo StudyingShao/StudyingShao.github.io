@@ -20,17 +20,36 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="GAMES101 RayTracing Part 2">
+  <meta name="description" content="GAMES101 RayTracing Part 2Using Axis-Aligned Bounding Boxes (AABBs) to accelerate ray tracingUniform Grids 均匀网格预处理   找到整个空间的包围盒 创建均匀网格 存储所有与空间中物体表面相交的单元     从光线进入包围盒的第一个位置开始，逐个cell寻找与光线相交的cell（下一个cell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GAMES101 RayTracing Part 2">
 <meta property="og:url" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/index.html">
 <meta property="og:site_name" content="邵大宝的学习Blog">
-<meta property="og:description" content="GAMES101 RayTracing Part 2">
+<meta property="og:description" content="GAMES101 RayTracing Part 2Using Axis-Aligned Bounding Boxes (AABBs) to accelerate ray tracingUniform Grids 均匀网格预处理   找到整个空间的包围盒 创建均匀网格 存储所有与空间中物体表面相交的单元     从光线进入包围盒的第一个位置开始，逐个cell寻找与光线相交的cell（下一个cell">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/1.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/2.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/3.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/4.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/5.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/6.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/7.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/8.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/9.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/10.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/11.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/12.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/13.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/14.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/15-1.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/15-2.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/15-3.png">
+<meta property="og:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/15-4.png">
 <meta property="article:published_time" content="2022-02-28T09:21:15.000Z">
-<meta property="article:modified_time" content="2022-03-01T09:11:58.367Z">
+<meta property="article:modified_time" content="2022-03-02T09:01:18.528Z">
 <meta property="article:author" content="Jiang Shao">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/02/28/GAMES101-RayTracing-2/1.png">
 
 <link rel="canonical" href="http://example.com/2022/02/28/GAMES101-RayTracing-2/">
 
@@ -186,7 +205,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-01 17:11:58" itemprop="dateModified" datetime="2022-03-01T17:11:58+08:00">2022-03-01</time>
+                <time title="Modified: 2022-03-02 17:01:18" itemprop="dateModified" datetime="2022-03-02T17:01:18+08:00">2022-03-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -209,7 +228,104 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="GAMES101-RayTracing-Part-2"><a href="#GAMES101-RayTracing-Part-2" class="headerlink" title="GAMES101 RayTracing Part 2"></a>GAMES101 RayTracing Part 2</h1>
+        <h1 id="GAMES101-RayTracing-Part-2"><a href="#GAMES101-RayTracing-Part-2" class="headerlink" title="GAMES101 RayTracing Part 2"></a>GAMES101 RayTracing Part 2</h1><h2 id="Using-Axis-Aligned-Bounding-Boxes-AABBs-to-accelerate-ray-tracing"><a href="#Using-Axis-Aligned-Bounding-Boxes-AABBs-to-accelerate-ray-tracing" class="headerlink" title="Using Axis-Aligned Bounding Boxes (AABBs) to accelerate ray tracing"></a>Using Axis-Aligned Bounding Boxes (AABBs) to accelerate ray tracing</h2><h3 id="Uniform-Grids-均匀网格预处理"><a href="#Uniform-Grids-均匀网格预处理" class="headerlink" title="Uniform Grids 均匀网格预处理"></a>Uniform Grids 均匀网格预处理</h3><center><img src="/2022/02/28/GAMES101-RayTracing-2/1.png" width="100%"></center>
+
+<ol>
+<li>找到整个空间的包围盒</li>
+<li>创建均匀网格</li>
+<li>存储所有与空间中物体表面相交的单元</li>
+</ol>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/2.png" width="100%"></center>
+
+<ol>
+<li>从光线进入包围盒的第一个位置开始，逐个cell寻找与光线相交的cell（下一个cell一定是<strong>光线方向上的与当前cell相邻的cell</strong>，对于图中光线来说一定是当前cell的右侧cell或上方cell）</li>
+<li>若当前cell中没有物体则继续下一个cell</li>
+<li>若当前cell中存在物体则判断光线是否与cell中的物体相交</li>
+</ol>
+<p>对于均匀网格来说，cell数目太少不起作用，cell数目太多则用于判断cell与光线相交的计算太多。那么使用经验公式：3D中cell数目 = 场景中物体数目 * 27</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/3.png" width="100%"></center>
+
+<p>这种Uniform Grid方法适用于场景中<strong>存在大量物体</strong>，<strong>且物体均匀的分布在空间中</strong>的情况。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/4.png" width="100%"></center>
+
+<h3 id="Spatial-Partitions-空间划分"><a href="#Spatial-Partitions-空间划分" class="headerlink" title="Spatial Partitions 空间划分"></a>Spatial Partitions 空间划分</h3><p>用于弥补uniform grids方法在物体空间分布稀疏情况下的不足。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/5.png" width="100%"></center>
+
+<p><strong>八叉树</strong>：每个cell均匀分裂成8个子cell in 3D、4个子cell in 2D（对应树结构每个父节点具有8/4个子节点）<br><strong>KD树</strong>：每个cell沿着某一个轴切分为2个子cell（对应结构为二叉树），每次切分方向都在三个轴之间切换，保证切分空间的匀称性，使子cell接近立方体。<br><strong>BSP树</strong>：每次选一个特殊方向切分空间。由于axis-aligned有便于计算的特性，因此主要使用KD树。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/6.png" width="100%"></center>
+
+<p><strong>KD-Tree 空间划分示意</strong><br>示例原因每次仅切分两个子节点中的一个，而实际情况下每个子节点都要进行切分，除非遇到递归基（满足一定条件无需继续切分）。</p>
+<p><strong>Data Structure for KD-Trees</strong><br>Internal nodes store 内部节点</p>
+<ul>
+<li>split axis: x-, y-, or z-axis 切分方向每次在三个轴之间切换</li>
+<li>split position: coordinate of split plane along axis 切分位置没有固定要求，一般沿着中间切分</li>
+<li>children: pointers to child nodes 每个中间节点具有指向两个子节点的指针</li>
+<li>No objects are stored in internal nodes 中间节点不存储场景中的物体信息<br>Leaf nodes store 叶节点（没有子节点）</li>
+<li>list of objects 存储对应区域所包含的场景中的物体信息</li>
+</ul>
+<p><strong>KD-Tree查找交点示意</strong></p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/7.png" width="100%"></center>
+
+<p>假设最终生成的KD-Tree就如图所示，对123节点并不继续划分，彩色的都是叶节点，对应图中一块区域。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/8.png" width="100%"></center>
+
+<p>首先判断光线是否与根节点所对应的整个场景的最大的包围盒相交。如果相交那么遍历它的两个子节点，首先到节点1。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/9.png" width="100%"></center>
+
+<p>首先判断是否与节点1所围成的<strong>包围盒相交</strong>，是则由于1是叶节点，那么遍历1中包含的所有物体，判断光线是否与<strong>物体相交</strong>。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/10.png" width="100%"></center>
+
+<p>发现节点1中并无交点，转而判断节点B，发现与B的包围盒相交。而B是内部节点，那么继续判断B的子节点2。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/11.png" width="100%"></center>
+
+<p>与节点2所围成的包围盒求交发现有交点，而节点2是一个叶节点，转而与节点2中包含的所有物体求交。发现没有，转而判断B的两一个子节点C。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/12.png" width="100%"></center>
+
+<p>发现与C的包围盒有交点，继续判断C的子节点。由于子节点间并没有严格顺序。这里转而判断节点3。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/13.png" width="100%"></center>
+
+<p>与3的包围盒求交-&gt;有交点。<br>3为叶节点-&gt;与3中所有物体求交-&gt;有交点-&gt;记录交点对应的 t_hit。<br><strong>此时转而判断C的另一个子节点D</strong>，再继续这个过程，找到所有的交点对应的 t_hit，永远记录一个为正的最小的 t，即为真实交点对应的 t。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/14.png" width="100%"></center>
+
+<p>KD-Tree两个缺点：</p>
+<ol>
+<li>实际物体为三角形网格，很难判断一个三角形是否处于一个节点所对应的包围盒中。</li>
+<li>同一个物体可能横跨了多个包围盒，被多个节点所记录。</li>
+</ol>
+<h3 id="Object-Partitions-物体划分-gt-Bounding-Volume-Hierarchy-BVH"><a href="#Object-Partitions-物体划分-gt-Bounding-Volume-Hierarchy-BVH" class="headerlink" title="Object Partitions 物体划分 -&gt; Bounding Volume Hierarchy (BVH)"></a>Object Partitions 物体划分 -&gt; Bounding Volume Hierarchy (BVH)</h3><p>把物体分为两堆（一个节点两个子节点），并重新计算这两堆物体的包围盒。</p>
+<center>
+<img src="/2022/02/28/GAMES101-RayTracing-2/15-1.png" width="100%">
+<img src="/2022/02/28/GAMES101-RayTracing-2/15-2.png" width="100%">
+<img src="/2022/02/28/GAMES101-RayTracing-2/15-3.png" width="100%">
+<img src="/2022/02/28/GAMES101-RayTracing-2/15-4.png" width="100%">
+</center>
+
+<blockquote>
+<p><strong>优点</strong>：</p>
+<ol>
+<li>场景中每个object只存储于一个叶节点中，不会被多个叶节点同时存储。</li>
+<li>避免了KD-Tree中对子节点包围盒中所包含object的计算，直接利用分类后堆中的所有object求其包围盒。</li>
+</ol>
+</blockquote>
+<p><strong>KD-Tree是对空间的划分</strong>，之后再把objects归类到相应的区域中。<strong>而BVH是对物体进行划分</strong>。</p>
+<blockquote>
+<p><strong>如何切分节点（将一堆objects划分为两堆）？</strong></p>
+</blockquote>
+<p>How to subdivide a node?</p>
+<ul>
+<li>Choose a dimension to split</li>
+<li>Heuristic #1: Always choose the longest axis in node<br>选择节点最长的一个轴进行切分（空间切分），好处是切分之后两个子节点空间大小均匀。</li>
+<li>Heuristic #2: Split node at location of median object<br>选择中间的物体进行切分（物体个数划分），好处是划分之后，两个子节点物体个数均匀，从而形成的二叉树较为平衡（二叉树深度较小，有利于缩短查找时间）。</li>
+</ul>
+<blockquote>
+<p>选择物体进行切分时，需要找到第K个物体（Top K 问题），传统方法是对所有物体进行排序，时间复杂度O(nlogn)。而实际无需对所有节点都排序。<br><strong>基于快速排序的思维实现</strong>，时间复杂度为o(n)：</p>
+<ol>
+<li>选一个枢轴点（主元），用快排的方法将数组分为两部分，位于枢轴点左边的数都比它大，位于枢轴点右边的数都比它小。</li>
+<li>划分后查看枢轴点索引值。如果恰好为k-1，则枢轴点即为第k大的数；否则若索引比k-1大，说明第k大的数位于左边部分；否则位于右边部分。</li>
+<li>递归地再在左或右某一部分中选取一个主元，进行下一次划分。</li>
+</ol>
+</blockquote>
+
     </div>
 
     
@@ -289,7 +405,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GAMES101-RayTracing-Part-2"><span class="nav-number">1.</span> <span class="nav-text">GAMES101 RayTracing Part 2</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GAMES101-RayTracing-Part-2"><span class="nav-number">1.</span> <span class="nav-text">GAMES101 RayTracing Part 2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Using-Axis-Aligned-Bounding-Boxes-AABBs-to-accelerate-ray-tracing"><span class="nav-number">1.1.</span> <span class="nav-text">Using Axis-Aligned Bounding Boxes (AABBs) to accelerate ray tracing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Uniform-Grids-%E5%9D%87%E5%8C%80%E7%BD%91%E6%A0%BC%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">1.1.1.</span> <span class="nav-text">Uniform Grids 均匀网格预处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spatial-Partitions-%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86"><span class="nav-number">1.1.2.</span> <span class="nav-text">Spatial Partitions 空间划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-Partitions-%E7%89%A9%E4%BD%93%E5%88%92%E5%88%86-gt-Bounding-Volume-Hierarchy-BVH"><span class="nav-number">1.1.3.</span> <span class="nav-text">Object Partitions 物体划分 -&gt; Bounding Volume Hierarchy (BVH)</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -303,14 +419,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>

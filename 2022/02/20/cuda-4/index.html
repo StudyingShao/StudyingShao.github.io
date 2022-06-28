@@ -39,7 +39,7 @@
 <meta property="og:image" content="http://example.com/2022/02/20/cuda-4/independent%20thread%20scheduling%204.png">
 <meta property="og:image" content="http://example.com/2022/02/20/cuda-4/a%20double-linked%20list%20with%20locks.png">
 <meta property="article:published_time" content="2022-02-20T12:09:48.000Z">
-<meta property="article:modified_time" content="2022-02-23T08:24:30.023Z">
+<meta property="article:modified_time" content="2022-06-28T08:55:12.326Z">
 <meta property="article:author" content="Jiang Shao">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2022/02/20/cuda-4/Volta%20GV100%20architecture.png">
@@ -198,7 +198,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-23 16:24:30" itemprop="dateModified" datetime="2022-02-23T16:24:30+08:00">2022-02-23</time>
+                <time title="Modified: 2022-06-28 16:55:12" itemprop="dateModified" datetime="2022-06-28T16:55:12+08:00">2022-06-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -248,11 +248,11 @@
 <p>Pascal架构中所有CUDA核心都是混合核心，SM每个分区一个时刻只能进行一种运算。<br>Turing架构中为INT型单独开辟一条通道，可同时执行INT型运算与FP运算，但这样INT型运算性能过剩，多数时间都在摸鱼。<br>Ampere架构中把INT型核心又换回了混合核心，这样就避免了INT型核心空闲的问题。</p>
 </blockquote>
 <h2 id="Tensor-Cores"><a href="#Tensor-Cores" class="headerlink" title="Tensor Cores"></a>Tensor Cores</h2><p>Matrix-Matrix multiplication (BLAS GEMM) operations are at the core of neural network training and inferencing, and are used to multiply large matrices of input data and weights in the connected layers of the network.<br>矩阵乘操作是神经网络训练和推理的核心，被用于做输入数据和对应权重矩阵的乘法。<br>BLAS: Basic Linear Algebra Subprograms 基本线性代数子程序<br>GEMM: General Matrix Multiplication 通用矩阵乘法</p>
-<p>Each Tensor Core provides a 4x4x4 matrix processing array which performs the operation $\textbf{D} = \textbf{A} \times \textbf{B} + \textbf{C}$, where $\textbf{A}$, $\textbf{B}$, $\textbf{C}$, and $\textbf{D}$ are 4×4 matrices as shown below. The matrix multiply inputs $\textbf{A}$ and $\textbf{B}$ are FP16 matrices, while the accumulation matrices $\textbf{C}$ and $\textbf{D}$ may be FP16 or FP32 matrices.<br>每个Tensor Core提供一个4x4x4的矩阵处理阵列，分别包括ABCD四个4x4的矩阵，乘法矩阵AB是FP16的，而加法矩阵CD可以是FP16也可以是FP32。</p>
+<p>Each Tensor Core provides a 4x4x4 matrix processing array which performs the operation $\textbf{D} = \textbf{A} \times \textbf{B} + \textbf{C}$, where $\textbf{A}$, $\textbf{B}$, $\textbf{C}$, and $\textbf{D}$ are 4×4 matrices as shown below. The matrix multiply inputs $\textbf{A}$ and $\textbf{B}$ are FP16 matrices, while the accumulation matrices $\textbf{C}$ and $\textbf{D}$ may be FP16 or FP32 matrices.<br>每个Tensor Core提供一个4x4x4的矩阵处理阵列，分别包括ABCD四个4x4的矩阵，乘法矩阵AB是FP16（半精度half类型）的，而加法矩阵CD可以是FP16也可以是FP32。</p>
 <center><img src="/2022/02/20/cuda-4/Tensor%20Core%204x4x4%20matrix%20multiply%20and%20accumulate.png" width="100%" height="100%"><font color="#708090" size="2">Tensor Core 4x4x4 matrix multiply and accumulate.</font></center>
 
-<p>Each Tensor Core performs 64 floating point FMA mixed-precision operations per clock.<br>FMA: Fused Multiply Add/Accumulate 融合乘加<br>4x4 矩阵乘$\textbf{A} \times \textbf{B}$，一共做 4x4x4 = 64次乘法，4x4x3 = 48次加法。结果矩阵加一个 4x4 矩阵$\textbf{C}$。整个计算一共64次乘，64次加，因此为64 FMA operations。<br>D00 = A00<em>B00 + C00 FMA<br>D00 = A01</em>B10 + D00 FMA<br>D00 = A02<em>B20 + D00 FMA<br>D00 = A03</em>B30 + D00 FMA<br>结果矩阵$\textbf{D}$中一个数对应4次FMA。</p>
-<p>During program execution, multiple Tensor Cores are used concurrently by a full warp of execution. The threads within a warp provide a larger 16x16x16 matrix operation to be processed by the Tensor Cores. CUDA exposes these operations as Warp-Level Matrix Operations in the CUDA C++ API. These C++ interfaces provide specialized matrix load, matrix multiply and accumulate, and matrix store operations to efficiently utilize Tensor Cores in CUDA C++ programs.<br>多个Tensor cores被一个完整的warp同时使用，为Warp-Level Matrix Operations，包括matrix load, matrix multiply and accumulate, and matrix store operations。</p>
+<p>Each Tensor Core performs 64 floating point FMA mixed-precision operations per clock.<br>FMA: Fused Multiply Add/Accumulate 融合乘加<br>4x4 矩阵乘$\textbf{A} \times \textbf{B}$，一共做 4x4x4 = 64次乘法，4x4x3 = 48次加法。结果矩阵加一个 4x4 矩阵$\textbf{C}$。整个计算一共64次乘，64次加，因此为64 FMA operations。<br>D00 = A00*B00 + C00 FMA<br>D00 = A01*B10 + D00 FMA<br>D00 = A02*B20 + D00 FMA<br>D00 = A03*B30 + D00 FMA<br>结果矩阵$\textbf{D}$中一个数对应4次FMA。</p>
+<p>During program execution, multiple Tensor Cores are used concurrently by a full warp of execution. The threads within a warp provide a larger 16x16x16 matrix operation to be processed by the Tensor Cores. CUDA exposes these operations as Warp-Level Matrix Operations in the CUDA C++ API. These C++ interfaces provide specialized matrix load, matrix multiply and accumulate, and matrix store operations to efficiently utilize Tensor Cores in CUDA C++ programs.<br>多个Tensor cores被一个完整的warp同时使用，为Warp-Level Matrix Operations，包括matrix load, matrix multiply and accumulate, and matrix store operations。<br>一个Tensor Core可以提供一个<strong>4x4x4</strong>的矩阵操作，一个warp可使用多个Tensor Cores，从而提供一个<strong>16x16x16</strong>的矩阵操作，为warp级别的操作。</p>
 <p>In addition to CUDA C++ interfaces to program Tensor Cores directly, CUDA 9 cuBLAS and cuDNN libraries include new library interfaces to make use of Tensor Cores for deep learning applications and frameworks.<br>除了CUDA C++之外，CUDA 9.0中的cuBLAS与cuDNN库也提供了调用Tensor core的接口。</p>
 <p>从Volta开始，L1 data cache与shared mem合并为一块内存。共享128 KB/SM的内存空间。<br>The new combined L1 data cache and shared memory subsystem of the Volta SM significantly improves performance while also simplifying programming and reducing the tuning required to attain at or near-peak application performance.<br>这样做在提升了程序性能的同时，简化了编程，也减少了达到峰值性能所需的调优。<br>narrows the gap between applications that are manually tuned to keep data in shared memory and those that access data in device memory directly.<br>由于现在L1与shared mem实际为一块内存，具有相同的特性，因此也缩小了人为使用shared mem优化程序与直接访问device mem的程序性能差距。<br>allow L1 cache operations to attain the benefits of shared memory performance. Shared memory provides high bandwidth and low latency, but the CUDA programmer needs to explicitly manage this memory. Volta narrows the gap between applications that explicitly manage shared memory and those that access data in device memory directly.<br>Shared mem带宽高延迟低，但需要人为控制。因此合并L1与shared mem可以使得L1 cache获得shared mem的特性，从而缩小直接访问device mem与人为使用shared mem的性能差距，简化编程。</p>
 <h2 id="Independent-Thread-Scheduling"><a href="#Independent-Thread-Scheduling" class="headerlink" title="Independent Thread Scheduling"></a>Independent Thread Scheduling</h2><p>Volta GV100 is the first GPU to support independent thread scheduling, which enables finer-grain synchronization and cooperation between parallel threads in a program.<br>Volta GV100是首个支持独立线程调度的GPU。</p>
@@ -380,14 +380,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>

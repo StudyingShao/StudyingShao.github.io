@@ -151,6 +151,184 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/23/Git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/23/Git/" class="post-title-link" itemprop="url">Git</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-23 18:16:26 / Modified: 20:13:43" itemprop="dateCreated datePublished" datetime="2022-06-23T18:16:26+08:00">2022-06-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="Git用户名和邮箱的配置"><a href="#Git用户名和邮箱的配置" class="headerlink" title="Git用户名和邮箱的配置"></a>Git用户名和邮箱的配置</h2><p>安装Git之后首先配置用户名和邮箱</p>
+<blockquote>
+<p>git config —global user.name “XXX”<br>git config —global user.email XXX</p>
+</blockquote>
+<p>—global表示全局设置，所有本地Git库使用相同的设置，如果希望在不同的项目中使用不同的配置，可在项目中配置并去掉—global符号。</p>
+<blockquote>
+<p>git config —list</p>
+</blockquote>
+<p>用于查看本地Git配置</p>
+<h2 id="Git基本理论"><a href="#Git基本理论" class="headerlink" title="Git基本理论"></a>Git基本理论</h2><p>Git有三个本地工作区域：<br>1、工作目录（Working Directory）<br>2、暂存区（Stage/Index）<em>实际上是一个文件</em><br>3、资源库（Repository/Git Directory）<br>还有一个远程Git仓库（Remote Directory）<br>一共<strong>四个工作区域</strong></p>
+<center><img src="/2022/06/23/Git/1.png" width="50%" height="50%"></center>
+<center><font color="#708090" size="2">Two types of LDGSTS: access and bypass.</font></center>
+
+<h3 id="提交改动"><a href="#提交改动" class="headerlink" title="提交改动"></a>提交改动</h3><p>1、在工作目录下，使用git add命令，将改动提交到暂存区，此时并未永久保存。<br>2、此时使用git commit命令，将暂存区的改动永久提交到本地仓库<br>3、使用git push命令，将本地仓库的改动提交到远程仓库</p>
+<h3 id="从远程仓库获取"><a href="#从远程仓库获取" class="headerlink" title="从远程仓库获取"></a>从远程仓库获取</h3><p>1、使用git pull命令</p>
+<h3 id="从本地仓库回滚"><a href="#从本地仓库回滚" class="headerlink" title="从本地仓库回滚"></a>从本地仓库回滚</h3><p>1、使用git reset命令，此命令从本地仓库将之前保存的版本回滚到暂存区</p>
+<h3 id="从暂存区回滚到工作目录"><a href="#从暂存区回滚到工作目录" class="headerlink" title="从暂存区回滚到工作目录"></a>从暂存区回滚到工作目录</h3><p>1、使用git checkout命令，将暂存区中未提交的版本回滚到本地目录中</p>
+<blockquote>
+<ul>
+<li><strong>Workspace</strong>：工作区，就是你平时存放<strong>项目代码</strong>的地方</li>
+<li><strong>Index / Stage</strong>：暂存区，用于临时存放你的改动，事实上它<strong>只是一个文件</strong>，保存即将提交到文件列表信息</li>
+<li><strong>Repository</strong>：仓库区（或本地仓库），就是<strong>安全存放数据</strong>的位置，这里面有你提交到所有版本的数据。其中<strong>HEAD指向最新放入仓库的版本</strong></li>
+<li><strong>Remote</strong>：远程仓库，<strong>托管代码的服务器</strong>，可以简单的认为是你项目组中的一台电脑用于远程数据交换</li>
+</ul>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/07/PC-Problem-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/07/PC-Problem-2/" class="post-title-link" itemprop="url">Word中Mathtype公式变形问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-07 21:10:16" itemprop="dateCreated datePublished" datetime="2022-04-07T21:10:16+08:00">2022-04-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-20 15:05:09" itemprop="dateModified" datetime="2022-04-20T15:05:09+08:00">2022-04-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87%E5%A4%84%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">计算机疑难杂症处理</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Word中Mathtype公式变形问题"><a href="#Word中Mathtype公式变形问题" class="headerlink" title="Word中Mathtype公式变形问题"></a>Word中Mathtype公式变形问题</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_34146849/article/details/116099673">关于word中插入的mathtype公式变形问题的解决方案</a></p>
+<h2 id="单个公式解决方案"><a href="#单个公式解决方案" class="headerlink" title="单个公式解决方案"></a>单个公式解决方案</h2><ol>
+<li>选中公式，右键，图片</li>
+<li>大小选项卡，缩放，高度宽度设置为100 %，点击下方重新设置</li>
+</ol>
+<h2 id="批量解决方案"><a href="#批量解决方案" class="headerlink" title="批量解决方案"></a>批量解决方案</h2><ol>
+<li>文件，选项，自定义功能区，启用开发工具</li>
+<li>开发工具，Visual Basic，对应Project中右键，插入模块</li>
+<li>添加代码<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Sub</span> ResizeEquations()</span><br><span class="line">    <span class="keyword">For</span> <span class="keyword">Each</span> Field <span class="keyword">In</span> ActiveDocument.Fields</span><br><span class="line">        <span class="keyword">If</span> Trim(Field.Code) = <span class="string">&quot;EMBED Equation.DSMT4&quot;</span> <span class="keyword">Then</span></span><br><span class="line">            <span class="keyword">With</span> Field.InlineShape</span><br><span class="line">                .LockAspectRatio = msoFalse</span><br><span class="line">                .ScaleWidth = <span class="number">100</span></span><br><span class="line">                .ScaleHeight = <span class="number">100</span></span><br><span class="line">            <span class="keyword">End</span> <span class="keyword">With</span></span><br><span class="line">        <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line">    <span class="keyword">Next</span> Field</span><br><span class="line">    MsgBox (<span class="string">&quot;完成&quot;</span>) <span class="comment">&#x27;操作完成的提示框</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br></pre></td></tr></table></figure></li>
+<li>保存，另存为启用宏的文档</li>
+<li>开发工具，宏，ResizeEquations，运行</li>
+</ol>
+<h2 id="Word里有设置的域，有些内容进行了手动修改，导出PDF后自动更新的解决方法"><a href="#Word里有设置的域，有些内容进行了手动修改，导出PDF后自动更新的解决方法" class="headerlink" title="Word里有设置的域，有些内容进行了手动修改，导出PDF后自动更新的解决方法"></a>Word里有设置的域，有些内容进行了手动修改，导出PDF后自动更新的解决方法</h2><p>Crtl+A  全选<br>Crtl+F11  锁定域<br>再导出PDF就不会自动更新了，点右键更新域也变成了灰色。<br>Ctrl + Shift + F11  解除锁定</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/PC-Problem-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -174,10 +352,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-03-01 14:26:03 / Modified: 17:12:40" itemprop="dateCreated datePublished" datetime="2022-03-01T14:26:03+08:00">2022-03-01</time>
+              <time title="Created: 2022-03-01 14:26:03" itemprop="dateCreated datePublished" datetime="2022-03-01T14:26:03+08:00">2022-03-01</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-06-23 18:58:15" itemprop="dateModified" datetime="2022-06-23T18:58:15+08:00">2022-06-23</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -207,8 +391,8 @@
 <p>声音延迟2s的具体原因是Realtek的省电管理出现问题，为了节省电量Realtek在不工作时会自动关闭，导致每次启动Realtek时都需要重新加载，所以说会出现声音延迟1~2s的问题。解决思路是关闭Realtk的省电管理功能。具体解决方法是：</p>
 <ul>
 <li>使用windows+R键调出运行窗口，输入regedit打开注册表编辑器</li>
-<li>按照路径寻找 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\{4d36e96c-e325-11ce-bfc1-08002be10318}\xxxx\PowerSettings</li>
-<li>其中’xxxx’是个四位数字，不同型号的电脑数字可能不一样，在暗影精灵4中’xxxx’即’0001’。验证方法为点击某个’xxxx’，右侧窗口的键值中有DriverDesc，若该DriverDesc的值为 ‘Realtk High Definition Audio’，则此’xxxx’就是我们要找的路径</li>
+<li>按照路径寻找 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\\{4d36e96c-e325-11ce-bfc1-08002be10318}\xxxx\PowerSettings</li>
+<li>其中’xxxx’是个四位数字，不同型号的电脑数字可能不一样，在暗影精灵4 win10系统中’xxxx’即’0000’。验证方法为点击某个’xxxx’，右侧窗口的键值中有DriverDesc，若该DriverDesc的值为 ‘Realtk High Definition Audio’，则此’xxxx’就是我们要找的路径</li>
 <li>找到PowerSettings中的三个二进制值并将它们修改为：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ConservationIdleTime = ff ff ff ff <span class="comment">//电池供电下音频空闲等待时间最大</span></span><br><span class="line">IdlePowerState = <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="comment">//超出空闲等待时间后，设置电源状态为D0（完全）</span></span><br><span class="line">PerformanceIdleTime = ff ff ff ff <span class="comment">//电源供电下音频空闲等待时间最大</span></span><br></pre></td></tr></table></figure>
 这些二进制值的默认值都是 00 00 00 00，有些其他的声卡驱动可能是0a 00 00 00</li>
 <li><strong>重启电脑生效</strong>（重启资源管理器不行，必须重启电脑）</li>
@@ -286,7 +470,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-01 17:11:58" itemprop="dateModified" datetime="2022-03-01T17:11:58+08:00">2022-03-01</time>
+                <time title="Modified: 2022-03-02 17:01:18" itemprop="dateModified" datetime="2022-03-02T17:01:18+08:00">2022-03-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -309,7 +493,104 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="GAMES101-RayTracing-Part-2"><a href="#GAMES101-RayTracing-Part-2" class="headerlink" title="GAMES101 RayTracing Part 2"></a>GAMES101 RayTracing Part 2</h1>
+          <h1 id="GAMES101-RayTracing-Part-2"><a href="#GAMES101-RayTracing-Part-2" class="headerlink" title="GAMES101 RayTracing Part 2"></a>GAMES101 RayTracing Part 2</h1><h2 id="Using-Axis-Aligned-Bounding-Boxes-AABBs-to-accelerate-ray-tracing"><a href="#Using-Axis-Aligned-Bounding-Boxes-AABBs-to-accelerate-ray-tracing" class="headerlink" title="Using Axis-Aligned Bounding Boxes (AABBs) to accelerate ray tracing"></a>Using Axis-Aligned Bounding Boxes (AABBs) to accelerate ray tracing</h2><h3 id="Uniform-Grids-均匀网格预处理"><a href="#Uniform-Grids-均匀网格预处理" class="headerlink" title="Uniform Grids 均匀网格预处理"></a>Uniform Grids 均匀网格预处理</h3><center><img src="/2022/02/28/GAMES101-RayTracing-2/1.png" width="100%"></center>
+
+<ol>
+<li>找到整个空间的包围盒</li>
+<li>创建均匀网格</li>
+<li>存储所有与空间中物体表面相交的单元</li>
+</ol>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/2.png" width="100%"></center>
+
+<ol>
+<li>从光线进入包围盒的第一个位置开始，逐个cell寻找与光线相交的cell（下一个cell一定是<strong>光线方向上的与当前cell相邻的cell</strong>，对于图中光线来说一定是当前cell的右侧cell或上方cell）</li>
+<li>若当前cell中没有物体则继续下一个cell</li>
+<li>若当前cell中存在物体则判断光线是否与cell中的物体相交</li>
+</ol>
+<p>对于均匀网格来说，cell数目太少不起作用，cell数目太多则用于判断cell与光线相交的计算太多。那么使用经验公式：3D中cell数目 = 场景中物体数目 * 27</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/3.png" width="100%"></center>
+
+<p>这种Uniform Grid方法适用于场景中<strong>存在大量物体</strong>，<strong>且物体均匀的分布在空间中</strong>的情况。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/4.png" width="100%"></center>
+
+<h3 id="Spatial-Partitions-空间划分"><a href="#Spatial-Partitions-空间划分" class="headerlink" title="Spatial Partitions 空间划分"></a>Spatial Partitions 空间划分</h3><p>用于弥补uniform grids方法在物体空间分布稀疏情况下的不足。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/5.png" width="100%"></center>
+
+<p><strong>八叉树</strong>：每个cell均匀分裂成8个子cell in 3D、4个子cell in 2D（对应树结构每个父节点具有8/4个子节点）<br><strong>KD树</strong>：每个cell沿着某一个轴切分为2个子cell（对应结构为二叉树），每次切分方向都在三个轴之间切换，保证切分空间的匀称性，使子cell接近立方体。<br><strong>BSP树</strong>：每次选一个特殊方向切分空间。由于axis-aligned有便于计算的特性，因此主要使用KD树。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/6.png" width="100%"></center>
+
+<p><strong>KD-Tree 空间划分示意</strong><br>示例原因每次仅切分两个子节点中的一个，而实际情况下每个子节点都要进行切分，除非遇到递归基（满足一定条件无需继续切分）。</p>
+<p><strong>Data Structure for KD-Trees</strong><br>Internal nodes store 内部节点</p>
+<ul>
+<li>split axis: x-, y-, or z-axis 切分方向每次在三个轴之间切换</li>
+<li>split position: coordinate of split plane along axis 切分位置没有固定要求，一般沿着中间切分</li>
+<li>children: pointers to child nodes 每个中间节点具有指向两个子节点的指针</li>
+<li>No objects are stored in internal nodes 中间节点不存储场景中的物体信息<br>Leaf nodes store 叶节点（没有子节点）</li>
+<li>list of objects 存储对应区域所包含的场景中的物体信息</li>
+</ul>
+<p><strong>KD-Tree查找交点示意</strong></p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/7.png" width="100%"></center>
+
+<p>假设最终生成的KD-Tree就如图所示，对123节点并不继续划分，彩色的都是叶节点，对应图中一块区域。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/8.png" width="100%"></center>
+
+<p>首先判断光线是否与根节点所对应的整个场景的最大的包围盒相交。如果相交那么遍历它的两个子节点，首先到节点1。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/9.png" width="100%"></center>
+
+<p>首先判断是否与节点1所围成的<strong>包围盒相交</strong>，是则由于1是叶节点，那么遍历1中包含的所有物体，判断光线是否与<strong>物体相交</strong>。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/10.png" width="100%"></center>
+
+<p>发现节点1中并无交点，转而判断节点B，发现与B的包围盒相交。而B是内部节点，那么继续判断B的子节点2。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/11.png" width="100%"></center>
+
+<p>与节点2所围成的包围盒求交发现有交点，而节点2是一个叶节点，转而与节点2中包含的所有物体求交。发现没有，转而判断B的两一个子节点C。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/12.png" width="100%"></center>
+
+<p>发现与C的包围盒有交点，继续判断C的子节点。由于子节点间并没有严格顺序。这里转而判断节点3。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/13.png" width="100%"></center>
+
+<p>与3的包围盒求交-&gt;有交点。<br>3为叶节点-&gt;与3中所有物体求交-&gt;有交点-&gt;记录交点对应的 t_hit。<br><strong>此时转而判断C的另一个子节点D</strong>，再继续这个过程，找到所有的交点对应的 t_hit，永远记录一个为正的最小的 t，即为真实交点对应的 t。</p>
+<center><img src="/2022/02/28/GAMES101-RayTracing-2/14.png" width="100%"></center>
+
+<p>KD-Tree两个缺点：</p>
+<ol>
+<li>实际物体为三角形网格，很难判断一个三角形是否处于一个节点所对应的包围盒中。</li>
+<li>同一个物体可能横跨了多个包围盒，被多个节点所记录。</li>
+</ol>
+<h3 id="Object-Partitions-物体划分-gt-Bounding-Volume-Hierarchy-BVH"><a href="#Object-Partitions-物体划分-gt-Bounding-Volume-Hierarchy-BVH" class="headerlink" title="Object Partitions 物体划分 -&gt; Bounding Volume Hierarchy (BVH)"></a>Object Partitions 物体划分 -&gt; Bounding Volume Hierarchy (BVH)</h3><p>把物体分为两堆（一个节点两个子节点），并重新计算这两堆物体的包围盒。</p>
+<center>
+<img src="/2022/02/28/GAMES101-RayTracing-2/15-1.png" width="100%">
+<img src="/2022/02/28/GAMES101-RayTracing-2/15-2.png" width="100%">
+<img src="/2022/02/28/GAMES101-RayTracing-2/15-3.png" width="100%">
+<img src="/2022/02/28/GAMES101-RayTracing-2/15-4.png" width="100%">
+</center>
+
+<blockquote>
+<p><strong>优点</strong>：</p>
+<ol>
+<li>场景中每个object只存储于一个叶节点中，不会被多个叶节点同时存储。</li>
+<li>避免了KD-Tree中对子节点包围盒中所包含object的计算，直接利用分类后堆中的所有object求其包围盒。</li>
+</ol>
+</blockquote>
+<p><strong>KD-Tree是对空间的划分</strong>，之后再把objects归类到相应的区域中。<strong>而BVH是对物体进行划分</strong>。</p>
+<blockquote>
+<p><strong>如何切分节点（将一堆objects划分为两堆）？</strong></p>
+</blockquote>
+<p>How to subdivide a node?</p>
+<ul>
+<li>Choose a dimension to split</li>
+<li>Heuristic #1: Always choose the longest axis in node<br>选择节点最长的一个轴进行切分（空间切分），好处是切分之后两个子节点空间大小均匀。</li>
+<li>Heuristic #2: Split node at location of median object<br>选择中间的物体进行切分（物体个数划分），好处是划分之后，两个子节点物体个数均匀，从而形成的二叉树较为平衡（二叉树深度较小，有利于缩短查找时间）。</li>
+</ul>
+<blockquote>
+<p>选择物体进行切分时，需要找到第K个物体（Top K 问题），传统方法是对所有物体进行排序，时间复杂度O(nlogn)。而实际无需对所有节点都排序。<br><strong>基于快速排序的思维实现</strong>，时间复杂度为o(n)：</p>
+<ol>
+<li>选一个枢轴点（主元），用快排的方法将数组分为两部分，位于枢轴点左边的数都比它大，位于枢轴点右边的数都比它小。</li>
+<li>划分后查看枢轴点索引值。如果恰好为k-1，则枢轴点即为第k大的数；否则若索引比k-1大，说明第k大的数位于左边部分；否则位于右边部分。</li>
+<li>递归地再在左或右某一部分中选取一个主元，进行下一次划分。</li>
+</ol>
+</blockquote>
+
       
     </div>
 
@@ -1028,84 +1309,15 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-02-23 21:41:50 / Modified: 22:04:22" itemprop="dateCreated datePublished" datetime="2022-02-23T21:41:50+08:00">2022-02-23</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">CUDA学习随记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CUDA学习随记6-Asynchronous-Barrier"><a href="#CUDA学习随记6-Asynchronous-Barrier" class="headerlink" title="CUDA学习随记6 Asynchronous Barrier"></a>CUDA学习随记6 Asynchronous Barrier</h1><p><a target="_blank" rel="noopener" href="https://singvision.net/2015/01/06/cuda-%e8%bd%af%e4%bb%b6%e6%8a%bd%e8%b1%a1%e7%9a%84%e5%b9%bb%e5%bd%b1%e8%83%8c%e5%90%8e/">CUDA, 软件抽象的幻影背后</a><br><a target="_blank" rel="noopener" href="https://singvision.net/2015/01/08/cuda-%e8%bd%af%e4%bb%b6%e6%8a%bd%e8%b1%a1%e7%9a%84%e5%b9%bb%e5%bd%b1%e8%83%8c%e5%90%8e-%e4%b9%8b%e4%ba%8c/">CUDA, 软件抽象的幻影背后 之二</a><br><a target="_blank" rel="noopener" href="https://singvision.net/2015/01/13/cuda-%e8%bd%af%e4%bb%b6%e6%8a%bd%e8%b1%a1%e7%9a%84%e5%b9%bb%e5%bd%b1%e8%83%8c%e5%90%8e-%e4%b9%8b%e4%b8%89/">CUDA, 软件抽象的幻影背后 之三</a></p>
-<p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#aw-barrier">CUDA C++ Programming Guide: B.25. Asynchronous Barrier</a><br><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#parallel-synchronization-and-communication-instructions-mbarrier">PTX ISA: 9.7.12.11. Parallel Synchronization and Communication Instructions: mbarrier</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/22/cuda-5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jiang Shao">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邵大宝的学习Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/22/cuda-5/" class="post-title-link" itemprop="url">CUDA学习随记5 Asynchronous copy cp.async</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-22 21:51:12" itemprop="dateCreated datePublished" datetime="2022-02-22T21:51:12+08:00">2022-02-22</time>
+              <time title="Created: 2022-02-23 21:41:50" itemprop="dateCreated datePublished" datetime="2022-02-23T21:41:50+08:00">2022-02-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-23 20:47:52" itemprop="dateModified" datetime="2022-02-23T20:47:52+08:00">2022-02-23</time>
+                <time title="Modified: 2022-06-28 21:13:45" itemprop="dateModified" datetime="2022-06-28T21:13:45+08:00">2022-06-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1128,195 +1340,73 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="CUDA学习随记5-Asynchronous-copy-cp-async"><a href="#CUDA学习随记5-Asynchronous-copy-cp-async" class="headerlink" title="CUDA学习随记5 Asynchronous copy cp.async"></a>CUDA学习随记5 Asynchronous copy cp.async</h1><p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#data-movement-and-conversion-instructions-asynchronous-copy">1. PTX (Parallel Thread Execution) ISA (Instruction Set Architecture)</a><br><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-binary-utilities/index.html">2. CUDA Binary Utilities (用于查询SASS code)</a></p>
-<p>An asynchronous copy operation copies data from one state space to another asynchronously without blocking the executing thread.<br>Initiation of an asynchronous copy operation simply dispatches the copy operation from the source memory location to the destination memory location.<br>异步拷贝，不阻塞线程，仅发起一个异步拷贝请求。</p>
-<p>There are two ways to wait for the completion of an asynchronous copy operation:<br>两种方式等待异步拷贝操作完成：</p>
-<ol>
-<li>使用<strong>cp.async-groups</strong><br>a. Initiate asynchronous copy operations.<br>b. Commit copy operations into a cp.async-group. cp.async.commit_group<br>c. Wait for cp.async-group to complete the copy. cp.async.wait_group<br>d. Once the cp.async-group completes, the writes performed by the copy operation in that cp.async-group are made visible to the thread that initiated the copy operations.</li>
-<li>使用<strong>mbarrier</strong>对象<br>a. Initiate asynchronous copy operations.<br>b. Make an mbarrier object track the asynchronous copy operations.<br>c. Wait for the mbarrier object to complete the phase using mbarrier.test_wait.<br>d. Once mbarrier.test_wait returns True, the writes performed by the copy operation are made visible to all the threads which waited on the mbarrier object.</li>
+          <h1 id="CUDA学习随记6-std-memory-order-amp-B-25-Asynchronous-Barrier"><a href="#CUDA学习随记6-std-memory-order-amp-B-25-Asynchronous-Barrier" class="headerlink" title="CUDA学习随记6  std::memory_order &amp; B.25. Asynchronous Barrier"></a>CUDA学习随记6  std::memory_order &amp; B.25. Asynchronous Barrier</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://singvision.net/2015/01/06/cuda-%e8%bd%af%e4%bb%b6%e6%8a%bd%e8%b1%a1%e7%9a%84%e5%b9%bb%e5%bd%b1%e8%83%8c%e5%90%8e/">CUDA, 软件抽象的幻影背后</a></li>
+<li><a target="_blank" rel="noopener" href="https://singvision.net/2015/01/08/cuda-%e8%bd%af%e4%bb%b6%e6%8a%bd%e8%b1%a1%e7%9a%84%e5%b9%bb%e5%bd%b1%e8%83%8c%e5%90%8e-%e4%b9%8b%e4%ba%8c/">CUDA, 软件抽象的幻影背后 之二</a></li>
+<li><p><a target="_blank" rel="noopener" href="https://singvision.net/2015/01/13/cuda-%e8%bd%af%e4%bb%b6%e6%8a%bd%e8%b1%a1%e7%9a%84%e5%b9%bb%e5%bd%b1%e8%83%8c%e5%90%8e-%e4%b9%8b%e4%b8%89/">CUDA, 软件抽象的幻影背后 之三</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#aw-barrier">CUDA C++ Programming Guide: B.25. Asynchronous Barrier</a></p>
+</li>
+<li><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#parallel-synchronization-and-communication-instructions-mbarrier">PTX ISA: 9.7.12.11. Parallel Synchronization and Communication Instructions: mbarrier</a></li>
 </ol>
-<p>A sequence of asynchronous copy operations initiated by a thread can be batched into a per-thread group referred to as cp.async-group.<br>由单个线程发出的一系列异步拷贝操作可以打包为a per-thread group，称为cp.async-group。</p>
-<p>A commit operation creates a cp.async-group containing all prior asynchronous copy operations initiated by the executing thread but none of the asynchronous copy operations following the commit operation. A committed asynchronous copy operation belongs to a single cp.async-group.<br>创建一个cp.async-group将包含所有由本线程发出的之前的异步拷贝操作，不包括之后的。每个异步拷贝操作仅属于一个cp.async-group。<br>由于执行到cp.async-group时，其之前的所有异步拷贝操作均已完成，因此下一个cp.async-group仅包含两条cp.async-group之间的新发出的异步拷贝操作，所以说每个异步拷贝操作仅属于一个cp.async-group。</p>
-<p>When a cp.async-group completes, all the asynchronous copy operations belonging in that group are complete and the executing thread that initiated copy operations can read copied results. All cp.async-groups committed by an executing thread always complete in the order in which they were committed. There is no ordering between asynchronous copy operations within a cp.async-group.<br>当cp.async-group完成时，其所包含的所有异步拷贝操作均已完成，发出异步拷贝请求的线程（也就是当前线程）可以安全读取拷贝结果。线程发射的cp.async-groups永远按照顺序完成，而cp.async-group中包含的异步拷贝操作的执行顺序是随机的。</p>
-<p>Writes performed by an asynchronous copy operation are visible to the thread that initiated the asynchronous copy operation only after the cp.async-group completes or mbarrier object tracking the asynchronous copy has completed the phase.<br>仅当cp.async-group完成 or mbarrier追踪到异步拷贝完成，当前线程才能安全读取由当前线程发出的异步拷贝操作写入的数据（数据可见）。</p>
-<p>Once an asynchronous copy operation is initaited, modifiying the source memory location or reading from the destination memory location before the asynchronous copy operation completes, will cause unpredictable results.<br>一旦一个异步拷贝操作被发起，不等待异步拷贝操作完成就 修改源内存地址中的数据 or 就读取目标内存地址中的数据，将会产生unpredictable results。</p>
-<h4 id="cp-async"><a href="#cp-async" class="headerlink" title="cp.async"></a>cp.async</h4><p>Initiates an asynchronous copy operation from one state space to another.<br>发起一个异步拷贝操作。<br>Operand src specifies a location in the global state space and dst specifies a location in the shared state space.<br>异步拷贝只能是从global mem拷贝到shared mem。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cp.async.ca.shared.global&#123;.level::cache_hint&#125;&#123;.level::prefetch_size&#125;</span><br><span class="line">                         [dst], [src], cp-size&#123;, src-size&#125;&#123;, cache-policy&#125; ;</span><br><span class="line">cp.async.cg.shared.global&#123;.level::cache_hint&#125;&#123;.level::prefetch_size&#125;</span><br><span class="line">                         [dst], [src], <span class="number">16</span>&#123;, src-size&#125;&#123;, cache-policy&#125; ;</span><br><span class="line">cp.async.ca.shared.global&#123;.level::cache_hint&#125;&#123;.level::prefetch_size&#125;</span><br><span class="line">                         [dst], [src], cp-size&#123;, ignore-src&#125;&#123;, cache-policy&#125; ;</span><br><span class="line">cp.async.cg.shared.global&#123;.level::cache_hint&#125;&#123;.level::prefetch_size&#125;</span><br><span class="line">                         [dst], [src], <span class="number">16</span>&#123;, ignore-src&#125;&#123;, cache-policy&#125; ;</span><br></pre></td></tr></table></figure><br>The <strong>.cg</strong> qualifier indicates caching of data only at global level cache L2 and not at L1 whereas <strong>.ca</strong> qualifier indicates caching of data at all levels including L1 cache. Cache operator are treated as performance hints only.<br><strong>.cg</strong>表示仅用L2 cache，数据传输绕过L1 cache与register。对应LDGSTS.BYPASS。<br><strong>.ca</strong>表示同时使用L1 cache与L2 cache，数据传输仅绕过register。对应LDGSTS.ACCESS。<br>这俩标识符只是对编译器的建议，具体用不用要看编译器的意思。实际上具体使用哪种取决于传输数据的大小与对齐方式。4 Bytes-&gt;access，16 Bytes-&gt;bypass。</p>
-<p>Operand cp-size is an integer constant which specifies the size of data in bytes to be copied to the destination dst. cp-size can only be 4, 8 and 16.<br>cp-size指定了传输数据的大小（in bytes），可以是4、8、16，可以看到cp-size最小是4，而.cg指令cp-size直接指定为16，正好符合上面的说法。</p>
-<center><img src="/2022/02/22/cuda-5/LDGSTS%20access%20and%20bypass.png" width="100%" height="100%"><font color="#708090" size="2">Two types of LDGSTS: access and bypass.</font></center>
-
-<p>Instruction cp.async allows optionally specifying a 32-bit integer operand <strong>src-size</strong>. Operand src-size represents the size of the data in bytes to be copied from src to dst and must be less than <strong>cp-size</strong>. In such case, remaining bytes in destination dst are filled with zeros. Specifying src-size larger than cp-size results in undefined behavior.<br>src-size，指定拷贝源数据大小，必须比cp-size小，否则undefined behavior。很简答，如果比cp-size大，则拷贝数据不完整，再读取肯定不对。cp-size比src-size多出来的部份在dst中会被填充0。</p>
-<p>The optional and non-immediate predicate argument <strong>ignore-src</strong> specifies whether the data from the source location src should be ignored completely. If the source data is ignored then zeros will be copied to destination dst. If the argument ignore-src is not specified then it defaults to False.<br>指定是否忽略scr中的数据，如果置为true，则向dst中拷贝0。默认为false。</p>
-<p>The mandatory(强制的) <strong>.async</strong> qualifier indicates that the cp instruction will <strong>initiate the memory copy operation asynchronously</strong> and <strong>control will return to the executing thread before the copy operation is complete</strong>. The executing thread can then use <strong>cp.async.wait_all</strong> or <strong>cp.async.wait_group</strong> or <strong>mbarrier instructions</strong> to wait for completion of the asynchronous copy operation. No other synchronization mechanisms described in Memory Consistency Model can be used to guarantee the completion of the asynchronous copy operations.<br>三种用来同步异步数据传输操作的方法：<br><strong>cp.async.wait_all</strong> or <strong>cp.async.wait_group</strong> or <strong>mbarrier instructions</strong></p>
-<p>There is no ordering guarantee between two cp.async operations if they are not explicitly synchronized using cp.async.wait_all or cp.async.wait_group or mbarrier instructions.<br>如果没有显式同步，两个cp.async之间没有顺序保证。</p>
-<p>The <strong>.level::prefetch_size</strong> qualifier is a hint to <strong>fetch additional data of the specified size into the respective cache level</strong>.The sub-qualifier prefetch_size can be set to either of 64B, 128B, 256B thereby allowing the prefetch size to be 64 Bytes, 128 Bytes or 256 Bytes respectively.</p>
-<p>The qualifier .level::prefetch_size may only be used with .global state space and with generic addressing where the address points to .global state space. If the generic address does not fall within the address window of the global memory, then the prefetching behavior is undefined.</p>
-<p>The .level::prefetch_size qualifier is treated as a performance hint only.</p>
-<p>When the optional argument <strong>cache-policy</strong> is specified, the qualifier <strong>.level::cache_hint</strong> is required. The 64-bit operand cache-policy specifies <strong>the cache eviction policy</strong> that may be used during the memory access.</p>
-<p>The qualifier .level::cache_hint is only supported for .global state space and for generic addressing where the address points to the .global state space.</p>
-<p>cache-policy is a hint to the cache subsystem and may not always be respected. It is treated as a performance hint only, and does not change the memory consistency behavior of the program.</p>
-<p>.level::prefetch_size与.level::cache_hint都是与缓存相关的qualifier。都是hints to the compiler，并不一定被编译器所采纳。由于是缓存相关的，所以操作对象地址必须在global memory中，否则会导致undefined behavior.<br>.level::prefetch_size用于在缓存中除了要拷贝的数据之外，额外fetch一定大小的数据到对应cache中，用于增加缓存命中率，减少从device memory中读取数据的次数。<br>.level::cache_hint用于cache-policy指定时，用于指定缓存清除策略，如何使用缓存。</p>
-<h4 id="cp-async-commit-group"><a href="#cp-async-commit-group" class="headerlink" title="cp.async.commit_group"></a>cp.async.commit_group</h4><p>Commits all prior initiated but uncommitted cp.async instructions into a cp.async-group.<br>将之前的未被commit的cp.async commit到一个cp.async-group。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp.async.commit_group;</span><br></pre></td></tr></table></figure>
-<p>这条PTX code所产生的SASS code就是<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LDGDEPBAR <span class="comment">//Global Load Dependency Barrier</span></span><br></pre></td></tr></table></figure><br>会导致一个很大的stall long scoreboard。</p>
-<p><strong>cp.async.commit_group</strong> instruction creates a new cp.async-group <strong>per thread</strong> and batches all prior cp.async instructions <strong>initiated by the executing thread but not committed to any cp.async-group</strong> into the new cp.async-group. If there are no uncommitted cp.async instructions then cp.async.commit_group results in an empty cp.async-group.</p>
-<p>An executing thread can wait for the completion of all cp.async operations in a cp.async-group using cp.async.wait_group.</p>
-<p>There is no memory ordering guarantee provided between any two cp.async operations within the same cp.async-group. So two or more cp.async operations within a cp.async-group copying data to the same location results in undefined behavior.<br>在同一个cp.async-group中的cp.async没有顺序保证，因此在同一cp.async-group中对同一地址的cp.async会导致undefined behavior。</p>
-<h4 id="cp-async-wait-group-cp-async-wait-all"><a href="#cp-async-wait-group-cp-async-wait-all" class="headerlink" title="cp.async.wait_group/cp.async.wait_all"></a>cp.async.wait_group/cp.async.wait_all</h4><p>Wait for completion of prior asynchronous copy operations.<br>等待先前的异步拷贝操作完成。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp.async.wait_group N;</span><br><span class="line">cp.async.wait_all;</span><br></pre></td></tr></table></figure>
-<p><strong>cp.async.wait_group</strong> instruction will cause executing thread to wait till <strong>only N or fewer of the most recent cp.async-groups are pending</strong> and <strong>all the prior cp.async-groups committed by the executing threads are complete</strong>. For example, when N is 0, the executing thread waits on all the prior cp.async-groups to complete. Operand N is an integer constant.</p>
-<p>cp.async.wait_all;等待execution thread先前的所有cp.async都完成。也就是等价于commit一个cp.async-group然后马上等待所有先前的cp.async-group完成。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp.async.commit_group; <span class="comment">//将仍未被commit的cp.async commit到一个cp.async-group中</span></span><br><span class="line">cp.async.wait_group <span class="number">0</span>; <span class="comment">//等待所有先前的cp.async-group完成</span></span><br></pre></td></tr></table></figure></p>
-<p>如果N为0，那么这条PTX code所产生的SASS code就是<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DEPBAR.LE SB0, <span class="number">0x0</span> ;</span><br></pre></td></tr></table></figure><br>DEPBAR的作用是等某个Scoreboard的计数不为0的情况（比如DEPBAR.LE SB5, 0x6 ;表示stall直至第5个Scoreboard的值降到6或以下）</p>
-<p>SB指的就是scoreboard，由于是。记录cp.async-group的数量（一个counter）与每个cp.async-group所对应的cp.async (LDGSTS)的数量。每次一个cp.async-group完成，counter - 1。counter的数量刚好对应N的值。<br>N标明等待只有N或更少个cp.async-group未完成才继续。如果是0，那么就是等待只有0个未完成，代表等待所有的cp.async-group完成。由于cp.async-group是保持发射顺序的，因此N等待的永远是倒数的N个cp.async-group，就是最近发射的。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Example of .wait_all:</span></span><br><span class="line">cp.async.ca.shared.global [shrd1], [gbl1], <span class="number">4</span>;</span><br><span class="line">cp.async.cg.shared.global [shrd2], [gbl2], <span class="number">16</span>;</span><br><span class="line">cp.async.wait_all;  <span class="comment">// waits for all prior cp.async to complete</span></span><br></pre></td></tr></table></figure>
-<p>cp.async.wait_all等待前面所有的cp.async完成。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Example of .wait_group :</span></span><br><span class="line">cp.async.ca.shared.global [shrd3], [gbl3], <span class="number">8</span>;</span><br><span class="line">cp.async.commit_group;  <span class="comment">// End of group 1</span></span><br><span class="line"></span><br><span class="line">cp.async.cg.shared.global [shrd4], [gbl4], <span class="number">16</span>;</span><br><span class="line">cp.async.commit_group;  <span class="comment">// End of group 2</span></span><br><span class="line"></span><br><span class="line">cp.async.cg.shared.global [shrd5], [gbl5], <span class="number">16</span>;</span><br><span class="line">cp.async.commit_group;  <span class="comment">// End of group 3</span></span><br><span class="line"></span><br><span class="line">cp.async.wait_group <span class="number">1</span>;  <span class="comment">// waits for group 1 and group 2 to complete</span></span><br></pre></td></tr></table></figure>
-<p>cp.async.wait_group 1 允许有一个cp.async-group未完成，按照顺序，此条指令等待group 1 and 2完成。</p>
-<p>Writes performed by cp.async operations are made <strong>visible to the executing thread</strong> only after :</p>
+<p>CUDA Samples里面有好多有意思的代码，多学多看</p>
+<p>6_Advanced/jacobiCudaGraphs<br>0_Simple\cudaTensorCoreGemm</p>
+<blockquote>
+<p><strong>References:</strong></p>
 <ol>
-<li>The completion of cp.async.wait_all or</li>
-<li>The completion of cp.async.wait_group on the cp.async-group in which the cp.async belongs to or</li>
-<li>mbarrier.test_wait returns True on an mbarrier object which is tracking the completion of the cp.async operation.<br>三种情况下，由cp.async写入的数据对当前线程可见。cp.async.wait_all完成了，代表此处之前所有的cp.async都已完成。cp.async所在的cp.async-group完成了，使用cp.async.wait_group实现。追踪此cp.async的mbarrier的mbarrier.test_wait返回true。</li>
+<li><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/atomic/memory_order">C++11 std::memory_order</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#aw-barrier">CUDA C++ Programming Guide: B.25. Asynchronous Barrier</a></li>
 </ol>
-<p>There is no ordering between two cp.async operations that are not synchronized with cp.async.wait_all or cp.async.wait_group or mbarrier objects.</p>
-<p><strong>cp.async.wait_group and cp.async.wait_all does not provide any ordering and visibility guarantees for any other memory operation apart from cp.async.</strong><br>cp.async.wait_group and cp.async.wait_all仅影响cp.async的顺序，其他内存操作与此无关。很容易看出嘛。前缀都是cp.async.*，明显就是这个专用的。这里没说mbarrier，说明这玩应是对所有内存操作都有效的，是同步障碍。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/20/cuda-4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jiang Shao">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邵大宝的学习Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/20/cuda-4/" class="post-title-link" itemprop="url">CUDA学习随记4 Volta’s Independent Thread Scheduling</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-20 20:09:48" itemprop="dateCreated datePublished" datetime="2022-02-20T20:09:48+08:00">2022-02-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-23 16:24:30" itemprop="dateModified" datetime="2022-02-23T16:24:30+08:00">2022-02-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">CUDA学习随记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Volta’s-Independent-Thread-Scheduling"><a href="#Volta’s-Independent-Thread-Scheduling" class="headerlink" title="Volta’s Independent Thread Scheduling"></a>Volta’s Independent Thread Scheduling</h1><p><a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/inside-volta/">Inside Volta: The World’s Most Advanced Data Center GPU</a></p>
-<p>High Performance Computing (HPC) is a fundamental pillar of modern science. From predicting weather, to discovering drugs, to finding new energy sources, researchers use large computing systems to simulate and predict our world. AI extends traditional HPC by allowing researchers to analyze large volumes of data for rapid insights where simulation alone cannot fully predict the real world.<br>高性能计算HPC是现代科学的基本支柱。从天气预测到药物研究，再到获取新能源，研究人员使用大型的计算系统来模拟与预测我们的世界。人工智能AI通过允许研究人员分析大量的数据以便快速获得洞察，拓展了传统的高性能计算，用于仅靠模拟不能完全预测现实世界的情况。<br>Computational Science for scientific simulation.<br>Data Science for finding insights in data.</p>
-<center><img src="/2022/02/20/cuda-4/Volta%20GV100%20architecture.png" width="100%" height="100%"><font color="#708090" size="2">Volta GV100 Full GPU with 84 SM Units.</font></center>
-
-<p><strong>每块 GV100 包含：</strong><br>6 x Graphics Processing Clusters (GPCs)<br>每个GPC包含 7 x Texture Processing Clusters (TPCs)，共 42<br>每个TPC包含 2 x Streaming Multiprocessors (SMs)，共 84<br>8 x 512-bit Memory Controllers(4096 bits total) 用于与显存进行数据交换</p>
-<p><strong>每个 SM 包含：</strong><br>64 FP32 Cores<br>64 INT32 Cores<br>32 FP64 Cores<br><em>8 new Tensor Cores</em><br>4 texture units</p>
-<center><img src="/2022/02/20/cuda-4/Volta%20GV100%20SM.png" width="100%" height="100%"><font color="#708090" size="2">Volta GV100 Full GPU with 84 SM Units.</font></center>
-
-<p><strong>每个SM被划分为四个部份partitions，每个部份包含：</strong><br>8 FP64 Cores<br>16 INT32 Cores<br>16 FP32 Cores<br>2 new mixed-precision Tensor Cores for deep learning matrix arithmetic<br>a new L0 instruction cache<br>a warp scheduler<br>a dispatch unit<br>a 64 KB Register File</p>
-<p>Unlike Pascal GPUs, which could not execute FP32 and INT32 instructions simultaneously, the Volta GV100 SM includes separate FP32 and INT32 cores, allowing simultaneous execution of FP32 and INT32 operations at full throughput, while also increasing instruction issue throughput. </p>
-<p>Pascal GPU所有的CUDA核心都是FP32+INT32混合核心，这种核心每个周期只能进行浮点运算或整型运算的一种。整块SM分区（具有一个warp scheduler）同时切换，这块分区某一时刻只能进行FP或INT运算的一种。</p>
-<p>Volta/Turing GPU单独开辟了一条INT型通道，其具有独立的FP32与INT32核心，可同时执行FP32与INT32操作。</p>
-<blockquote>
-<p>关于NVIDIA三代GPU架构CUDA核心的变化（Pascal, Turing, Ampere）<br><a target="_blank" rel="noopener" href="https://weibo.com/tv/show/1034:4548031207637036?from=old_pc_videoshow">微博 林亦LYi: 什么是「显卡测不准原理」</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1a64y1F7Gp?from=search&amp;seid=665276990359275781&amp;spm_id_from=333.337.0.0">B站 林亦LYi: 什么是「显卡测不准原理」</a></p>
 </blockquote>
-<center><img src="/2022/02/20/cuda-4/FP_INT.png" width="100%" height="100%"><font color="#708090" size="2">Floating Point vs Integer.</font></center>
-<center><img src="/2022/02/20/cuda-4/CUDA_cores.png" width="100%" height="100%"><font color="#708090" size="2">SM of Volta & Turing</font></center>
-
+<h2 id="std-memory-order-C-11"><a href="#std-memory-order-C-11" class="headerlink" title="std::memory_order (C++11)"></a>std::memory_order (C++11)</h2><p>Defined in header \<atomic\><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// since C++11 until C++20</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> <span class="title class_">memory_order</span> &#123;</span><br><span class="line">    memory_order_relaxed,</span><br><span class="line">    memory_order_consume,</span><br><span class="line">    memory_order_acquire,</span><br><span class="line">    memory_order_release,</span><br><span class="line">    memory_order_acq_rel,</span><br><span class="line">    memory_order_seq_cst</span><br><span class="line">&#125; memory_order;</span><br></pre></td></tr></table></figure><br><strong>std::memory_order</strong> specifies how memory accesses, including regular, non-atomic memory accesses, are to be ordered around an atomic operation.<br>std::memory_order指定如何围绕一个atomic操作对内存访问（包括常规的非原子访存）进行排序。</atomic\></p>
+<p>Absent any constraints on a multi-core system, when multiple threads simultaneously read and write to several variables, one thread can observe the values change in an order different from the order another thread wrote them. Indeed, the apparent order of changes can even differ among multiple reader threads. Some similar effects can occur even on uniprocessor systems due to compiler transformations allowed by the memory model.<br>多核系统中由于缺少任何限制，当多个线程同时读写少量变量时，一个线程观察到的某个变量的值的改变可能与对这个变量进行写入操作的线程的写入顺序不同，甚至多个线程观察到的变量的值的改变顺序可能都存在差异。对于单核系统，由于在memory model允许下编译器对代码的优化，一些类似的现象也会发生。</p>
+<p>The default behavior of all atomic operations in the library provides for <strong>sequentially consistent ordering</strong> (see discussion below). That default can <strong>hurt performance</strong>, but the library’s atomic operations can be given an additional <strong>std::memory_order</strong> argument to specify the exact constraints, beyond atomicity, that the compiler and processor must enforce for that operation.<br>所有atomic操作默认是顺序一致的排序（全序，memory_order_seq_cst），虽然保证了内存读写的顺序，但影响程序性能，损失了并行性。因此，可通过额外指定std::memory_order来规定编译器和处理器在操作中必须遵守的内存顺序。</p>
 <blockquote>
-<p>RTX20系显卡使用Turing架构，而RTX30系显卡使用Ampere架构。<br>图中可以看出，FP32核心要比INT32核心更大一些，这是由于用于浮点型运算的核心要更复杂一些，也只有FP32核心才被称为CUDA核心。<br>Turing架构中，INT32核心和FP32核心是独立的，每个SM中各有64个。<br>Ampere架构中，除了64个FP32核心，原有的64个INT32核心转变为了64个FP32+INT32核心，而这部分核心也算作CUDA核心，因此每个SM上共有64+64=128个CUDA核心。<br>FP32+INT32核心在一个周期内，只能进行浮点型或整数型运算的一种。二选一。混合核心并不能提供完全的浮点运算能力。程序的整型运算越多，浮点运算能力就会下降越明显。这是由于混合核心在FP32与INT32核心间的切换导致的。每次切换时，以SM中的一块partition为单位切换，partition中的所有混合核心同时切换。</p>
+<ul>
+<li><strong>memory_order_relaxed</strong><br>Relaxed operation: there are no synchronization or ordering constraints imposed on other reads or writes, only this operation’s atomicity is guaranteed (see Relaxed ordering below)</li>
+<li><strong>memory_order_consume</strong><br>a</li>
+<li><strong>memory_order_acquire</strong><br>a</li>
+<li><strong>memory_order_release</strong><br>a</li>
+<li><strong>memory_order_acq_rel</strong><br>a</li>
+<li><strong>memory_order_seq_cst</strong><br>a</li>
+</ul>
 </blockquote>
-<center><img src="/2022/02/20/cuda-4/CUDA_cores_1.png" width="100%" height="100%"><font color="#708090" size="2">SM of Volta & Turing</font></center>
-
+<h2 id="B-25-Asynchronous-Barrier"><a href="#B-25-Asynchronous-Barrier" class="headerlink" title="B.25. Asynchronous Barrier"></a>B.25. Asynchronous Barrier</h2><p>std::barrier的GPU实现，允许用户指定barrier对象的范围。</p>
+<p>Devices of compute capability 8.0 or higher provide <strong>hardware acceleration</strong> for barrier operations and integration of these barriers with the <strong>memcpy_async</strong> feature.<br>CC 8.0及以上的设备对barrier拥有硬件加速，且集成了memcpy_async的特性（用于异步拷贝的同步）。</p>
+<p> On devices with compute capability below 8.0 but starting 7.0, these barriers are available without hardware acceleration.<br> 介于CC 7.0与8.0之间的设备具有barrier指令，但没有硬件加速。</p>
+<h3 id="B-25-1-Simple-Synchronization-Pattern-简单同步模式"><a href="#B-25-1-Simple-Synchronization-Pattern-简单同步模式" class="headerlink" title="B.25.1. Simple Synchronization Pattern 简单同步模式"></a>B.25.1. Simple Synchronization Pattern 简单同步模式</h3><p> Without the arrive/wait barrier, synchronization is achieved using __syncthreads() (to synchronize all threads in a block) or group.sync() when using Cooperative Groups.</p>
+<p>不使用barrier时，GPU拥有两种同步方式：</p>
+<ol>
+<li>__syncthreads()：同步一个block中的所有threads。</li>
+<li>group.sync()：同步整个Cooperative Groups。</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cooperative_groups.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">simple_sync</span><span class="params">(<span class="type">int</span> iteration_count)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> block = cooperative_groups::<span class="built_in">this_thread_block</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; iteration_count; ++i) &#123;</span><br><span class="line">        <span class="comment">/* code before arrive */</span></span><br><span class="line">        block.<span class="built_in">sync</span>(); <span class="comment">/* wait for all threads to arrive here */</span></span><br><span class="line">        <span class="comment">/* code after wait */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用Cooperative Groups进行block级别同步的例子。<br>In addition, memory updates that happened before the synchronization point are guaranteed to be visible to all threads in the block after the synchronization point, i.e., equivalent to atomic_thread_fence(memory_order_seq_cst, thread_scope_block) as well as the sync.<br>除此之外，还隐含了memory fence的作用，在同步点前发生的内存修改操作，对同步点之后的所有线程均可见。这个特性__syncthreads()与group.sync()都有。保证了线程内存独写的先后顺序。</p>
 <blockquote>
-<p>Pascal架构中所有CUDA核心都是混合核心，SM每个分区一个时刻只能进行一种运算。<br>Turing架构中为INT型单独开辟一条通道，可同时执行INT型运算与FP运算，但这样INT型运算性能过剩，多数时间都在摸鱼。<br>Ampere架构中把INT型核心又换回了混合核心，这样就避免了INT型核心空闲的问题。</p>
+<p><strong>这种模式有三个阶段：</strong></p>
+<ol>
+<li>sync之前的内存更新操作，在sync之后可读</li>
+<li>同步点Synchronization point</li>
+<li>sync之后的代码，拥有对sync之前发生的内存更新操作的可见性</li>
+</ol>
 </blockquote>
-<h2 id="Tensor-Cores"><a href="#Tensor-Cores" class="headerlink" title="Tensor Cores"></a>Tensor Cores</h2><p>Matrix-Matrix multiplication (BLAS GEMM) operations are at the core of neural network training and inferencing, and are used to multiply large matrices of input data and weights in the connected layers of the network.<br>矩阵乘操作是神经网络训练和推理的核心，被用于做输入数据和对应权重矩阵的乘法。<br>BLAS: Basic Linear Algebra Subprograms 基本线性代数子程序<br>GEMM: General Matrix Multiplication 通用矩阵乘法</p>
-<p>Each Tensor Core provides a 4x4x4 matrix processing array which performs the operation $\textbf{D} = \textbf{A} \times \textbf{B} + \textbf{C}$, where $\textbf{A}$, $\textbf{B}$, $\textbf{C}$, and $\textbf{D}$ are 4×4 matrices as shown below. The matrix multiply inputs $\textbf{A}$ and $\textbf{B}$ are FP16 matrices, while the accumulation matrices $\textbf{C}$ and $\textbf{D}$ may be FP16 or FP32 matrices.<br>每个Tensor Core提供一个4x4x4的矩阵处理阵列，分别包括ABCD四个4x4的矩阵，乘法矩阵AB是FP16的，而加法矩阵CD可以是FP16也可以是FP32。</p>
-<center><img src="/2022/02/20/cuda-4/Tensor%20Core%204x4x4%20matrix%20multiply%20and%20accumulate.png" width="100%" height="100%"><font color="#708090" size="2">Tensor Core 4x4x4 matrix multiply and accumulate.</font></center>
-
-<p>Each Tensor Core performs 64 floating point FMA mixed-precision operations per clock.<br>FMA: Fused Multiply Add/Accumulate 融合乘加<br>4x4 矩阵乘$\textbf{A} \times \textbf{B}$，一共做 4x4x4 = 64次乘法，4x4x3 = 48次加法。结果矩阵加一个 4x4 矩阵$\textbf{C}$。整个计算一共64次乘，64次加，因此为64 FMA operations。<br>D00 = A00<em>B00 + C00 FMA<br>D00 = A01</em>B10 + D00 FMA<br>D00 = A02<em>B20 + D00 FMA<br>D00 = A03</em>B30 + D00 FMA<br>结果矩阵$\textbf{D}$中一个数对应4次FMA。</p>
-<p>During program execution, multiple Tensor Cores are used concurrently by a full warp of execution. The threads within a warp provide a larger 16x16x16 matrix operation to be processed by the Tensor Cores. CUDA exposes these operations as Warp-Level Matrix Operations in the CUDA C++ API. These C++ interfaces provide specialized matrix load, matrix multiply and accumulate, and matrix store operations to efficiently utilize Tensor Cores in CUDA C++ programs.<br>多个Tensor cores被一个完整的warp同时使用，为Warp-Level Matrix Operations，包括matrix load, matrix multiply and accumulate, and matrix store operations。</p>
-<p>In addition to CUDA C++ interfaces to program Tensor Cores directly, CUDA 9 cuBLAS and cuDNN libraries include new library interfaces to make use of Tensor Cores for deep learning applications and frameworks.<br>除了CUDA C++之外，CUDA 9.0中的cuBLAS与cuDNN库也提供了调用Tensor core的接口。</p>
-<p>从Volta开始，L1 data cache与shared mem合并为一块内存。共享128 KB/SM的内存空间。<br>The new combined L1 data cache and shared memory subsystem of the Volta SM significantly improves performance while also simplifying programming and reducing the tuning required to attain at or near-peak application performance.<br>这样做在提升了程序性能的同时，简化了编程，也减少了达到峰值性能所需的调优。<br>narrows the gap between applications that are manually tuned to keep data in shared memory and those that access data in device memory directly.<br>由于现在L1与shared mem实际为一块内存，具有相同的特性，因此也缩小了人为使用shared mem优化程序与直接访问device mem的程序性能差距。<br>allow L1 cache operations to attain the benefits of shared memory performance. Shared memory provides high bandwidth and low latency, but the CUDA programmer needs to explicitly manage this memory. Volta narrows the gap between applications that explicitly manage shared memory and those that access data in device memory directly.<br>Shared mem带宽高延迟低，但需要人为控制。因此合并L1与shared mem可以使得L1 cache获得shared mem的特性，从而缩小直接访问device mem与人为使用shared mem的性能差距，简化编程。</p>
-<h2 id="Independent-Thread-Scheduling"><a href="#Independent-Thread-Scheduling" class="headerlink" title="Independent Thread Scheduling"></a>Independent Thread Scheduling</h2><p>Volta GV100 is the first GPU to support independent thread scheduling, which enables finer-grain synchronization and cooperation between parallel threads in a program.<br>Volta GV100是首个支持独立线程调度的GPU。</p>
-<h4 id="Prior-NVIDIA-GPU-SIMT-Models"><a href="#Prior-NVIDIA-GPU-SIMT-Models" class="headerlink" title="Prior NVIDIA GPU SIMT Models"></a>Prior NVIDIA GPU SIMT Models</h4><p>Pascal and earlier NVIDIA GPUs execute <strong>groups of 32 threads, known as warps</strong>, in SIMT (Single Instruction, Multiple Thread) fashion. The Pascal warp uses <strong>a single program counter shared amongst all 32 threads</strong>, combined with an “<strong>active mask</strong>” that specifies which threads of the warp are active at any given time.  This means that divergent execution paths leave some threads inactive, <strong>serializing execution</strong> for different portions of the warp as shown below. The original mask is stored until the warp reconverges at the end of the divergent section, at which point the mask is restored and the threads run together once again.<br>warp中的32个线程共享同一个程序计数器（也称为指令指针，或指令地址寄存器），同步执行相同的指令，同时使用一个mask标记当前哪些线程是active的。当遇到分支路径时，顺序执行不同的分支并屏蔽掉不在此路径上的线程。在分支部份开始时切换顺序执行，在分支结束时重新同步reconverge所有线程。</p>
-<center><img src="/2022/02/20/cuda-4/independent%20thread%20scheduling%201.png" width="100%" height="100%"><font color="#708090" size="2">Thread scheduling under the SIMT warp execution model of Pascal and earlier NVIDIA GPUs.</font></center>
-
-<p>如图所示，会先执行其中一个分支直到结束，屏蔽掉不在这条分支上的线程，再开始执行另一条分支，在分支结束时所有线程重新同步。</p>
-<p>The Pascal SIMT execution model maximizes efficiency by reducing the quantity of resources required to track thread state and by aggressively reconverging threads to maximize parallelism. Tracking thread state in aggregate for the whole warp, however, means that when the execution pathway diverges, the threads which take different branches lose concurrency until they reconverge. This loss of concurrency means that threads from the same warp in divergent regions or different states of execution cannot signal each other or exchange data. This presents an inconsistency in which threads from different warps continue to run concurrently, but diverged threads from the same warp run sequentially until they reconverge. This means, for example, that algorithms requiring fine-grained sharing of data guarded by locks or mutexes can easily lead to deadlock, depending on which warp the contending threads come from. Therefore, on Pascal and earlier GPUs, programmers have to avoid fine-grained synchronization or rely on lock-free or warp-aware algorithms.<br>The Pascal SIMT execution model通过减少记录线程状态所需资源（同一warp同步执行，只记录一个active mask）、积极同步线程最大化并行度（分支结束即立刻同步warp中的线程）来最大化效率。<br>串行化逐个执行分支，也就意味着同一个warp中执行不同分支的线程之间失去了并行性，彼此不能通信、交换数据。但不同warp中的线程仍然是同步的，分支仅屏蔽掉本warp中的一部分线程而执行另一部分，这就显示出一种矛盾。这也就阻止了更细粒度（warp-level）的编程，同一个warp中不同线程交换数据使用锁或互斥体很容易导致死锁问题（一个线程等待另一个线程，但另一个线程需要等待本线程执行完毕才能执行，互相等待导致死锁）。</p>
-<h4 id="Volta-SIMT-Model"><a href="#Volta-SIMT-Model" class="headerlink" title="Volta SIMT Model"></a>Volta SIMT Model</h4><p>enabling equal concurrency between all threads, regardless of warp.<br>maintaining execution state per thread, including the program counter and call stack.<br>Volta通过维护每一个线程的执行状态，包括程序计数器（指令地址寄存器）和调用栈，在所有线程间实现了相同的并发性，即同一个warp中的线程也是并发的。</p>
-<center><img src="/2022/02/20/cuda-4/independent%20thread%20scheduling%202.png" width="100%" height="100%"><font color="#708090" size="2">Volta (bottom) independent thread scheduling architecture block diagram compared to Pascal and earlier architectures (top).</font></center>
-
-<p>Volta maintains per-thread scheduling resources such as program counter (PC) and call stack (S), while earlier architectures maintained these resources per warp.<br>Volta每个线程维护一个program counter (PC) and call stack (S)，而之前的架构每个warp维护一个。</p>
-<p>To maximize parallel efficiency, Volta includes a <strong>schedule optimizer</strong> which determines how to group <strong>active threads from the same warp</strong> together into SIMT units. Threads can now diverge and reconverge at sub-warp granularity, and Volta will still <strong>group together threads which are executing the same code and run them in parallel</strong>.</p>
-<center><img src="/2022/02/20/cuda-4/independent%20thread%20scheduling%203.png" width="100%" height="100%"><font color="#708090" size="2">Volta independent thread scheduling enables interleaved execution of statements from divergent branches.</font></center>
-
-<p>Statements from the if and else branches in the program can now be interleaved in time.<br>if else分支中的语句现在可以交错执行。<br>Note that execution is still SIMT: at any given clock cycle CUDA cores execute the same instruction for all active threads in a warp just as before, retaining the execution efficiency of previous architectures.<br>仍然是SIMT执行架构，单指令流多线程。每个clock cycle，所有active threads在CUDA cores上执行相同的指令。<br>Importantly, Volta’s ability to independently schedule threads within a warp makes it possible to implement complex, <strong>fine-grained algorithms (sub-warp)</strong> and data structures in a more natural way. While the scheduler supports independent execution of threads, it optimizes non-synchronizing code to maintain <strong>as much convergence as possible</strong> for maximum SIMT efficiency.<br>Independently schedule threads within a warp，使得位于不同分支的语句（由不同active threads执行）可以交错执行，从而warp中的线程具有concurrency，可以互相同步、交换数据，使得sub-warp算法成为可能。Scheduler尽可能地优化非同步代码，以实现最大化的convergence（并行性越好，SIMT efficiency越高）。</p>
-<p>It is interesting to note that the Figure does not show execution of statement Z by all threads in the warp at the same time. This is because the scheduler must conservatively assume that Z may produce data required by other divergent branches of execution in which case it would be unsafe to automatically enforce reconvergence. In the common case where A, B, X, and Y do not consist of synchronizing operations, the scheduler can identify that it is safe for the warp to naturally reconverge on Z, as on prior architectures.<br>从图中可以看出，位于if else分支语句之外的Z语句，并没有被所有线程同步执行。也就是说在divergence结束的部份，warp中的线程并不一定会reconverge。<br>这是由于编译器保守地假定本线程中的Z语句会产生其他divergent线程执行所需要的数据，如果同步会导致其他线程一直处于等待这部分数据的情况unsafe。一般情况下，如果if else中的指令未包含同步操作，scheduler能识别出在执行Z之前reconverge是safe的，那么就会reconverge，从而提高并行性提高SIMT efficiency。<br>但divergence之后是否reconverge warp中的线程是编译器擅自做主，没保证，最安全的还是人为使用CUDA 9 新引入的__syncwarp()函数to force reconvergence同步all threads in a warp。</p>
-<center><img src="/2022/02/20/cuda-4/independent%20thread%20scheduling%204.png" width="100%" height="100%"><font color="#708090" size="2">Programs can use explicit synchronization __syncwarp() to reconverge threads in a warp.</font></center>
-
-<p>In this case, the divergent portions of the warp might not execute Z together, but all execution pathways from threads within a warp will complete before any thread reaches the statement after the <strong>syncwarp(). Similarly, placing the call to </strong>syncwarp() before the execution of Z would force reconvergence before executing Z, potentially enabling greater SIMT efficiency if the developer knows that this is safe for their application.<br>到达__syncwarp()时，所有warp中的divergent portions执行完毕，在此处reconverge。</p>
-<h4 id="Starvation-Free-Algorithms"><a href="#Starvation-Free-Algorithms" class="headerlink" title="Starvation-Free Algorithms"></a>Starvation-Free Algorithms</h4><p>Starvation-free algorithms are a key pattern enabled by independent thread scheduling.</p>
-<p>Starvation: 并发进程永久地无法获得执行工作所需的某个资源的情况。饥饿可能会导致程序无效或不正确，因为无法获得资源的线程没有正确地完成工作。<br>Starvation-Free: 无饥饿。<strong>某个线程，总是可以获取到某个资源，获取资源的时间不作限制，可长可短，只要能获取到即可</strong>。取决于线程之间是否有优先级的存在，如果系统允许高优先级的线程插队，这样有可能导致低优先级线程产生饥饿，资源被高优先级线程一直锁住，导致低优先级线程一直无法访问。Starvation-Free的线程可以是阻塞的，可以spinning on a lock等待数据可供访问。</p>
-<p>Starvation-Free Algorithms are concurrent computing algorithms that are guaranteed to execute correctly so long as the system ensures that <strong>all threads have adequate access to a contended resource</strong>.<br>并发算法，需要保证所有线程对竞争资源都具有充分的访问权限。</p>
-<p>Inserting nodes into a doubly-linked list in a multithreaded application.<br>在一个多线程应用中，向一个双向链表中插入节点。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__device__ <span class="type">void</span> <span class="title">insert_after</span><span class="params">(Node *a, Node *b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *c;</span><br><span class="line">    <span class="built_in">lock</span>(a); <span class="built_in">lock</span>(a-&gt;next);</span><br><span class="line">    c = a-&gt;next;</span><br><span class="line"></span><br><span class="line">    a-&gt;next = b;</span><br><span class="line">    b-&gt;prev = a;</span><br><span class="line"></span><br><span class="line">    b-&gt;next = c;</span><br><span class="line">    c-&gt;prev = b;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">unlock</span>(c); <span class="built_in">unlock</span>(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>双向链表，前后节点都要记录。<br>a -&gt; a_next(c)<br>a -&gt; b -&gt; a_next(c)<br>由于要修改a与a_next中的数据，因此首先锁定这两个节点，修改之后解锁。</p>
-<p>each element of a doubly linked list has at least three components: a next pointer, a previous pointer, and a lock providing the owner <strong>exclusive access</strong> to update the node.<br>独占访问权</p>
-<center><img src="/2022/02/20/cuda-4/a%20double-linked%20list%20with%20locks.png" width="100%" height="100%"><font color="#708090" size="2">A doubly-linked list with fine-grained locks. Per-node locks are acquired (left) before inserting node B into the list (right).</font></center>
-
-<p>Independent thread scheduling in Volta ensures that even if a thread T0 currently holds the lock for node A, another thread T1 in the same warp can successfully wait for the lock to become available without impeding the progress of thread T0. Note, however, that because active threads in a warp execute together, threads spinning on a lock may degrade the performance of the thread holding the lock.<br>Volta的独立线程调度机制使得，即便一个thread T0正持有node A的lock（正在使用node A的数据，其他线程不可访问，需等待T0使用完毕之后unlock），相同warp中的另一个线程T1也可以在不干扰线程T0的情况下等到lock解锁。<br>解释一下，这是由于独立线程调度允许在divergent branches之间交替执行，但也是屏蔽掉不在这条path上的线程。因此此时T0正在持有lock，而T1正在spinning on the lock，等待使用状态。正是由于这样的原因，当T1 spinning的时候，T0是被屏蔽了的，而T0执行的时候，T1是被屏蔽的。因此这里说spinning on a lock的线程会影响此时holding the lock的线程的性能。<br>若没有独立线程调度机制，这种算法无法实现，原因是同一warp中的线程只能执行相同的指令，要么就是被屏蔽掉了。当两线程同时access node A，一个成功hold the lock，另一个只能spin on the lock。而由于发生divergent时，不同分支是交替执行的，无法确保哪个优先执行，有可能执行到spinning状态，这时另一个线程是处于一直被屏蔽状态的，没有机会unlock，导致程序挂起。</p>
-<p>It is also important to note that the use of a per-node lock in the above example is critical for performance on the GPU. Traditional doubly-linked list implementations may use a coarse-grained lock that provides exclusive access to the entire structure, rather than separately protecting individual nodes. This approach typically leads to poor performance in applications with many threads—Volta may have up to 163,840 concurrent threads—caused by extremely high contention for the lock. By using a fine-grained lock on each node, the average per-node contention in large lists will usually be low except under certain pathological node insertion patterns.</p>
-<p>使用这种per-node lock对GPU执行性能收益很大（除非是那种病态访问情况：线程间访问的节点非常集中）。传统双向链表只能用更粗粒度的lock，提供对整个structure的独占访问权，而不是单独检测每个node。当有数量非常庞大的线程时，线程间竞争非常激烈，并行就完全退化为了串行。</p>
-<p><a target="_blank" rel="noopener" href="https://images.nvidia.cn/content/volta-architecture/pdf/volta-architecture-whitepaper.pdf">Tesla V100 architecture white paper</a></p>
+<p>一个同步 + 一个Memory Fence</p>
+<h3 id="B-25-2-Temporal-Splitting-and-Five-Stages-of-Synchronization-时间分割同步-与-同步的五个阶段"><a href="#B-25-2-Temporal-Splitting-and-Five-Stages-of-Synchronization-时间分割同步-与-同步的五个阶段" class="headerlink" title="B.25.2. Temporal Splitting and Five Stages of Synchronization 时间分割同步 与 同步的五个阶段"></a>B.25.2. Temporal Splitting and Five Stages of Synchronization 时间分割同步 与 同步的五个阶段</h3><p>The temporally-split synchronization pattern with the std::barrier is as follows.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cuda/barrier&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cooperative_groups.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">__device__ <span class="type">void</span> <span class="title">compute</span><span class="params">(<span class="type">float</span>* data, <span class="type">int</span> curr_iteration)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">split_arrive_wait</span><span class="params">(<span class="type">int</span> iteration_count, <span class="type">float</span> *data)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">using</span> barrier = cuda::barrier&lt;cuda::thread_scope_block&gt;;</span><br><span class="line">    <span class="comment">// C++11引入，相当于typedef，定义类型别名</span></span><br><span class="line">    <span class="comment">// cuda::barrier&lt;cuda::thread_scope_block&gt;;作用范围为block级别的cuda::barrier类型</span></span><br><span class="line"></span><br><span class="line">    __shared__  barrier bar;</span><br><span class="line">    <span class="comment">// 放在shared mem中的cuda::barrier，作用于整个block</span></span><br><span class="line">    <span class="keyword">auto</span> block = cooperative_groups::<span class="built_in">this_thread_block</span>();</span><br><span class="line">    <span class="comment">// 一个Cooperative Groups，定义范围为整个block</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// block.thread_rank()，Cooperative Groups专用，返回线程的组内索引号</span></span><br><span class="line">    <span class="keyword">if</span> (block.<span class="built_in">thread_rank</span>() == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 使用0号线程初始化存储于shared mem中的cuda::barrier</span></span><br><span class="line">        <span class="built_in">init</span>(&amp;bar, block.<span class="built_in">size</span>()); <span class="comment">// Initialize the barrier with expected arrival count</span></span><br><span class="line">        <span class="comment">// expected arrival count这里为block size</span></span><br><span class="line">    &#125;</span><br><span class="line">    block.<span class="built_in">sync</span>();<span class="comment">// Cooperative Groups同步，其他线程等待0号线程初始化cuda::barrier结束，并在同步点之后对shared mem中的cuda::barrier拥有可见性</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> curr_iter = <span class="number">0</span>; curr_iter &lt; iteration_count; ++curr_iter) &#123;</span><br><span class="line">        <span class="comment">/* code before arrive */</span></span><br><span class="line">       barrier::arrival_token token = bar.<span class="built_in">arrive</span>(); <span class="comment">/* this thread arrives. Arrival does not block a thread */</span></span><br><span class="line">       <span class="comment">// 先执行完的线程先开始其他工作，做完之后再bar.wait()等待其他线程到达bar.arrive()，从而减少每个线程等待的时间</span></span><br><span class="line">       <span class="built_in">compute</span>(data, curr_iter);</span><br><span class="line">       bar.<span class="built_in">wait</span>(std::<span class="built_in">move</span>(token)); <span class="comment">/* wait for all threads participating in the barrier to complete bar.arrive()*/</span></span><br><span class="line">        <span class="comment">/* code after wait */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;         </span><br></pre></td></tr></table></figure>
+<p>In this pattern, the synchronization point (<strong>block.sync()</strong>) is split into an arrive point (<strong>bar.arrive()</strong>) and a wait point (<strong>bar.wait(std::move(token))</strong>). A thread begins participating in a <strong>cuda::barrier</strong> with its first call to <strong>bar.arrive()</strong>.<br>此模式下原来的一个同步点block.sync()被分割为了一个到达点bar.arrive()与一个等待点bar.wait(std::move(token))。当一个线程首次执行到bar.arrive()时，视为其开始参与到cuda::barrier中。</p>
+<p>When a thread calls bar.wait(std::move(token)) it will be blocked until participating threads have completed bar.arrive() the expected number of times as specified by the expected arrival count argument passed to init().<br>当一个线程执行到bar.wait(std::move(token))，此线程将被blocked，直到参与到cuda::barrier中的线程执行了期望次数的bar.arrive()。这个期望次数在一开始使用init()函数初始化cuda::barrier时指定。<br>比如示例代码中：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">init</span>(&amp;bar, block.<span class="built_in">size</span>()); <span class="comment">// Initialize the barrier with expected arrival count</span></span><br></pre></td></tr></table></figure><br>为使用block size初始化cuda::barrier，等于对block中所有线程的同步操作。</p>
+<p><strong>Memory updates that happen before participating threads’ call to bar.arrive() are guaranteed to be visible to participating threads after their call to bar.wait(std::move(token)).</strong><br>这种方式也有memory fence的功能，区别是发生在bar.arrive()之前的内存修改将会对bar.wait()之后的代码可见。</p>
+<p>Note that the call to bar.arrive() does not block a thread, it can proceed with other work that does not depend upon memory updates that happen before other participating threads’ call to bar.arrive().<br>bar.arrive()并不会阻塞一个线程继续执行，只有bar.wait()会，因此在线程到达bar.arrive()后，可以在等待其他线程到达bar.arrive()之前，继续执行一些不含访问由其他参与线程到达bar.arrive()之前修改的内存的工作。</p>
+<blockquote>
+<p><strong>这种arrive之后wait的模式有五个阶段：</strong></p>
+<ol>
+<li>arrive之前的内存更新操作，在wait之后可读</li>
+<li>arrive点有隐式的memory fence，等价于<br><strong>atomic_thread_fence(memory_order_seq_cst, thread_scope_block)</strong></li>
+<li>arrive与wait之间的代码，一些不依赖arrive之前会更新的内存数据的工作。</li>
+<li>wait point等待点，等待arrive的数量满足要求。</li>
+<li>wait之后的代码，拥有对arrive之前发生的内存更新操作的可见性</li>
+</ol>
+</blockquote>
 
       
     </div>
@@ -1401,14 +1491,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>
