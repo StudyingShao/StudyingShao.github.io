@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="CUDA学习随记7 B.25. Asynchronous Barrier References:  CUDA C++ Programming Guide: B.25. Asynchronous Barrier    B.25. Asynchronous Barrierstd::barrier的GPU实现，允许用户指定barrier对象的范围。 Devices of compute capabili">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CUDA学习随记7 Asynchronous Barrier">
+<meta property="og:url" content="http://example.com/2022/07/01/cuda-7/index.html">
+<meta property="og:site_name" content="邵大宝的学习Blog">
+<meta property="og:description" content="CUDA学习随记7 B.25. Asynchronous Barrier References:  CUDA C++ Programming Guide: B.25. Asynchronous Barrier    B.25. Asynchronous Barrierstd::barrier的GPU实现，允许用户指定barrier对象的范围。 Devices of compute capabili">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-07-01T14:56:18.000Z">
+<meta property="article:modified_time" content="2022-07-01T15:00:20.330Z">
+<meta property="article:author" content="Jiang Shao">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/07/01/cuda-7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>CUDA学习随记7 Asynchronous Barrier | 邵大宝的学习Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">邵大宝的学习Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">最爱严小跳</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/01/cuda-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="WeChat: shaojiang9650<br>Email: shao_study@163.com">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CUDA学习随记7 Asynchronous Barrier
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-07-01 22:56:18 / Modified: 23:00:20" itemprop="dateCreated datePublished" datetime="2022-07-01T22:56:18+08:00">2022-07-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">CUDA学习随记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="CUDA学习随记7-B-25-Asynchronous-Barrier"><a href="#CUDA学习随记7-B-25-Asynchronous-Barrier" class="headerlink" title="CUDA学习随记7 B.25. Asynchronous Barrier"></a>CUDA学习随记7 B.25. Asynchronous Barrier</h1><blockquote>
+<p><strong>References:</strong></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#aw-barrier">CUDA C++ Programming Guide: B.25. Asynchronous Barrier</a></li>
+<li></li>
+</ol>
+</blockquote>
+<h2 id="B-25-Asynchronous-Barrier"><a href="#B-25-Asynchronous-Barrier" class="headerlink" title="B.25. Asynchronous Barrier"></a>B.25. Asynchronous Barrier</h2><p>std::barrier的GPU实现，允许用户指定barrier对象的范围。</p>
+<p>Devices of compute capability 8.0 or higher provide <strong>hardware acceleration</strong> for barrier operations and integration of these barriers with the <strong>memcpy_async</strong> feature.<br>CC 8.0及以上的设备对barrier拥有硬件加速，且集成了memcpy_async的特性（用于异步拷贝的同步）。</p>
+<p> On devices with compute capability below 8.0 but starting 7.0, these barriers are available without hardware acceleration.<br> 介于CC 7.0与8.0之间的设备具有barrier指令，但没有硬件加速。</p>
+<h3 id="B-25-1-Simple-Synchronization-Pattern-简单同步模式"><a href="#B-25-1-Simple-Synchronization-Pattern-简单同步模式" class="headerlink" title="B.25.1. Simple Synchronization Pattern 简单同步模式"></a>B.25.1. Simple Synchronization Pattern 简单同步模式</h3><p> Without the arrive/wait barrier, synchronization is achieved using __syncthreads() (to synchronize all threads in a block) or group.sync() when using Cooperative Groups.</p>
+<p>不使用barrier时，GPU拥有两种同步方式：</p>
+<ol>
+<li>__syncthreads()：同步一个block中的所有threads。</li>
+<li>group.sync()：同步整个Cooperative Groups。</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cooperative_groups.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">simple_sync</span><span class="params">(<span class="type">int</span> iteration_count)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> block = cooperative_groups::<span class="built_in">this_thread_block</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; iteration_count; ++i) &#123;</span><br><span class="line">        <span class="comment">/* code before arrive */</span></span><br><span class="line">        block.<span class="built_in">sync</span>(); <span class="comment">/* wait for all threads to arrive here */</span></span><br><span class="line">        <span class="comment">/* code after wait */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用Cooperative Groups进行block级别同步的例子。<br>In addition, memory updates that happened before the synchronization point are guaranteed to be visible to all threads in the block after the synchronization point, i.e., equivalent to atomic_thread_fence(memory_order_seq_cst, thread_scope_block) as well as the sync.<br>除此之外，还隐含了memory fence的作用，在同步点前发生的内存修改操作，对同步点之后的所有线程均可见。这个特性__syncthreads()与group.sync()都有。保证了线程内存独写的先后顺序。</p>
+<blockquote>
+<p><strong>这种模式有三个阶段：</strong></p>
+<ol>
+<li>sync之前的内存更新操作，在sync之后可读</li>
+<li>同步点Synchronization point</li>
+<li>sync之后的代码，拥有对sync之前发生的内存更新操作的可见性</li>
+</ol>
+</blockquote>
+<p>一个同步 + 一个Memory Fence</p>
+<h3 id="B-25-2-Temporal-Splitting-and-Five-Stages-of-Synchronization-时间分割同步-与-同步的五个阶段"><a href="#B-25-2-Temporal-Splitting-and-Five-Stages-of-Synchronization-时间分割同步-与-同步的五个阶段" class="headerlink" title="B.25.2. Temporal Splitting and Five Stages of Synchronization 时间分割同步 与 同步的五个阶段"></a>B.25.2. Temporal Splitting and Five Stages of Synchronization 时间分割同步 与 同步的五个阶段</h3><p>The temporally-split synchronization pattern with the std::barrier is as follows.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cuda/barrier&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cooperative_groups.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">__device__ <span class="type">void</span> <span class="title">compute</span><span class="params">(<span class="type">float</span>* data, <span class="type">int</span> curr_iteration)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">split_arrive_wait</span><span class="params">(<span class="type">int</span> iteration_count, <span class="type">float</span> *data)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">using</span> barrier = cuda::barrier&lt;cuda::thread_scope_block&gt;;</span><br><span class="line">    <span class="comment">// C++11引入，相当于typedef，定义类型别名</span></span><br><span class="line">    <span class="comment">// cuda::barrier&lt;cuda::thread_scope_block&gt;;作用范围为block级别的cuda::barrier类型</span></span><br><span class="line"></span><br><span class="line">    __shared__  barrier bar;</span><br><span class="line">    <span class="comment">// 放在shared mem中的cuda::barrier，作用于整个block</span></span><br><span class="line">    <span class="keyword">auto</span> block = cooperative_groups::<span class="built_in">this_thread_block</span>();</span><br><span class="line">    <span class="comment">// 一个Cooperative Groups，定义范围为整个block</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// block.thread_rank()，Cooperative Groups专用，返回线程的组内索引号</span></span><br><span class="line">    <span class="keyword">if</span> (block.<span class="built_in">thread_rank</span>() == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 使用0号线程初始化存储于shared mem中的cuda::barrier</span></span><br><span class="line">        <span class="built_in">init</span>(&amp;bar, block.<span class="built_in">size</span>()); <span class="comment">// Initialize the barrier with expected arrival count</span></span><br><span class="line">        <span class="comment">// expected arrival count这里为block size</span></span><br><span class="line">    &#125;</span><br><span class="line">    block.<span class="built_in">sync</span>();<span class="comment">// Cooperative Groups同步，其他线程等待0号线程初始化cuda::barrier结束，并在同步点之后对shared mem中的cuda::barrier拥有可见性</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> curr_iter = <span class="number">0</span>; curr_iter &lt; iteration_count; ++curr_iter) &#123;</span><br><span class="line">        <span class="comment">/* code before arrive */</span></span><br><span class="line">       barrier::arrival_token token = bar.<span class="built_in">arrive</span>(); <span class="comment">/* this thread arrives. Arrival does not block a thread */</span></span><br><span class="line">       <span class="comment">// 先执行完的线程先开始其他工作，做完之后再bar.wait()等待其他线程到达bar.arrive()，从而减少每个线程等待的时间</span></span><br><span class="line">       <span class="built_in">compute</span>(data, curr_iter);</span><br><span class="line">       bar.<span class="built_in">wait</span>(std::<span class="built_in">move</span>(token)); <span class="comment">/* wait for all threads participating in the barrier to complete bar.arrive()*/</span></span><br><span class="line">        <span class="comment">/* code after wait */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;         </span><br></pre></td></tr></table></figure>
+<p>In this pattern, the synchronization point (<strong>block.sync()</strong>) is split into an arrive point (<strong>bar.arrive()</strong>) and a wait point (<strong>bar.wait(std::move(token))</strong>). A thread begins participating in a <strong>cuda::barrier</strong> with its first call to <strong>bar.arrive()</strong>.<br>此模式下原来的一个同步点block.sync()被分割为了一个到达点bar.arrive()与一个等待点bar.wait(std::move(token))。当一个线程首次执行到bar.arrive()时，视为其开始参与到cuda::barrier中。</p>
+<p>When a thread calls bar.wait(std::move(token)) it will be blocked until participating threads have completed bar.arrive() the expected number of times as specified by the expected arrival count argument passed to init().<br>当一个线程执行到bar.wait(std::move(token))，此线程将被blocked，直到参与到cuda::barrier中的线程执行了期望次数的bar.arrive()。这个期望次数在一开始使用init()函数初始化cuda::barrier时指定。<br>比如示例代码中：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">init</span>(&amp;bar, block.<span class="built_in">size</span>()); <span class="comment">// Initialize the barrier with expected arrival count</span></span><br></pre></td></tr></table></figure><br>为使用block size初始化cuda::barrier，等于对block中所有线程的同步操作。</p>
+<p><strong>Memory updates that happen before participating threads’ call to bar.arrive() are guaranteed to be visible to participating threads after their call to bar.wait(std::move(token)).</strong><br>这种方式也有memory fence的功能，区别是发生在bar.arrive()之前的内存修改将会对bar.wait()之后的代码可见。</p>
+<p>Note that the call to bar.arrive() does not block a thread, it can proceed with other work that does not depend upon memory updates that happen before other participating threads’ call to bar.arrive().<br>bar.arrive()并不会阻塞一个线程继续执行，只有bar.wait()会，因此在线程到达bar.arrive()后，可以在等待其他线程到达bar.arrive()之前，继续执行一些不含访问由其他参与线程到达bar.arrive()之前修改的内存的工作。</p>
+<blockquote>
+<p><strong>这种arrive之后wait的模式有五个阶段：</strong></p>
+<ol>
+<li>arrive之前的内存更新操作，在wait之后可读</li>
+<li>arrive点有隐式的memory fence，等价于<br><strong>atomic_thread_fence(memory_order_seq_cst, thread_scope_block)</strong></li>
+<li>arrive与wait之间的代码，一些不依赖arrive之前会更新的内存数据的工作。</li>
+<li>wait point等待点，等待arrive的数量满足要求。</li>
+<li>wait之后的代码，拥有对arrive之前发生的内存更新操作的可见性</li>
+</ol>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/06/23/Git/" rel="prev" title="Git">
+      <i class="fa fa-chevron-left"></i> Git
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CUDA%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B07-B-25-Asynchronous-Barrier"><span class="nav-number">1.</span> <span class="nav-text">CUDA学习随记7 B.25. Asynchronous Barrier</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#B-25-Asynchronous-Barrier"><span class="nav-number">1.1.</span> <span class="nav-text">B.25. Asynchronous Barrier</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#B-25-1-Simple-Synchronization-Pattern-%E7%AE%80%E5%8D%95%E5%90%8C%E6%AD%A5%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">B.25.1. Simple Synchronization Pattern 简单同步模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-25-2-Temporal-Splitting-and-Five-Stages-of-Synchronization-%E6%97%B6%E9%97%B4%E5%88%86%E5%89%B2%E5%90%8C%E6%AD%A5-%E4%B8%8E-%E5%90%8C%E6%AD%A5%E7%9A%84%E4%BA%94%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="nav-number">1.1.2.</span> <span class="nav-text">B.25.2. Temporal Splitting and Five Stages of Synchronization 时间分割同步 与 同步的五个阶段</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jiang Shao"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jiang Shao</p>
+  <div class="site-description" itemprop="description">WeChat: shaojiang9650<br>Email: shao_study@163.com</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jiang Shao</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
