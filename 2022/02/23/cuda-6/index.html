@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="CUDA学习随记6  C++11中的内存模型 std::memory_order来自陌生网友最真挚的情感抒发：   &lt; !—more—&gt;  References:  C++11 std::memory_order 内存顺序（Memory Order） C++11中的内存模型上篇 - 内存模型基础 C++11中的内存模型下篇 - C++11支持的几种内存模型   std::memory_">
+  <meta name="description" content="CUDA学习随记6  C++11中的内存模型 std::memory_order来自陌生网友最真挚的情感抒发：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CUDA学习随记6 C++11中的内存模型 std::memory_order">
 <meta property="og:url" content="http://example.com/2022/02/23/cuda-6/index.html">
 <meta property="og:site_name" content="邵大宝的学习Blog">
-<meta property="og:description" content="CUDA学习随记6  C++11中的内存模型 std::memory_order来自陌生网友最真挚的情感抒发：   &lt; !—more—&gt;  References:  C++11 std::memory_order 内存顺序（Memory Order） C++11中的内存模型上篇 - 内存模型基础 C++11中的内存模型下篇 - C++11支持的几种内存模型   std::memory_">
+<meta property="og:description" content="CUDA学习随记6  C++11中的内存模型 std::memory_order来自陌生网友最真挚的情感抒发：">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2022/02/23/cuda-6/0.png">
 <meta property="og:image" content="http://example.com/2022/02/23/cuda-6/1.png">
 <meta property="og:image" content="http://example.com/2022/02/23/cuda-6/2.png">
 <meta property="og:image" content="http://example.com/2022/02/23/cuda-6/3.png">
 <meta property="article:published_time" content="2022-02-23T13:41:50.000Z">
-<meta property="article:modified_time" content="2022-07-06T13:57:32.727Z">
+<meta property="article:modified_time" content="2022-07-06T14:18:59.424Z">
 <meta property="article:author" content="Jiang Shao">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2022/02/23/cuda-6/0.png">
@@ -191,7 +191,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-06 21:57:32" itemprop="dateModified" datetime="2022-07-06T21:57:32+08:00">2022-07-06</time>
+                <time title="Modified: 2022-07-06 22:18:59" itemprop="dateModified" datetime="2022-07-06T22:18:59+08:00">2022-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -217,7 +217,7 @@
         <h1 id="CUDA学习随记6-C-11中的内存模型-std-memory-order"><a href="#CUDA学习随记6-C-11中的内存模型-std-memory-order" class="headerlink" title="CUDA学习随记6  C++11中的内存模型 std::memory_order"></a>CUDA学习随记6  C++11中的内存模型 std::memory_order</h1><p>来自陌生网友最真挚的情感抒发：</p>
 <center><img src="/2022/02/23/cuda-6/0.png" width="50%" height="50%"></center>
 
-<p>&lt; !—more—&gt;</p>
+<span id="more"></span>
 <blockquote>
 <p><strong>References:</strong></p>
 <ol>
