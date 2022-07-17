@@ -153,6 +153,231 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/16/ComputeLab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="WeChat: shaojiang9650<br>Email: shao_study@163.com">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/07/16/ComputeLab/" class="post-title-link" itemprop="url">ComputeLab</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-07-16 20:29:55 / Modified: 23:09:29" itemprop="dateCreated datePublished" datetime="2022-07-16T20:29:55+08:00">2022-07-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ComputeLab-Usage"><a href="#ComputeLab-Usage" class="headerlink" title="ComputeLab Usage"></a>ComputeLab Usage</h1><blockquote>
+<p>Reference:<br><a target="_blank" rel="noopener" href="https://gitlab-master.nvidia.com/rjeng/devtech_new_hire_training">Rjeng’s Devtech New Hire Training</a></p>
+</blockquote>
+<h4 id="VSCode连接ComputeLab-非常的不好用总掉线！"><a href="#VSCode连接ComputeLab-非常的不好用总掉线！" class="headerlink" title="VSCode连接ComputeLab  (非常的不好用总掉线！)"></a>VSCode连接ComputeLab  (非常的不好用总掉线！)</h4><ol>
+<li>VSCode端安装拓展Remote-SSH</li>
+<li>设置-拓展-Remote-SSH-always reveal the SSH login terminal</li>
+<li>ssh jiangs@computelab</li>
+<li>卡住之后VSCode-Terminal-New Terminal</li>
+</ol>
+<h4 id><a href="#" class="headerlink" title=" "></a> </h4><ul>
+<li><p>连接ComputeLab：<br><code>ssh jiangs@computelab</code></p>
+</li>
+<li><p>个人500G云存储空间：<br><code>/home/scratch.jiangs_sw</code></p>
+</li>
+<li><p>查找可用的free nodes：<br><code>csm find &#39;chip=*&#39; -v -f</code></p>
+</li>
+<li><p>使用chip信息开始一个interactive job：<br><code>crun -q &#39;chip=gv100 and partition=all&#39; -i</code></p>
+</li>
+<li><p>使用node信息开始一个interactive job：<br><code>crun -q &#39;node=computelab-11&#39; -i</code></p>
+</li>
+<li><p>提交一个batch job<br><code>crun -q &#39;chip=tu102&#39; -b &quot;&lt;cmd/script to execute&gt; &lt;arg1&gt; &lt;arg2&gt; ... &lt;argn&gt;&quot;</code></p>
+</li>
+<li><p>提交一个时长无限的batch job<br><code>crun -q &#39;chip=gv100 and partition=all,longJob&#39; -t 0 -b &quot;&lt;cmd/script&gt; &lt;arg1&gt; &lt;arg2&gt; ... &lt;argn&gt;&quot;</code></p>
+</li>
+<li><p>Run the following to get crun’s full help<br><code>crun -h|--help</code></p>
+</li>
+<li><p>Run the following to get more usage examples (这个|是或的意思，只留下前面的或者后面的就可以)<br><code>crun -ie|--interactive_examples</code><br><code>crun -be|--batch_examples</code><br><code>crun -de|--docker_examples</code> </p>
+</li>
+</ul>
+<hr>
+<h3 id="crun-interactive-examples"><a href="#crun-interactive-examples" class="headerlink" title="crun interactive_examples"></a>crun interactive_examples</h3><ul>
+<li><p>Run nvidia-smi command on a specific free node that has a tu104 gpu<br><code>crun -q &#39;chip=tu104&#39; nvidia-smi</code></p>
+</li>
+<li><p>Start an interactive session on any random compute node<br><code>crun -q &#39;chip=*&#39; -i</code> <strong>进入交互式session！！！exit退出session</strong></p>
+</li>
+<li><p>Start an interactive session on a compute node which has gv100 chip<br><code>crun -q &#39;chip=gv100&#39; -i</code></p>
+</li>
+<li><p>Start an interactive session on a compute node which has gv100 chip, and wait if none is available yet<br><code>crun -q &#39;chip=gv100&#39; -i --wait</code> 如果暂时没有可用节点则等待节点可用</p>
+</li>
+<li><p>Start an interactive session on test partition 测试分区<br><code>crun -q &#39;chip=gv100 and partition=test&#39; -i</code></p>
+</li>
+<li><p>Run nvidia-smi command and then start an interactive session on a node that has gv100 chip<br><code>crun -q &#39;chip=gv100&#39; -i nvidia-smi</code></p>
+</li>
+<li><p>Install a specific driver before starting an interactive session on a node that has gv100 chip<br><code>crun -q &#39;chip=gv100&#39; -d /home/builds/release/display/x86_64/410.45/NVIDIA-Linux-x86_64-410.45.run -ex -i</code></p>
+</li>
+<li><p>Start an interactive session on a node with <strong>exclusive access 独占访问</strong><br><code>crun -q &#39;chip=*&#39; -i -ex</code></p>
+</li>
+<li><p>Run a prolog script and then start an interactive session<br><code>crun -q &#39;chip=*&#39; -p /home/scratch.computelab/csm/user_data/test.sh -i</code></p>
+</li>
+</ul>
+<p>Following is the list of attributes you can use and combine in a query using<br>the logical ‘and’, ‘or’, and ‘not’ operators. You can also use * as a wildcard 通配符<br>and parentheses 圆括号 to group expressions in your query. Use csm to find nodes/GPUs<br>and their attributes.</p>
+<h2 id="Attribute-Description"><a href="#Attribute-Description" class="headerlink" title="Attribute               : Description"></a>Attribute               : Description</h2><p>baseboard_name              : System Baseboard Name<br>cluster                     :<br>cpu_arch                    : CPU Architecture<br>cpu_cores_per_socket        : CPU Cores per socket<br>cpu_count                   : Total logical CPU (a.k.a. hardware thread) count<br>cpu_family                  : CPU Family<br>cpu_flags                   : CPU Flags<br>cpu_model_number            : CPU Model Number<br>cpu_product_name            : CPU Product Name<br>cpu_short_name              : CPU Shorter Name<br>cpu_stepping                : CPU Stepping<br>crun_hash                   :<br><strong>default_cuda_version        : max cuda version supported by the default driver</strong><br><strong>default_gpu_driver          : driver that is installed on the node unless overridden</strong><br>gpu_affine_numa_node        :<br><strong>gpu_arch                    : Architecture name (e.g., Volta, Turing, Ampere)</strong><br>gpu_board                   : Board type (e.g., pg133, pg136)<br>gpu_board_id                : Board ID in hex<br>gpu_board_name              : Full board name including the product name, board, SKU, and TS when available<br>gpu_board_pbr               : Board PBR (Prototype Build Request)<br>gpu_board_type              : One of “production”, “pre-production”, “engineering”<br><strong>gpu_chip                    : Chip name (e.g., gv100, ga100)</strong><br>gpu_chip_sku                : Chip SKU (Stock Keeping Unit)<br><strong>gpu_compute_capability      : GPU compute capability (eg. sm80)</strong><br>gpu_default_register        : registers that are set on the gpu unless overridden<br>gpu_default_vbios           : vbios driver that is installed on the gpu unless overridden<br>gpu_device_id               : PCIe device ID in hex<br>gpu_max_mem_clock           : Maximum GPU memory clock in MHz<br>gpu_max_sm_clock            : Maximum GPU SM clock in MHz<br>gpu_memory                  : GPU memory in bytes<br>gpu_memory_gb               : GPU memory in JEDEC GB (IEC GiB, or 1024^3)<br>gpu_nvidia_smi_index        : GPU device index<br>gpu_nvlink_peers            : Number of NVLink-connected GPUs requested<br>gpu_pcie_gen                : PCIe generation at which the device link is trained<br>gpu_pcie_link_width         : PCIe link width<br>gpu_pcie_peers              : Number of PCIe-connected to this GPU<br>gpu_peers                   : Number of GPUs connected in any way to this GPU<br>gpu_power_limit             : Power limit in Watts<br>gpu_product_name            : Product name (e.g., Tesla V100, Tesla P4, Titan V, Tesla P4)<br>gpu_product_variant_hash    :<br>gpu_serial_number           : GPU serial number<br>gpu_short_name              : Chip ID (e.g., ga100-a, ga100gl-a, ga100gl-b)<br><strong>gpu_sms                     : Number of SMs</strong><br>gpu_trainstop               : Device Train Stop (e.g. TSn, DVT, QSm, RCn, CR, MP)<br>gpu_uuid                    : Unique identifier for a gpu<br>gpu_vbios_ver               : VBIOS version<br>gpus                        : GPUs to allocate for the job, defaults to 1<br>host                        : Alias for “node”<br>hostname                    : Alias for “node”<br>is_soc                      : Boolean indicating an SOC system (eg. jetson)<br>node                        : Node name in computelab<br>num_gpus                    : Number of GPUs connected in the group that this GPU is a part of<br><strong>os_name                     : OS name</strong><br><strong>os_version                  : OS version</strong><br>partitions                  : Slurm partition name<br>system_memory               : System memory<br>system_memory_gb            : System memory in GB<br>system_product_name         : System product name (from DMI type 1 record)<br>system_short_name           : System short name</p>
+<p>Note that you can’t really select a specific GPU using the uuid on a multi-GPU<br>node, so a job started from a query containing a positive uuid term will be<br>converted to an exclusive job and you will get all of the GPUs on the node where<br>the given GPU is hosted.  </p>
+<hr>
+<ul>
+<li><p>Get a front-end computelab machine<br><code>ssh jiangs@computelab</code></p>
+</li>
+<li><p>To get a list of free nodes available to you in computelab -<br><code>csm find &#39;chip=*&#39; -v -f</code></p>
+</li>
+<li><p>To start an interactive job, using node information (use a free node listed in the previous list) -<br><code>crun -q &#39;node=computelab-11&#39; -i</code></p>
+</li>
+<li><p>Set the bash for a bash shell with clear environment variables<br><code>alias bash &#39;/usr/bin/env -i /bin/bash -l&#39;</code></p>
+</li>
+<li><p>Get a bash shell<br><code>bash</code></p>
+</li>
+<li><p>Get the relevant CUDA toolkit pointers. This is gotten from previous computelab users who needed to set their environment<br><code>source ~/computelab.sh</code></p>
+</li>
+<li><p>Build the code. Note that make clean is important otherwise there are weird environment issues that make spits out<br><code>make clean; make all</code></p>
+</li>
+<li><p>CUDA Path pointer in the Makefile that we need to set<br><code>CUDA_PATH ?= /home/scratch.svc_compute_arch/release/cuda_toolkit/r11.5/x86_64/latest/</code></p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/07/VSCode-MarkDown-Hexo-Blog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="WeChat: shaojiang9650<br>Email: shao_study@163.com">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/07/07/VSCode-MarkDown-Hexo-Blog/" class="post-title-link" itemprop="url">VSCode_MarkDown_Hexo_Blog</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-07-07 17:36:57 / Modified: 17:56:35" itemprop="dateCreated datePublished" datetime="2022-07-07T17:36:57+08:00">2022-07-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="MarkDown文件"><a href="#MarkDown文件" class="headerlink" title="MarkDown文件"></a>MarkDown文件</h1><h3 id="VS-Code-中-MarkDown-文件快捷键"><a href="#VS-Code-中-MarkDown-文件快捷键" class="headerlink" title="VS Code 中 MarkDown 文件快捷键"></a>VS Code 中 MarkDown 文件快捷键</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">快捷键</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">ctrl + B</td>
+<td style="text-align:left">切换粗体</td>
+</tr>
+<tr>
+<td style="text-align:left">ctrl + I</td>
+<td style="text-align:left">切换斜体</td>
+</tr>
+<tr>
+<td style="text-align:left">alt + S</td>
+<td style="text-align:left">切换删除线</td>
+</tr>
+<tr>
+<td style="text-align:left">ctrl + shift + [\/]</td>
+<td style="text-align:left">切换标题级别</td>
+</tr>
+<tr>
+<td style="text-align:left">alt + shift + F</td>
+<td style="text-align:left">表格自动缩进</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="表格中内容对齐方式"><a href="#表格中内容对齐方式" class="headerlink" title="表格中内容对齐方式"></a>表格中内容对齐方式</h3><ul>
+<li><code>-:</code> 设置内容和标题栏居右对齐。</li>
+<li><code>:-</code> 设置内容和标题栏居左对齐。</li>
+<li><code>:-:</code> 设置内容和标题栏居中对齐。</li>
+</ul>
+<h1 id="使用Hexo-GitHub搭建博客"><a href="#使用Hexo-GitHub搭建博客" class="headerlink" title="使用Hexo + GitHub搭建博客"></a>使用Hexo + GitHub搭建博客</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/01/cuda-7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -184,7 +409,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-06 21:53:41" itemprop="dateModified" datetime="2022-07-06T21:53:41+08:00">2022-07-06</time>
+                <time title="Modified: 2022-07-18 01:12:41" itemprop="dateModified" datetime="2022-07-18T01:12:41+08:00">2022-07-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -210,11 +435,7 @@
           <h1 id="CUDA学习随记7-B-25-Asynchronous-Barrier"><a href="#CUDA学习随记7-B-25-Asynchronous-Barrier" class="headerlink" title="CUDA学习随记7 B.25. Asynchronous Barrier"></a>CUDA学习随记7 B.25. Asynchronous Barrier</h1><ol>
 <li><a target="_blank" rel="noopener" href="https://singvision.net/2015/01/06/cuda-%e8%bd%af%e4%bb%b6%e6%8a%bd%e8%b1%a1%e7%9a%84%e5%b9%bb%e5%bd%b1%e8%83%8c%e5%90%8e/">CUDA, 软件抽象的幻影背后</a></li>
 <li><a target="_blank" rel="noopener" href="https://singvision.net/2015/01/08/cuda-%e8%bd%af%e4%bb%b6%e6%8a%bd%e8%b1%a1%e7%9a%84%e5%b9%bb%e5%bd%b1%e8%83%8c%e5%90%8e-%e4%b9%8b%e4%ba%8c/">CUDA, 软件抽象的幻影背后 之二</a></li>
-<li><p><a target="_blank" rel="noopener" href="https://singvision.net/2015/01/13/cuda-%e8%bd%af%e4%bb%b6%e6%8a%bd%e8%b1%a1%e7%9a%84%e5%b9%bb%e5%bd%b1%e8%83%8c%e5%90%8e-%e4%b9%8b%e4%b8%89/">CUDA, 软件抽象的幻影背后 之三</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#aw-barrier">CUDA C++ Programming Guide: B.25. Asynchronous Barrier</a></p>
-</li>
-<li><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#parallel-synchronization-and-communication-instructions-mbarrier">PTX ISA: 9.7.12.11. Parallel Synchronization and Communication Instructions: mbarrier</a></li>
+<li><a target="_blank" rel="noopener" href="https://singvision.net/2015/01/13/cuda-%e8%bd%af%e4%bb%b6%e6%8a%bd%e8%b1%a1%e7%9a%84%e5%b9%bb%e5%bd%b1%e8%83%8c%e5%90%8e-%e4%b9%8b%e4%b8%89/">CUDA, 软件抽象的幻影背后 之三</a></li>
 </ol>
 <p>CUDA Samples里面有好多有意思的代码，多学多看</p>
 <p>6_Advanced/jacobiCudaGraphs<br>0_Simple\cudaTensorCoreGemm</p>
@@ -222,24 +443,24 @@
 <p><strong>References:</strong></p>
 <ol>
 <li><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#aw-barrier">CUDA C++ Programming Guide: B.25. Asynchronous Barrier</a></li>
-<li></li>
+<li><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#parallel-synchronization-and-communication-instructions-mbarrier">PTX ISA: 9.7.12.11. Parallel Synchronization and Communication Instructions: mbarrier</a></li>
 </ol>
 </blockquote>
-<h2 id="B-25-Asynchronous-Barrier"><a href="#B-25-Asynchronous-Barrier" class="headerlink" title="B.25. Asynchronous Barrier"></a>B.25. Asynchronous Barrier</h2><p>std::barrier的GPU实现，允许用户指定barrier对象的范围。</p>
+<h2 id="CUDA-C-Programming-Guide-B-25-Asynchronous-Barrier"><a href="#CUDA-C-Programming-Guide-B-25-Asynchronous-Barrier" class="headerlink" title="CUDA C++ Programming Guide: B.25. Asynchronous Barrier"></a>CUDA C++ Programming Guide: B.25. Asynchronous Barrier</h2><h2 id="异步barrier"><a href="#异步barrier" class="headerlink" title="异步barrier"></a>异步barrier</h2><p>std::barrier的GPU实现，允许用户指定barrier对象的范围。</p>
 <p>Devices of compute capability 8.0 or higher provide <strong>hardware acceleration</strong> for barrier operations and integration of these barriers with the <strong>memcpy_async</strong> feature.<br>CC 8.0及以上的设备对barrier拥有硬件加速，且集成了memcpy_async的特性（用于异步拷贝的同步）。</p>
-<p> On devices with compute capability below 8.0 but starting 7.0, these barriers are available without hardware acceleration.<br> 介于CC 7.0与8.0之间的设备具有barrier指令，但没有硬件加速。</p>
-<h3 id="B-25-1-Simple-Synchronization-Pattern-简单同步模式"><a href="#B-25-1-Simple-Synchronization-Pattern-简单同步模式" class="headerlink" title="B.25.1. Simple Synchronization Pattern 简单同步模式"></a>B.25.1. Simple Synchronization Pattern 简单同步模式</h3><p> Without the arrive/wait barrier, synchronization is achieved using __syncthreads() (to synchronize all threads in a block) or group.sync() when using Cooperative Groups.</p>
+<p>On devices with compute capability below 8.0 but starting 7.0, these barriers are available without hardware acceleration.<br>介于CC 7.0与8.0之间的设备具有barrier指令，但没有硬件加速。</p>
+<h3 id="B-25-1-Simple-Synchronization-Pattern-简单同步模式"><a href="#B-25-1-Simple-Synchronization-Pattern-简单同步模式" class="headerlink" title="B.25.1. Simple Synchronization Pattern 简单同步模式"></a>B.25.1. Simple Synchronization Pattern 简单同步模式</h3><p>Without the arrive/wait barrier, synchronization is achieved using __syncthreads() (to synchronize all threads in a block) or group.sync() when using Cooperative Groups.</p>
 <p>不使用barrier时，GPU拥有两种同步方式：</p>
 <ol>
 <li>__syncthreads()：同步一个block中的所有threads。</li>
 <li>group.sync()：同步整个Cooperative Groups。</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cooperative_groups.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">simple_sync</span><span class="params">(<span class="type">int</span> iteration_count)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> block = cooperative_groups::<span class="built_in">this_thread_block</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; iteration_count; ++i) &#123;</span><br><span class="line">        <span class="comment">/* code before arrive */</span></span><br><span class="line">        block.<span class="built_in">sync</span>(); <span class="comment">/* wait for all threads to arrive here */</span></span><br><span class="line">        <span class="comment">/* code after wait */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用Cooperative Groups进行block级别同步的例子。<br>In addition, memory updates that happened before the synchronization point are guaranteed to be visible to all threads in the block after the synchronization point, i.e., equivalent to atomic_thread_fence(memory_order_seq_cst, thread_scope_block) as well as the sync.<br>除此之外，还隐含了memory fence的作用，在同步点前发生的内存修改操作，对同步点之后的所有线程均可见。这个特性__syncthreads()与group.sync()都有。保证了线程内存独写的先后顺序。</p>
+<p>使用Cooperative Groups进行block级别同步的例子。<br>In addition, memory updates that happened before the synchronization point are guaranteed to be visible to all threads in the block after the synchronization point, i.e., equivalent to atomic_thread_fence(memory_order_seq_cst, thread_scope_block) as well as the sync.<br>除此之外，还隐含了memory fence的作用，在同步点前发生的内存修改操作，对同步点之后的所有线程均可见。这个特性__syncthreads()与group.sync()都有。保证了线程内内存读写的先后顺序。</p>
 <blockquote>
 <p><strong>这种模式有三个阶段：</strong></p>
 <ol>
-<li>sync之前的内存更新操作，在sync之后可读</li>
+<li>sync之前的代码执行内存更新操作，且将要在sync之后被读取</li>
 <li>同步点Synchronization point</li>
 <li>sync之后的代码，拥有对sync之前发生的内存更新操作的可见性</li>
 </ol>
@@ -250,18 +471,239 @@
 <p>In this pattern, the synchronization point (<strong>block.sync()</strong>) is split into an arrive point (<strong>bar.arrive()</strong>) and a wait point (<strong>bar.wait(std::move(token))</strong>). A thread begins participating in a <strong>cuda::barrier</strong> with its first call to <strong>bar.arrive()</strong>.<br>此模式下原来的一个同步点block.sync()被分割为了一个到达点bar.arrive()与一个等待点bar.wait(std::move(token))。当一个线程首次执行到bar.arrive()时，视为其开始参与到cuda::barrier中。</p>
 <p>When a thread calls bar.wait(std::move(token)) it will be blocked until participating threads have completed bar.arrive() the expected number of times as specified by the expected arrival count argument passed to init().<br>当一个线程执行到bar.wait(std::move(token))，此线程将被blocked，直到参与到cuda::barrier中的线程执行了期望次数的bar.arrive()。这个期望次数在一开始使用init()函数初始化cuda::barrier时指定。<br>比如示例代码中：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">init</span>(&amp;bar, block.<span class="built_in">size</span>()); <span class="comment">// Initialize the barrier with expected arrival count</span></span><br></pre></td></tr></table></figure><br>为使用block size初始化cuda::barrier，等于对block中所有线程的同步操作。</p>
 <p><strong>Memory updates that happen before participating threads’ call to bar.arrive() are guaranteed to be visible to participating threads after their call to bar.wait(std::move(token)).</strong><br>这种方式也有memory fence的功能，区别是发生在bar.arrive()之前的内存修改将会对bar.wait()之后的代码可见。</p>
-<p>Note that the call to bar.arrive() does not block a thread, it can proceed with other work that does not depend upon memory updates that happen before other participating threads’ call to bar.arrive().<br>bar.arrive()并不会阻塞一个线程继续执行，只有bar.wait()会，因此在线程到达bar.arrive()后，可以在等待其他线程到达bar.arrive()之前，继续执行一些不含访问由其他参与线程到达bar.arrive()之前修改的内存的工作。</p>
+<p>Note that the call to bar.arrive() does not block a thread, it can proceed with other work that does not depend upon memory updates that happen before other participating threads’ call to bar.arrive().<br>bar.arrive()并不会阻塞一个线程继续执行，只有bar.wait()会，因此在线程到达bar.arrive()后，可以在等待其他线程到达bar.arrive()之前，继续执行一些不依赖于由其他参与线程到达bar.arrive()之前进行的内存修改的工作。</p>
 <blockquote>
 <p><strong>这种arrive之后wait的模式有五个阶段：</strong></p>
 <ol>
-<li>arrive之前的内存更新操作，在wait之后可读</li>
-<li>arrive点有隐式的memory fence，等价于<br><strong>atomic_thread_fence(memory_order_seq_cst, thread_scope_block)</strong></li>
-<li>arrive与wait之间的代码，一些不依赖arrive之前会更新的内存数据的工作。</li>
-<li>wait point等待点，等待arrive的数量满足要求。</li>
-<li>wait之后的代码，拥有对arrive之前发生的内存更新操作的可见性</li>
+<li>arrive之前的代码执行内存更新操作，且将会在wait之后被读取</li>
+<li>arrive point 到达点，含有隐式的memory fence，等价于<br><strong>atomic_thread_fence(memory_order_seq_cst, thread_scope_block) 顺序一致模型</strong></li>
+<li>arrive与wait之间的代码，一些不依赖其他线程在arrive之前进行的内存更新操作的工作。</li>
+<li>wait point 等待点，等待执行arrive的数量满足要求。</li>
+<li>wait之后的代码，拥有对arrive之前发生的内存更新操作的可见性。</li>
 </ol>
 </blockquote>
+<h3 id="B-25-3-Bootstrap-Initialization-Expected-Arrival-Count-and-Participation-初始化、预期到达计数、参与性"><a href="#B-25-3-Bootstrap-Initialization-Expected-Arrival-Count-and-Participation-初始化、预期到达计数、参与性" class="headerlink" title="B.25.3. Bootstrap Initialization, Expected Arrival Count, and Participation 初始化、预期到达计数、参与性"></a>B.25.3. Bootstrap Initialization, Expected Arrival Count, and Participation 初始化、预期到达计数、参与性</h3><p>Initialization must happen before any thread begins participating in a cuda::barrier.<br>cuda::barrier的初始化必须happen before任意线程开始参与cuda::barrier。<br>happen before具有对内存状态的可见性，也就是说其他线程必须对初始化之后的结果可见。<br>cuda::barrier对线程participating的定义为线程调用bar.arrive()开始。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cuda/barrier&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cooperative_groups.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">init_barrier</span><span class="params">()</span> </span>&#123; </span><br><span class="line">    __shared__ cuda::barrier&lt;cuda::thread_scope_block&gt; bar;</span><br><span class="line">    <span class="keyword">auto</span> block = cooperative_groups::<span class="built_in">this_thread_block</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (block.<span class="built_in">thread_rank</span>() == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">init</span>(&amp;bar, block.<span class="built_in">size</span>()); <span class="comment">// Single thread initializes the total expected arrival count.</span></span><br><span class="line">    &#125;</span><br><span class="line">    block.<span class="built_in">sync</span>();         </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用函数init()来为cuda::barrier进行初始化，其第二个参数为expected arrival count (期望到达数量)，指期待参与线程执行bar.arrive()的次数，到达这个数量后，线程于bar.wait(std::move(token))处unblocked。</p>
+<p>A cuda::barrier is flexible in specifying how threads participate (split arrive/wait) and which threads participate. In contrast this_thread_block.sync() from cooperative groups or <strong>syncthreads() is applicable to whole-thread-block and </strong>syncwarp(mask) is a specified subset of a warp. If the intention of the user is to synchronize a full thread block or a full warp we recommend using <strong>syncthreads() and </strong>syncwarp(mask) respectively for <strong>performance reasons</strong>.<br>cuda::barrier可以自由指定参与其中的线程与线程参与的方式，相比之下cooperative groups (指定为整个block) 或<strong>syncthreads()作用于整个block，而</strong>syncwarp(mask)作用于一个warp的子集 (具体参与其中的线程lane由mask对应bit位为 0/1 指定 不参与/参与)<br>如果希望对block或warp进行同步，使用<strong>syncthreads()与</strong>syncwarp(mask)性能更好。</p>
+<h3 id="B-25-4-A-Barrier’s-Phase-Arrival-Countdown-Completion-and-Reset-Barrier的四种状态：到达、倒计时、完成、重置"><a href="#B-25-4-A-Barrier’s-Phase-Arrival-Countdown-Completion-and-Reset-Barrier的四种状态：到达、倒计时、完成、重置" class="headerlink" title="B.25.4. A Barrier’s Phase: Arrival, Countdown, Completion, and Reset Barrier的四种状态：到达、倒计时、完成、重置"></a>B.25.4. A Barrier’s Phase: Arrival, Countdown, Completion, and Reset Barrier的四种状态：到达、倒计时、完成、重置</h3><p>A cuda::barrier counts down from the expected arrival count to zero as participating threads call bar.arrive(). When the countdown reaches zero, a cuda::barrier is complete for the current phase. When the last call to bar.arrive() causes the countdown to reach zero, the countdown (计数器) is <strong>automatically</strong> and <strong>atomically</strong> reset. The reset assigns <strong>the countdown to the expected arrival count</strong>, and moves the cuda::barrier to the next phase.</p>
+<p>A token object (记号对象) of class <strong>cuda::barrier::arrival_token</strong>, as <strong>returned from token=bar.arrive()</strong>, is associated with the current phase of the barrier. A call to bar.wait(std::move(token)) blocks the calling thread while the cuda::barrier is in the current phase, i.e., while <strong>the phase associated with the token matches the phase of the cuda::barrier</strong>. If the phase is advanced (because the countdown reaches zero) before the call to bar.wait(std::move(token)) then the thread does not block; if the phase is advanced while the thread is blocked in bar.wait(std::move(token)), the thread is unblocked.<br>bar.wait(std::move(token))函数会block其中cuda::barrier与其参数token处于相同阶段的线程，如果线程的阶段更超前，则unblocked。</p>
+<blockquote>
+<p>std::move语句的功能是将一个左值引用强制转化为右值引用，继而可以通过右值引用来使用该值，避免了使用左值对象赋值时，调用拷贝构造函数，具有更佳的性能。<br>std::move是将对象的状态或者所有权从一个对象转移到另一个对象，只是转移，没有内存的搬迁或者内存拷贝。</p>
+<p>std::move，移动构造函数。<br>通过移动构造，<strong>b指向a的资源，a不再拥有资源 (资源所有权的转移) </strong>，这里的资源，可以是动态申请的内存，网络链接，打开的文件，也可以是本例中的string。<strong>这时候访问a的行为时未定义的</strong>，比如，如果资源是动态内存，a被移动之后，再次访问a的资源，根据移动构造函数的定义，可能是空指针，如果是资源上文的string，移动之后，a的资源为空字符串（string被移动之后，为空字符串）。</p>
+<center><img src="/2022/07/01/cuda-7/1.jpg" width="100%" height="100%"></center>
 
+</blockquote>
+<ul>
+<li>A thread’s calls to token=bar.arrive() and bar.wait(std::move(token)) must be <strong>sequenced</strong> such that token=bar.arrive() occurs during the cuda::barrier’s current phase, and bar.wait(std::move(token)) occurs during the same or next phase.<br><code>token=bar.arrive()</code>与<code>bar.wait(std::move(token))</code>必须有严格的先后顺序</li>
+<li>A thread’s call to bar.arrive() must occur when the barrier’s counter is non-zero. After barrier initialization, if a thread’s call to bar.arrive() causes the countdown to reach zero then a call to bar.wait(std::move(token)) must happen before the barrier can be reused for a subsequent call to bar.arrive().<br>必须在<code>cuda::barrier</code>的countdown非0的时候才能调用<code>bar.arrive()</code>。在初始化<code>cuda::barrier</code>之后，如果任一线程调用<code>bar.arrive()</code>导致countdown到达0，则此时必须调用一次<code>bar.wait(std::move(token))</code>，才可将<code>cuda::barrier</code> reset，从而reuse这个<code>cuda::barrier</code>。</li>
+<li>bar.wait() must only be called using a token object of the current phase or the immediately preceding phase. For any other values of the token object, the behavior is undefined.</li>
+</ul>
+<h3 id="B-25-5-Spatial-Partitioning-also-known-as-Warp-Specialization-空间划分-warp专用"><a href="#B-25-5-Spatial-Partitioning-also-known-as-Warp-Specialization-空间划分-warp专用" class="headerlink" title="B.25.5. Spatial Partitioning (also known as Warp Specialization)  空间划分 (warp专用)"></a>B.25.5. Spatial Partitioning (also known as Warp Specialization)  空间划分 (warp专用)</h3><p>A thread block can be spatially partitioned such that warps are specialized to <strong>perform independent computations</strong>. Spatial partitioning is used in a <strong>producer</strong> or <strong>consumer</strong> pattern, where one subset of threads produces data that is concurrently consumed by the other (disjoint) subset of threads.<br>block中线程按照warp划分，不同的warp间可独立执行不同的指令 (disjoint)。</p>
+<p>A producer/consumer spatial partitioning pattern requires two one sided synchronizations to manage a data buffer between the producer and consumer.<br>producer/consumer空间划分方式需要在producer与consumer中分别进行单侧同步。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Producer</th>
+<th>Consumer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>wait for buffer to be ready to be filled</td>
+<td>signal buffer is ready to be filled</td>
+</tr>
+<tr>
+<td>produce data and fill the buffer</td>
+<td></td>
+</tr>
+<tr>
+<td>signal buffer is filled</td>
+<td>wait for buffer to be filled</td>
+</tr>
+<tr>
+<td></td>
+<td>consume data in filled buffer</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cuda/barrier&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cooperative_groups.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> barrier = cuda::barrier&lt;cuda::thread_scope_block&gt;;</span><br><span class="line"><span class="comment">// 类型别名</span></span><br><span class="line"></span><br><span class="line"><span class="function">__device__ <span class="type">void</span> <span class="title">producer</span><span class="params">(barrier ready[], barrier filled[], <span class="type">float</span>* buffer, <span class="type">float</span>* in, <span class="type">int</span> N, <span class="type">int</span> buffer_len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; (N/buffer_len); ++i) &#123;</span><br><span class="line">        ready[i%<span class="number">2</span>].<span class="built_in">arrive_and_wait</span>(); <span class="comment">/* wait for buffer_(i%2) to be ready to be filled */</span></span><br><span class="line">        <span class="comment">// 初始情况下所有producer线程执行一次arrive_and_wait，此函数为arrive之后wait，因此结合consumer中的线程，block中所有线程初始时均执行了一次arrive，此时ready[i%2] barrier的countdown由初始化的block size减至0，此时此处的arrive_and_wait中包含的wait不再block producer线程</span></span><br><span class="line">        <span class="comment">// 此时ready[i%2] barrier reset，其countdown重新恢复至block size</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* produce, i.e., fill in, buffer_(i%2)  */</span></span><br><span class="line">        <span class="comment">// producer线程填充 buffer</span></span><br><span class="line"></span><br><span class="line">        barrier::arrival_token token = filled[i%<span class="number">2</span>].<span class="built_in">arrive</span>(); <span class="comment">/* buffer_(i%2) is filled */</span></span><br><span class="line">        <span class="comment">// 线程填充过之后会将对应的filled[i%2] barrier的countdown减至warp size</span></span><br><span class="line">        <span class="comment">// 并++i进入下一循环，使得另一个ready barrier的countdown减至warpsize</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">__device__ <span class="type">void</span> <span class="title">consumer</span><span class="params">(barrier ready[], barrier filled[], <span class="type">float</span>* buffer, <span class="type">float</span>* out, <span class="type">int</span> N, <span class="type">int</span> buffer_len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    barrier::arrival_token token1 = ready[<span class="number">0</span>].<span class="built_in">arrive</span>(); <span class="comment">/* buffer_0 is ready for initial fill */</span></span><br><span class="line">    barrier::arrival_token token2 = ready[<span class="number">1</span>].<span class="built_in">arrive</span>(); <span class="comment">/* buffer_1 is ready for initial fill */</span></span><br><span class="line">    <span class="comment">// 以上代码每个consumer线程都会执行一次，因此会使得两个ready barrier的countdown均减至一个warp size (block size = 2 * warp size)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; (N/buffer_len); ++i) &#123;</span><br><span class="line">        filled[i%<span class="number">2</span>].<span class="built_in">arrive_and_wait</span>(); <span class="comment">/* wait for buffer_(i%2) to be filled */</span></span><br><span class="line">        <span class="comment">// 等待producer填充数据结束</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* consume buffer_(i%2) */</span></span><br><span class="line">        <span class="comment">// consumer使用buffer中已经填充好的数据</span></span><br><span class="line"></span><br><span class="line">        barrier::arrival_token token = ready[i%<span class="number">2</span>].<span class="built_in">arrive</span>(); <span class="comment">/* buffer_(i%2) is ready to be re-filled */</span></span><br><span class="line">        <span class="comment">// 提示对应buffer中的数据已经使用完毕，可以填充新的数据进来</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//N is the total number of float elements in arrays in and out</span></span><br><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">producer_consumer_pattern</span><span class="params">(<span class="type">int</span> N, <span class="type">int</span> buffer_len, <span class="type">float</span>* in, <span class="type">float</span>* out)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Shared memory buffer declared below is of size 2 * buffer_len</span></span><br><span class="line">    <span class="comment">// so that we can alternatively work between two buffers. </span></span><br><span class="line">    <span class="comment">// buffer_0 = buffer and buffer_1 = buffer + buffer_len</span></span><br><span class="line">    __shared__ <span class="keyword">extern</span> <span class="type">float</span> buffer[];</span><br><span class="line">    <span class="comment">// 动态分配的shared memory，大小在launch kernel时指定，为 2 * buffer_len</span></span><br><span class="line">    <span class="comment">// double buffer</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// bar[0] and bar[1] track if buffers buffer_0 and buffer_1 are ready to be filled, </span></span><br><span class="line">    <span class="comment">// while bar[2] and bar[3] track if buffers buffer_0 and buffer_1 are filled-in respectively</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Ping-Pong buffer，两个标记填充完毕，两个标记使用完毕</span></span><br><span class="line">    __shared__ barrier bar[<span class="number">4</span>];</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">auto</span> block = cooperative_groups::<span class="built_in">this_thread_block</span>();</span><br><span class="line">    <span class="comment">// block.thread_rank()函数返回cooperative_groups中线程Index</span></span><br><span class="line">    <span class="keyword">if</span> (block.<span class="built_in">thread_rank</span>() &lt; <span class="number">4</span>)</span><br><span class="line">        <span class="built_in">init</span>(bar + block.<span class="built_in">thread_rank</span>(), block.<span class="built_in">size</span>());</span><br><span class="line">        <span class="comment">// 用四个线程，每个线程负责初始化一个cuda::barrier</span></span><br><span class="line">        <span class="comment">// barrier的countdown为block size</span></span><br><span class="line">    block.<span class="built_in">sync</span>();</span><br><span class="line">    <span class="comment">// block同步，顺便隐含一个memory fence，后续线程等待cuda::barrier初始化结束，并对初始化之后的结果可见</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// block size为两个warp，前32个作为producer，后32个为consumer</span></span><br><span class="line">    <span class="keyword">if</span> (block.<span class="built_in">thread_rank</span>() &lt; warpSize)</span><br><span class="line">        <span class="built_in">producer</span>(bar, bar+<span class="number">2</span>, buffer, in, N, buffer_len);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">consumer</span>(bar, bar+<span class="number">2</span>, buffer, out, N, buffer_len);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<center><img src="/2022/07/01/cuda-7/1.png" width="100%" height="100%"></center>
+
+<p>In this example the first warp is specialized as the producer and the remaining warps are specialized as the consumer. All producer and consumer threads participate (call <code>bar.arrive()</code> or <code>bar.arrive_and_wait()</code>) in each of the four <code>cuda::barriers</code> so the expected arrival counts are equal to <code>block.size()</code>.<br>在这个示例中，通过if语句，将第一个warp指定为producer，而其余warps指定为consumer。所有的线程都通过调用<code>bar.arrive()</code> or <code>bar.arrive_and_wait()</code>函数参与到了四个barriers中。所以四个barrier的expected arrival counts均设置为block size。</p>
+<p>A producer thread waits for the consumer threads to <strong>signal</strong> that the shared memory buffer can be filled. In order to wait for a <code>cuda::barrier</code> a producer thread must first arrive on that <code>ready[i%2].arrive()</code> to get a <strong>token</strong> and then <code>ready[i%2].wait(token)</code> with that token. For simplicity <code>ready[i%2].arrive_and_wait()</code> combines these operations.<br>wait函数需要使用arrive函数返回的token进行配对，而<code>ready[i%2].arrive_and_wait()</code>简化了这个过程，其相当于<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bar.<span class="built_in">arrive_and_wait</span>();</span><br><span class="line"><span class="comment">/* is equivalent to */</span></span><br><span class="line">bar.<span class="built_in">wait</span>(bar.<span class="built_in">arrive</span>());</span><br></pre></td></tr></table></figure></p>
+<p>Producer threads compute and fill the ready buffer, they then <strong>signal</strong> that the buffer is filled by arriving on the filled barrier, <code>filled[i%2].arrive()</code>. A producer thread does not wait at this point, instead it waits until the next iteration’s buffer (double buffering) is ready to be filled.<br>producer负责计算和填充已经ready的buffer，接着通过调用<code>filled[i%2].arrive()</code>发出buffer is filled的信号。producer不等待这个filled信号，而是等待consumer使用完毕之后发出的ready信号。</p>
+<p>A consumer thread begins by signaling that both buffers are ready to be filled. A consumer thread does not wait at this point, instead it waits for this iteration’s buffer to be filled, <code>filled[i%2].arrive_and_wait()</code>. After the consumer threads consume the buffer they signal that the buffer is ready to be filled again, <code>ready[i%2].arrive()</code>, and then wait for the next iteration’s buffer to be filled.<br>consumer在一开始发出两个buffer均已经ready，可以进行填充的信号。而consumer不等待这个filled信号，而是等待producer发出的填充完毕的filled信号，通过调用函数<code>filled[i%2].arrive_and_wait()</code>。当consumer使用完毕一个buffer之后，其通过调用<code>ready[i%2].arrive()</code>，发出ready信号，告知producer可以对这个buffer进行填充，并等待下一个buffer to be filled。</p>
+<p><strong>producer的循环流程为：</strong></p>
+<ol>
+<li>等待consumer的ready信号</li>
+<li>填充ready的buffer</li>
+<li>发出填充完毕的filled信号</li>
+</ol>
+<p><strong>consumer的循环流程为：</strong></p>
+<ol>
+<li>等待producer的filled信号</li>
+<li>使用filled的buffer</li>
+<li>发出使用完毕的ready信号</li>
+</ol>
+<h3 id="B-25-6-Early-Exit-Dropping-out-of-Participation-早退，提前退出barrier"><a href="#B-25-6-Early-Exit-Dropping-out-of-Participation-早退，提前退出barrier" class="headerlink" title="B.25.6. Early Exit (Dropping out of Participation) 早退，提前退出barrier"></a>B.25.6. Early Exit (Dropping out of Participation) 早退，提前退出barrier</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cuda/barrier&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cooperative_groups.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">__device__ <span class="type">bool</span> <span class="title">condition_check</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">early_exit_kernel</span><span class="params">(<span class="type">int</span> N)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">using</span> barrier = cuda::barrier&lt;cuda::thread_scope_block&gt;;</span><br><span class="line">    __shared__ barrier bar;</span><br><span class="line">    <span class="comment">// 依旧放在shared mem中</span></span><br><span class="line">    <span class="keyword">auto</span> block = cooperative_groups::<span class="built_in">this_thread_block</span>();</span><br><span class="line">    <span class="comment">// 定义整个block为cooperative_groups</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (block.<span class="built_in">thread_rank</span>() == <span class="number">0</span>)</span><br><span class="line">        <span class="built_in">init</span>(&amp;bar , block.<span class="built_in">size</span>());</span><br><span class="line">        <span class="comment">//由0号线程完成barrier初始化工作，the expected arrival counts设置为block size </span></span><br><span class="line">    block.<span class="built_in">sync</span>();</span><br><span class="line">    <span class="comment">// block同步，同时隐含mem fence，使得其他线程对0号线程的初始化结果可见</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; N; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">condition_check</span>()) &#123;</span><br><span class="line">          bar.<span class="built_in">arrive_and_drop</span>();</span><br><span class="line">          <span class="comment">// arrive和drop函数的combination，线程先执行arrive参与到barrier中，随后drop早退</span></span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">          <span class="comment">// 早退的线程直接return结束</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/* other threads can proceed normally */</span></span><br><span class="line">        barrier::arrival_token token = bar.<span class="built_in">arrive</span>();</span><br><span class="line">        <span class="comment">/* code between arrive and wait */</span></span><br><span class="line">        bar.<span class="built_in">wait</span>(std::<span class="built_in">move</span>(token)); <span class="comment">/* wait for all threads to arrive */</span></span><br><span class="line">        <span class="comment">/* code after wait */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>bar.arrive_and_drop();</code><br>This operation arrives on the <code>cuda::barrier</code> to fulfill the participating thread’s obligation to arrive in the current phase, and then decrements the expected arrival count for the next phase so that this thread is no longer expected to arrive on the barrier.<br>这个操作首先执行arrive，履行参与线程的义务，使barrier计数达到the expected arrival count，从而进入下一phase，接下来执行drop操作，退出barrier的参与，同时<strong>减少barrier在下一个phase中的the expected arrival count</strong>，因为此线程退出了，永远不会arrive。</p>
+<h3 id="B-25-7-Memory-Barrier-Primitives-Interface-内存barrier原语接口-mbarrier"><a href="#B-25-7-Memory-Barrier-Primitives-Interface-内存barrier原语接口-mbarrier" class="headerlink" title="B.25.7. Memory Barrier Primitives Interface  内存barrier原语接口 (mbarrier)"></a>B.25.7. Memory Barrier Primitives Interface  内存barrier原语接口 (mbarrier)</h3><blockquote>
+<p><strong>Primitives 原语</strong><br>所谓原语，一般是指由若干条指令组成的程序段，用来实现某个特定功能，在执行过程中<strong>不可被中断</strong>。原语一旦开始执行，就要连续执行完，不允许中断，否则就会出现操作错误，造成系统混乱。</p>
+</blockquote>
+<ul>
+<li>需要include头文件<code>&lt;cuda_awbarrier_primitives.h&gt;</code></li>
+</ul>
+<h4 id="B-25-7-1-Data-Types-数据类型"><a href="#B-25-7-1-Data-Types-数据类型" class="headerlink" title="B.25.7.1. Data Types 数据类型"></a>B.25.7.1. Data Types 数据类型</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="comment">/* implementation defined */</span> <span class="type">__mbarrier_t</span>;</span><br><span class="line"><span class="keyword">typedef</span> <span class="comment">/* implementation defined */</span> <span class="type">__mbarrier_token_t</span>;  </span><br></pre></td></tr></table></figure>
+<h4 id="B-25-7-2-Memory-Barrier-Primitives-API-原语API"><a href="#B-25-7-2-Memory-Barrier-Primitives-API-原语API" class="headerlink" title="B.25.7.2. Memory Barrier Primitives API 原语API"></a>B.25.7.2. Memory Barrier Primitives API 原语API</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">uint32_t</span> __mbarrier_maximum_count();</span><br><span class="line"><span class="type">void</span> __mbarrier_init(<span class="type">__mbarrier_t</span>* bar, <span class="type">uint32_t</span> expected_count); </span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>初始化函数的原语函数</strong></li>
+<li>bar must be a pointer to <strong>shared</strong> memory.  <strong>bar指针指向的mbarrier对象必须放在shared mem中！</strong></li>
+<li>expected_count &lt;= __mbarrier_maximum_count()  </li>
+<li>Initialize *bar expected arrival count for the current and next phase to expected_count.</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __mbarrier_inval(<span class="type">__mbarrier_t</span>* bar); </span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>功能：使mbarrier失效！</strong></li>
+<li>bar must be a pointer to the mbarrier object residing in shared memory.  <strong>bar必须为指向放在shared mem中的mbarrier对象的指针</strong></li>
+<li>Invalidation of <em>bar is required before the corresponding shared memory can be repurposed.  <em>*在重新将mbarrier所占用的shared mem分配出去之前必须先使mbarrier失效</em></em></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">__mbarrier_token_t</span> __mbarrier_arrive(<span class="type">__mbarrier_t</span>* bar);    </span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>bar.arrive()函数的原语函数</strong></li>
+<li>Initialization of *bar must happen before this call.</li>
+<li>Pending count must not be zero.</li>
+<li>Atomically decrement the pending count for the current phase of the barrier.  <strong>以原子方式做countdown</strong></li>
+<li>Return an arrival token associated with the barrier state immediately prior to the decrement.  <strong>返回计数-1之前反映barrier状态的token</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">__mbarrier_token_t</span> __mbarrier_arrive_and_drop(<span class="type">__mbarrier_t</span>* bar);   </span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>arrive_and_drop函数的原语函数，由于包含arrive函数，因此含有arrive函数的所有特性，此外还含有drop函数的特性</strong></li>
+<li>Initialization of *bar must happen before this call.</li>
+<li>Pending count must not be zero.</li>
+<li>Atomically decrement <strong>the pending count for the current phase</strong> and <strong>expected count for the next phase</strong> of the barrier.  <strong>除了arrive会将做countdown之外，drop函数还会使线程早退，并使得the expected arrival count -1</strong></li>
+<li>Return an arrival token associated with the barrier state immediately prior to the decrement.</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> __mbarrier_test_wait(<span class="type">__mbarrier_t</span>* bar, <span class="type">__mbarrier_token_t</span> token);  </span><br></pre></td></tr></table></figure>
+<ul>
+<li>token must be associated with <strong>the immediately preceding phase</strong> or <strong>current phase</strong> of *this.</li>
+<li>Returns true if token is associated with the immediately preceding phase of <em>bar, otherwise returns false.  <em>*如果token为前一阶段，则返回true (还需继续等待)，使得线程wait；如果token为当前阶段，则返回false (无需继续等待)，unblock线程。</em></em></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Note: This API has been deprecated in CUDA 11.1 </span></span><br><span class="line"><span class="comment">// 从CUDA 11.1开始，__mbarrier_pending_count函数被弃用</span></span><br><span class="line"><span class="type">uint32_t</span> __mbarrier_pending_count(<span class="type">__mbarrier_token_t</span> token);</span><br></pre></td></tr></table></figure>
+<h2 id="PTX-ISA-9-7-12-11-Parallel-Synchronization-and-Communication-Instructions-mbarrier"><a href="#PTX-ISA-9-7-12-11-Parallel-Synchronization-and-Communication-Instructions-mbarrier" class="headerlink" title="PTX ISA: 9.7.12.11. Parallel Synchronization and Communication Instructions: mbarrier"></a>PTX ISA: 9.7.12.11. Parallel Synchronization and Communication Instructions: mbarrier</h2><h2 id="并行同步通讯指令：mbarrier"><a href="#并行同步通讯指令：mbarrier" class="headerlink" title="并行同步通讯指令：mbarrier"></a>并行同步通讯指令：mbarrier</h2><p><code>mbarrier</code> is a barrier created in <strong>shared memory</strong> that supports :</p>
+<ul>
+<li>Synchronizing any subset of threads within a CTA<br>同步一个block中的任意线程子集 (mbarrier本身位于shared mem中，因此只能作用于block范围内)</li>
+<li>Waiting for completion of asynchronous <code>cp.async</code> operations initiated by a thread and <strong>making them visible to other threads</strong>.<br>等待线程发起的异步数据拷贝结束(cp.async，global mem to shared mem的异步数据拷贝)，并使得拷贝的结果对其他线程可见。</li>
+</ul>
+<blockquote>
+<p>CTA (Cooperative Thread Array), CUDA程序的任务分发单位，CTA与block是同一事物在<strong>执行模型</strong>和<strong>编程模型</strong>中的表述。</p>
+</blockquote>
+<p>An mbarrier object is an <strong>opaque object</strong> in memory which can be initialized and invalidated using :</p>
+<ul>
+<li><code>mbarrier.init</code> <strong>initialize</strong></li>
+<li><code>mbarrier.inval</code> <strong>invalidate</strong></li>
+</ul>
+<blockquote>
+<p>C++ opaque object，不透明对象，其没有对外可见的属性和方法，只能 pass these objects to related functions that know how to work with them.</p>
+</blockquote>
+<p>Operations supported on mbarrier objects are :</p>
+<ul>
+<li><code>mbarrier.arrive</code></li>
+<li><code>mbarrier.arrive_drop</code></li>
+<li><code>mbarrier.test_wait</code></li>
+<li><code>mbarrier.pending_count</code> // 按照 <a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#memory_barrier_primitives_interface">CUDA C++ Programming Guide</a> 的说法，这个在CUDA 11.1中被弃用了</li>
+<li><code>cp.async.mbarrier.arrive</code> //与异步拷贝函数cp.async相关</li>
+</ul>
+<p>未经<code>mbarrier.init</code>初始化就对mbarrier施加操作会导致undefined behavior。</p>
+<p>mbarrier operations enable threads to perform useful work <strong>after the arrival at the mbarrier</strong> and <strong>before waiting for the mbarrier to complete</strong>. The wait operation test_wait performs a <strong>non blocking test</strong> of mbarrier completion.</p>
+<h3 id="9-7-12-11-1-Size-and-alignment-of-mbarrier-object"><a href="#9-7-12-11-1-Size-and-alignment-of-mbarrier-object" class="headerlink" title="9.7.12.11.1. Size and alignment of mbarrier object"></a>9.7.12.11.1. Size and alignment of mbarrier object</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Type</th>
+<th style="text-align:center">Alignment (bytes)</th>
+<th style="text-align:center">Memory space</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">.b64</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">.shared</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="9-7-12-11-2-Contents-of-the-mbarrier-object"><a href="#9-7-12-11-2-Contents-of-the-mbarrier-object" class="headerlink" title="9.7.12.11.2. Contents of the mbarrier object"></a>9.7.12.11.2. Contents of the mbarrier object</h3><p>An opaque mbarrier object keeps track of the following information :</p>
+<ul>
+<li>Current phase of the mbarrier object<br>当前phase</li>
+<li>Count of pending arrivals for the current phase of the mbarrier object<br>等待arrive的数量</li>
+<li>Count of expected arrivals for the next phase of the mbarrier object<br>下一phase的expected arrivals count</li>
+</ul>
+<p>An mbarrier object progresses through a sequence of phases where each phase is defined by <strong>threads performing an expected number of arrive-on operations</strong>.<br>phase of the mbarrier: 线程进行expected number的arrive-on operation。</p>
+<p>The valid range of pending arrival count and expected arrival count is [1, 220 -1].<br>pending arrival count: 待arrive的数量<br>expected arrival count: 期望arrive的数量<br>expected arrival count - pending arrival count = 已经arrive的数量</p>
+<h3 id="9-7-12-11-3-Lifecycle-of-the-mbarrier-object"><a href="#9-7-12-11-3-Lifecycle-of-the-mbarrier-object" class="headerlink" title="9.7.12.11.3. Lifecycle of the mbarrier object"></a>9.7.12.11.3. Lifecycle of the mbarrier object</h3><p>The mbarrier object must be initialized prior to use.<br>使用前必须先进行初始化，不然会导致undefined behavior。</p>
+<p>An mbarrier object is used to <strong>synchronize threads (within a block)</strong> and <strong>cp.async operations (除了等待完成还会使得结果对block内其他线程可见)</strong>.</p>
+<p>An mbarrier object may be used to perform a sequence of such synchronizations.<br>mbarrier可重复使用，每一段使用过程对应一个phase。</p>
+<p>An mbarrier object must be invalidated to repurpose its memory.<br>在重新分配mbarrier所占用的内存之前，必须先将其invalidated。</p>
+<h3 id="9-7-12-11-4-Phase-of-the-mbarrier-object"><a href="#9-7-12-11-4-Phase-of-the-mbarrier-object" class="headerlink" title="9.7.12.11.4. Phase of the mbarrier object"></a>9.7.12.11.4. Phase of the mbarrier object</h3><p>The phase of an mbarrier object is <strong>the number of times the mbarrier object has been used</strong> to synchronize threads and cp.async operations. In each phase {0, 1, 2, …}, threads perform in program order :</p>
+<ul>
+<li>arrive-on operations to <strong>complete the current phase</strong> and</li>
+<li>test-wait operations to <strong>check for the completion of the current phase</strong>.</li>
+</ul>
+<p>An mbarrier object is <strong>automatically reinitialized upon completion of the current phase</strong> for immediate use in the next phase. The current phase is incomplete and all prior phases are complete.<br>当前phase完成时自动初始化，以便立即开始下一phase的重复使用。</p>
+<h3 id="9-7-12-11-5-Arrive-on-operation-on-mbarrier-object"><a href="#9-7-12-11-5-Arrive-on-operation-on-mbarrier-object" class="headerlink" title="9.7.12.11.5. Arrive-on operation on mbarrier object"></a>9.7.12.11.5. Arrive-on operation on mbarrier object</h3><p>An arrive-on operation, with <strong>an optional count argument (不指定默认为1)</strong>, on an mbarrier object consists of the following 2 steps :</p>
+<ul>
+<li><p>mbarrier signalling :<br>Signals <strong>the arrival of the executing thread</strong> OR <strong>completion of the asynchronous copy operations initiated by the executing thread</strong> on the mbarrier object. As a result of this, the pending arrival count is decremented by <strong>count</strong>. If the count argument is not specified, then <strong>it defaults to 1</strong>.<br>发出信号宣布当前执行线程arrive-on 或 当前执行线程发出的异步拷贝操作已经完成。通过将the pending arrival count减少count的方式发出这个信号，如果不指定count默认为1。</p>
+</li>
+<li><p>mbarrier completing the current phase :<br>If the count of <strong>the pending arrivals has reached zero</strong> then :</p>
+<ul>
+<li>the mbarrier object <strong>completes the current phase</strong> and <strong>transitions to the next phase</strong> and</li>
+<li><strong>the pending arrival count is reinitialized to the expected arrival count</strong></li>
+</ul>
+<p>In other words, if all the pending arrivals of the mbarrier object have happened, the mbarrier object gets reinitialized so that it can be immediately reused and the mbarrier object transitions to the next phase.<br>如果所有的pending arrivals都arrive-on了，那么mbarrier自动初始化 (the pending arrivel count 由0重新变为 the expected arrival count)，当前phase完成，进入下一phase。</p>
+</li>
+</ul>
+<h3 id="9-7-12-11-6-Parallel-Synchronization-and-Communication-Instructions-mbarrier-init"><a href="#9-7-12-11-6-Parallel-Synchronization-and-Communication-Instructions-mbarrier-init" class="headerlink" title="9.7.12.11.6. Parallel Synchronization and Communication Instructions: mbarrier.init"></a>9.7.12.11.6. Parallel Synchronization and Communication Instructions: mbarrier.init</h3><p><strong>mbarrier.init</strong><br>Initialize the mbarrier object.</p>
+<p><strong>Syntax 语法</strong><br><code>mbarrier.init&#123;.shared&#125;.b64 [addr], count;</code><br>.shared: 存储空间为shared mem<br>.b64: 数据类型<br>count: the expected arrival count</p>
+<p><strong>Description</strong><br><code>mbarrier.init</code> initializes the mbarrier object at the location specified by the address operand <code>addr</code> with the unsigned 32-bit integer <code>count</code>. The value of operand <code>count</code> must be in the range as specified in Contents of the mbarrier object.</p>
+<p>Initialization of the mbarrier object involves :</p>
+<ul>
+<li><strong>Initializing the current phase to 0.</strong><br>所以我猜current phase其实就是当前phase中arrive-on的count</li>
+<li>Initializing the expected arrival count to count.</li>
+<li>Initializing the pending arrival count to count.</li>
+</ul>
+<p>If no state space is specified then Generic Addressing is used. If the address specified by <code>addr</code> does not fall within the address window of <code>.shared</code> state space then the behavior is undefined.<br>如果没有使用<code>.share</code>操作数指定state space，则使用Generic Addressing通用地址，此时就要求<code>addr</code>指向的地址必须位于shared mem中，否则会导致undefined behavior。</p>
+<p>Supported addressing modes for operand <code>addr</code> is as described in Addresses as Operands.<br>Alignment for operand addr is as described in the Size and alignment of mbarrier object.<br><strong>8 bytes, 64 bits</strong></p>
+<p><strong>PTX ISA Notes</strong><br>Introduced in PTX ISA version 7.0.</p>
+<p><strong>Target ISA Notes</strong><br>Requires <strong>sm_80</strong> or higher.</p>
+<p><strong>Examples</strong><br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">.shared .b64 shMem, shMem2;</span><br><span class="line">.reg    .b64 addr;</span><br><span class="line">.reg    .b32 %r1;</span><br><span class="line"></span><br><span class="line">cvta.shared.u64          addr, shMem2;</span><br><span class="line">mbarrier.init.b64        [addr],   %r1;</span><br><span class="line">bar.sync                 0;</span><br><span class="line">// ... other mbarrier operations on addr</span><br><span class="line">// 这里cvta.shared.u64保证了addr指向的空间位于.share state space。因此mbarrier.init.b64指令没有添加.shared。</span><br><span class="line"></span><br><span class="line">mbarrier.init.shared.b64 [shMem], 12;</span><br><span class="line">bar.sync                 0;</span><br><span class="line">// ... other mbarrier operations on shMem</span><br></pre></td></tr></table></figure></p>
+<h3 id="9-7-12-11-7-Parallel-Synchronization-and-Communication-Instructions-mbarrier-inval"><a href="#9-7-12-11-7-Parallel-Synchronization-and-Communication-Instructions-mbarrier-inval" class="headerlink" title="9.7.12.11.7. Parallel Synchronization and Communication Instructions: mbarrier.inval"></a>9.7.12.11.7. Parallel Synchronization and Communication Instructions: mbarrier.inval</h3><p><strong>mbarrier.inval</strong><br>Invalidates the mbarrier object.</p>
+<p><strong>Syntax</strong><br><code>mbarrier.inval&#123;.shared&#125;.b64 [addr];</code></p>
+<p><strong>Description</strong><br><code>mbarrier.inval</code> invalidates the mbarrier object at the location specified by the address operand <code>addr</code>.</p>
+<p>An mbarrier object must be invalidated before using its memory location for any other purpose.<br>在将mbarrier所占用内存用作其他用途之前，必须先将mbarrier无效处理。</p>
+<p>Performing any mbarrier operation except mbarrier.init on an invalidated mbarrier object results in undefined behaviour.</p>
+<p>If no state space is specified then Generic Addressing is used. If the address specified by addr does not fall within the address window of .shared state space then the behavior is undefined.</p>
+<p>Supported addressing modes for operand addr is as described in Addresses as Operands. Alignment for operand addr is as described in the Size and alignment of mbarrier object.</p>
+<p><strong>PTX ISA Notes</strong><br>Introduced in PTX ISA version 7.0.</p>
+<p><strong>Target ISA Notes</strong><br>Requires <strong>sm_80</strong> or higher.</p>
+<p><strong>Examples</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">.shared .b64 shmem;</span><br><span class="line">.reg    .b64 addr;</span><br><span class="line">.reg    .b32 %r1;</span><br><span class="line">.reg    .pred t0;</span><br><span class="line"></span><br><span class="line">// Example 1 :</span><br><span class="line">bar.sync                      0;</span><br><span class="line">@t0 mbarrier.init.b64     [addr], %r1;</span><br><span class="line">// ... other mbarrier operations on addr</span><br><span class="line">bar.sync                      0;</span><br><span class="line">@t0 mbarrier.inval.b64    [addr];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// Example 2 :</span><br><span class="line">bar.sync                      0;</span><br><span class="line">mbarrier.init.shared.b64      [shmem], 12;</span><br><span class="line">// ... other mbarrier operations on shmem</span><br><span class="line">bar.sync                      0;</span><br><span class="line">@t0 mbarrier.inval.shared.b64 [shmem];</span><br><span class="line"></span><br><span class="line">// shmem can be reused here for unrelated use :</span><br><span class="line">bar.sync                      0;</span><br><span class="line">st.shared.b64                 [shmem], ...;</span><br><span class="line"></span><br><span class="line">// shmem can be re-initialized as mbarrier object :</span><br><span class="line">bar.sync                      0;</span><br><span class="line">@t0 mbarrier.init.shared.b64  [shmem], 24;</span><br><span class="line">// ... other mbarrier operations on shmem</span><br><span class="line">bar.sync                      0;</span><br><span class="line">@t0 mbarrier.inval.shared.b64 [shmem];</span><br></pre></td></tr></table></figure>
+<h3 id="9-7-12-11-8-Parallel-Synchronization-and-Communication-Instructions-mbarrier-arrive"><a href="#9-7-12-11-8-Parallel-Synchronization-and-Communication-Instructions-mbarrier-arrive" class="headerlink" title="9.7.12.11.8. Parallel Synchronization and Communication Instructions: mbarrier.arrive"></a>9.7.12.11.8. Parallel Synchronization and Communication Instructions: mbarrier.arrive</h3><p><strong>mbarrier.arrive</strong><br>Performs <strong>arrive-on operation</strong> on the mbarrier object.</p>
+<p><strong>Syntax</strong><br><code>mbarrier.arrive&#123;.shared&#125;.b64 state, [addr];</code><br><code>mbarrier.arrive.noComplete&#123;.shared&#125;.b64 state, [addr], count;</code></p>
+<p><strong>Description</strong><br>A thread executing <code>mbarrier.arrive</code> performs an <strong>arrive-on operation</strong> on the mbarrier object at the location specified by the address operand <code>addr</code>. The 32-bit unsigned integer operand <code>count</code> specifies the count argument to the arrive-on operation.<br>count操作数指定实行arrive-on operation时，从the pending arrival count中减去的值。</p>
+<p>If no state space is specified then Generic Addressing is used. If the address specified by addr does not fall within the address window of .shared state space then the behavior is undefined.</p>
+<p>Supported addressing modes for operand addr is as described in Addresses as Operands. Alignment for operand addr is as described in the Size and alignment of mbarrier object.</p>
+<p>When the argument count is specified, the modifier <code>.noComplete</code> is required. A <code>mbarrier.arrive</code> operation with <code>.noComplete</code> qualifier <strong>must not cause the mbarrier to complete its current phase</strong>, otherwise the behavior is undefined.<br>当不使用默认为1的count数，而是人为指定count数值的时候，必须为<code>mbarrier.arrive</code>操作加上修饰符<code>.noComplete</code>，这样的操作<strong>不能导致mbarrier完成当前phase</strong> (指the pending arrival count减去count数后变为0)，否则会导致undefined behavior。</p>
+<p>The value of the operand count must be in the range as specified in Contents of the mbarrier object.</p>
+<p><code>mbarrier.arrive</code> returns <strong>an opaque 64-bit register capturing the phase of the mbarrier object prior to the arrive-on operation</strong> in the destination operand (输出操作数) <code>state</code>. Contents of the <code>state</code> operand are implementation specific. Optionally, sink symbol ‘_’ can be used for the state argument.</p>
+<p><strong>PTX ISA Notes</strong><br>Introduced in PTX ISA version 7.0.</p>
+<p>Support for sink symbol ‘_’ as the destination operand is introduced in PTX ISA version 7.1.</p>
+<p><strong>Target ISA Notes</strong><br>Requires <strong>sm_80</strong> or higher.</p>
+<p><strong>Examples</strong><br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.reg .b32 cnt;</span><br><span class="line">.reg .b64 %r&lt;3&gt;, addr;</span><br><span class="line">.shared .b64 shMem, shMem2;</span><br><span class="line"></span><br><span class="line">cvta.shared.u64          addr, shMem2;</span><br><span class="line"></span><br><span class="line">mbarrier.arrive.shared.b64     %r0, [shMem];</span><br><span class="line"></span><br><span class="line">mbarrier.arrive.noComplete.b64 %r1, [addr], 2;</span><br><span class="line">mbarrier.arrive.noComplete.b64 %r2, [addr], cnt;</span><br><span class="line">// 后两个指定了count，因此必须加上.noComplete修饰符</span><br><span class="line">// 且后两个操作不能造成当前phase完成！</span><br></pre></td></tr></table></figure></p>
+<h3 id="9-7-12-11-9-Parallel-Synchronization-and-Communication-Instructions-mbarrier-arrive-drop"><a href="#9-7-12-11-9-Parallel-Synchronization-and-Communication-Instructions-mbarrier-arrive-drop" class="headerlink" title="9.7.12.11.9. Parallel Synchronization and Communication Instructions: mbarrier.arrive_drop"></a>9.7.12.11.9. Parallel Synchronization and Communication Instructions: mbarrier.arrive_drop</h3>
       
     </div>
 
@@ -303,10 +745,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-06-23 18:16:26 / Modified: 20:13:43" itemprop="dateCreated datePublished" datetime="2022-06-23T18:16:26+08:00">2022-06-23</time>
+              <time title="Created: 2022-06-23 18:16:26" itemprop="dateCreated datePublished" datetime="2022-06-23T18:16:26+08:00">2022-06-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-16 23:15:53" itemprop="dateModified" datetime="2022-07-16T23:15:53+08:00">2022-07-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -351,6 +799,130 @@
 <li><strong>Index / Stage</strong>：暂存区，用于临时存放你的改动，事实上它<strong>只是一个文件</strong>，保存即将提交到文件列表信息</li>
 <li><strong>Repository</strong>：仓库区（或本地仓库），就是<strong>安全存放数据</strong>的位置，这里面有你提交到所有版本的数据。其中<strong>HEAD指向最新放入仓库的版本</strong></li>
 <li><strong>Remote</strong>：远程仓库，<strong>托管代码的服务器</strong>，可以简单的认为是你项目组中的一台电脑用于远程数据交换</li>
+</ul>
+</blockquote>
+<h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><p><code>docker image ls</code> or <code>docker images</code>查看所有已装载的image<br><code>docker login -u 519844778 -p azaz123122</code> docker用户登陆<br><code>docker load -i xxx.tgz</code> load image文件<br><code>service docker start</code> 开启docker的守护进程 (后台运行)</p>
+<h4 id="docker创建一个容器"><a href="#docker创建一个容器" class="headerlink" title="docker创建一个容器:"></a>docker创建一个容器:</h4><p><code>docker run --network=host --gpus=all --cap-add=SYS_ADMIN -id -v /home/jiangs/classT:/classT --name=classT physion:0.4Cuda11.4 /bin/bash</code></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--network=host</code></td>
+<td>容器使用主机网络</td>
+</tr>
+<tr>
+<td><code>--gpus all</code></td>
+<td>使用所有的GPU设备</td>
+</tr>
+<tr>
+<td><code>--cap-add=SYS_ADMIN</code></td>
+<td>为容器赋予Linux系统下的SYS_ADMIN权限 (for nsys/GDB/ncu…)</td>
+</tr>
+<tr>
+<td><code>--privileged=true</code></td>
+<td>同上，赋予容器root权限 (for nsys/GDB/ncu…)</td>
+</tr>
+<tr>
+<td><code>--rm</code></td>
+<td>退出容器时不保留用户数据，容器也会消失，而不是仅关闭</td>
+</tr>
+<tr>
+<td><code>-it</code></td>
+<td>交互式容器并分配终端，退出时停止运行</td>
+</tr>
+<tr>
+<td><code>-id</code></td>
+<td>守护式容器，创建时自动运行，退出不会自动关闭，可以使用<code>docker stop [name]</code>来关闭容器</td>
+</tr>
+<tr>
+<td><code>-d</code></td>
+<td>守护式容器，仅创建不自动运行，创建后为关闭状态</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>挂载数据卷(宿主机的一个目录)</td>
+</tr>
+<tr>
+<td><code>--name=classT</code></td>
+<td>容器的名称设置为classT</td>
+</tr>
+<tr>
+<td><code>physion:0.4Cuda11.4</code></td>
+<td>创建容器所使用的image名称physion，版本0.4Cuda11.4</td>
+</tr>
+<tr>
+<td><code>/bin/bash</code></td>
+<td>创建容器时初始化操作</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>关闭守护式容器 (仅关闭容器不消失)<br><code>docker stop [name]</code><br><code>docker kill [容器名]</code> 同上</li>
+<li>启动已关闭的守护式容器<br><code>docker start [容器名]</code> </li>
+<li>进入<strong>正在运行</strong>的守护式容器，进入容器执行<code>/bin/bash</code>初始化操作，<code>-it</code>分配终端<br><code>docker exec -it [容器名] /bin/bash</code> </li>
+<li>删除容器<br><code>docker rm [容器名]</code> </li>
+<li>退出容器，交互式容器消失，守护式转后台运行<br><code>exit</code> </li>
+<li>查看当前所有容器与容器状态<br><code>docker ps -a</code> </li>
+</ul>
+<h4 id="创建一个自己的镜像"><a href="#创建一个自己的镜像" class="headerlink" title="创建一个自己的镜像"></a>创建一个自己的镜像</h4><ol>
+<li><strong>首先使用现有镜像创建一个守护式容器，并exec进入容器按照需求修改</strong></li>
+<li><strong>exit退出容器</strong></li>
+<li><strong>提交更新后的副本 (使用现有容器创建镜像)</strong><br><code>docker commit -a=&quot;作者&quot; -m=&quot;提交的描述信息&quot; 容器id 要创建的目标镜像名:[Tag]</code><br><code>docker commit -a &quot;Jiang Shao&quot; -m &quot;CUDA-11.4 &amp; Nsight&quot; 4c6b1488512c physion:0.4Cuda11.4</code></li>
+</ol>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-m &quot;CUDA-11.4 &amp; Nsight&quot;</code></td>
+<td>#提交的说明和信息</td>
+</tr>
+<tr>
+<td><code>-a &quot;Jiang Shao&quot;</code></td>
+<td>#提交的用户信息</td>
+</tr>
+<tr>
+<td><code>4c6b1488512c</code></td>
+<td>#修改后的容器的ID</td>
+</tr>
+<tr>
+<td><code>physion:0.4Cuda11.4</code></td>
+<td>#要更新的镜像名：版本号</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>Failed to initialize NVML: Driver/library version mismatch<br>原因：NVIDIA 内核驱动版本与系统驱动不一致，ubuntu自动更新导致<br><code>cat /proc/driver/nvidia/version</code> 查看显卡内核版本<br><code>cat /var/log/dpkg.log | grep nvidia</code> 查看电脑驱动版本历史<br>解决方案：<code>sudo reboot</code></p>
+</blockquote>
+<ul>
+<li><p>保存镜像physion:0.4Cuda11.4，name=physion, tag=0.4Cuda11.4, 到文件docker_image_cuda11_4_shao.tar中<br><code>docker save -o docker_image_cuda11_4_shao.tar physion:0.4Cuda11.4</code> </p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.nvidia.cn/gpu-cloud/containers/">NVIDIA GPU 加速的容器</a></p>
+</li>
+<li><p>将docker image文件由台式机拷贝到ComputeLab个人空间上<br><code>scp root@10.19.203.137:/home/jiangs/shao_physion/docker_image/docker_image_cuda11_4_shao.tar /home/scratch.jiangs_sw/docker_image/</code></p>
+</li>
+<li><p>在ComputeLab上找一个芯片为A100的node，开启交互式任务<br><code>crun -q &#39;chip=ga100&#39; -i</code></p>
+</li>
+<li><p>由文件加载docker image<br><code>docker load -i docker_image_cuda11_4_shao.tar</code></p>
+</li>
+</ul>
+<blockquote>
+<p>最终找到了node=cl1-3001</p>
+<ul>
+<li>在ComputeLab上找到node=cl1-3001，开启交互式任务，如果非空闲就等待<br><code>crun -q &#39;node=cl1-3001&#39; -i --wait</code><br>重新登陆后发现刚才load的docker image已经没有了，看来只要exit退出就删除所有痕迹，每次使用都需要重新load docker image</li>
 </ul>
 </blockquote>
 
@@ -1109,312 +1681,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/25/GAMES101-Geometry-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Jiang Shao">
-      <meta itemprop="description" content="WeChat: shaojiang9650<br>Email: shao_study@163.com">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邵大宝的学习Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/25/GAMES101-Geometry-3/" class="post-title-link" itemprop="url">GAMES101 Geometry part3</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-25 17:02:43" itemprop="dateCreated datePublished" datetime="2022-02-25T17:02:43+08:00">2022-02-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-28 17:01:37" itemprop="dateModified" datetime="2022-02-28T17:01:37+08:00">2022-02-28</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GAMES101-%E7%8E%B0%E4%BB%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">GAMES101-现代计算机图形学入门</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="GAMES101-Geometry-part3"><a href="#GAMES101-Geometry-part3" class="headerlink" title="GAMES101 Geometry part3"></a>GAMES101 Geometry part3</h1><ol>
-<li>mesh subdivision 网格细化</li>
-<li>mesh simplification 网格粗化</li>
-<li>mesh regularization 网格正则化，使三角形趋于一致</li>
-</ol>
-<h2 id="Mesh-Subdivision"><a href="#Mesh-Subdivision" class="headerlink" title="Mesh Subdivision"></a>Mesh Subdivision</h2><p>两步操作：</p>
-<ol>
-<li>创建更多的三角形</li>
-<li>移动这些三角形的位置</li>
-</ol>
-<h3 id="Loop-Subdivision-与循环无关，发明人叫Loop，仅适用于三角形网格"><a href="#Loop-Subdivision-与循环无关，发明人叫Loop，仅适用于三角形网格" class="headerlink" title="Loop Subdivision (与循环无关，发明人叫Loop，仅适用于三角形网格)"></a>Loop Subdivision (与循环无关，发明人叫Loop，仅适用于三角形网格)</h3><p>连接三角形三条边的中点，则原本的一个三角形转变为四个。</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-3/1.png" width="100%" height="100%"></center>
-
-<p><strong>新顶点</strong>和<strong>原有顶点</strong>具有不同的更新策略。（区分为两类）</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-3/2.png" width="100%" height="100%"></center>
-
-<p>其中新顶点的更新要考虑到新顶点所在边所对应的两个三角形。AB为新顶点所在边，被两个三角形共有。</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-3/3.png" width="100%" height="100%"></center>
-
-<p>对于旧顶点，由于顶点是位于三角形顶点上的，因此会被多个三角形共有，其值的更新就要考虑到周围所有的三角形。n指顶点的度，也就是顶点所连接的边的数量，对应有多少个相邻顶点。u为一个与n有关的值。从公式看，除了相邻顶点，旧顶点值的更新还需用到自身的值，权重为(1-n*u)。而周围点权重为u*n，n体现在sum中。</p>
-<h3 id="Catmull-Clark-Subdivision（General-Mesh，任意网格都适用）"><a href="#Catmull-Clark-Subdivision（General-Mesh，任意网格都适用）" class="headerlink" title="Catmull-Clark Subdivision（General Mesh，任意网格都适用）"></a>Catmull-Clark Subdivision（General Mesh，任意网格都适用）</h3><p>引入概念：<br>奇异点extraordinary vertex：度不为4的点（连接边数不为4）</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-3/4.png" width="100%" height="100%"></center>
-
-<p>连接每个面的中点与每条边的中点。</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-3/5.png" width="100%" height="100%"></center>
-
-<p>得到的新网格有两个特性。</p>
-<ol>
-<li>得到的所有面均为四边形面，所有的非四边形面全部消失。</li>
-<li>原来的奇异点不变，其对应的度也不变。（连接面中点与边中点，与这个顶点无关）</li>
-<li>新增加的奇异点的数量等于原来非四边形面的数量。（多边形每条边都与面中点相连，中点的度就等于多边形的边数）</li>
-<li>由于做完一次Catmull-Clark Subdivision后，所有面均为四边形面。因此下一次再做Catmull-Clark Subdivision后，奇异点数量不变。</li>
-</ol>
-<center><img src="/2022/02/25/GAMES101-Geometry-3/6_1.png" width="50%" height="50%"><img src="/2022/02/25/GAMES101-Geometry-3/6_2.png" width="50%" height="50%"></center>
-
-<p>细分之后点被分为三类，各自对应不同的update policy。<br>新点：1面中点、2边中点，3旧顶点。</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-3/7.png" width="100%" height="100%"></center>
-
-<h2 id="Mesh-Simplification"><a href="#Mesh-Simplification" class="headerlink" title="Mesh Simplification"></a>Mesh Simplification</h2><ol>
-<li>减少三角形的数量</li>
-<li>保持整体形状</li>
-</ol>
-<h3 id="Edge-Collapse-边坍缩"><a href="#Edge-Collapse-边坍缩" class="headerlink" title="Edge Collapse 边坍缩"></a>Edge Collapse 边坍缩</h3><p>把一条边的两个顶点捏在一起，使一条边消失。</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-3/8.png" width="100%" height="100%"></center>
-
-<p>两个问题：</p>
-<ol>
-<li>坍缩后的顶点应该取在哪？</li>
-<li>应该坍缩网格中的哪些边？</li>
-</ol>
-<p>对于第一个问题，如果仅仅取坍缩边顶点的平均值，如图所示，显而易见的并不能很好地保留原先的形状。所以引入一个度量<br><strong>Quadric Error Metrics 二次误差度量</strong><br>到坍缩前相关的各个面的square distance (L2 distance)的和最小的点，作为新顶点。<br>square distance (L2 distance)：指欧几里德距离，直线距离。</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-3/9.png" width="100%" height="100%"></center>
-
-<p>对于第二个问题，应该坍缩哪些边？<br>最终目的是尽可能地保持原有形状，那么就先对每条边，计算坍缩对应边之后，新顶点的Quadric Error Metrics二次误差度量。从小到大开始坍缩。<br>带来的新问题：每次坍缩会影响周围其他边的二次误差度量。-&gt;每次坍缩完一条边之后，更新受到影响的边的二次误差度量。<br>那么就需要一种数据结构，除了能提供当前极值之外，还得能动态地以最小代价修改任意元素（快速搜索，快速增删）。-&gt;堆（优先级队列）<br>这种做法得到的其实不是全局最优解，而是每一次都取<strong>局部最优解</strong>（每次坍缩当前二次误差度量最小的边），是一种<strong>贪心算法</strong>，能得到近似最优解。</p>
-<blockquote>
-<h4 id="优先级队列-priority-queue"><a href="#优先级队列-priority-queue" class="headerlink" title="优先级队列 priority queue"></a>优先级队列 priority queue</h4><p>最高优先级元素先出。</p>
-<ol>
-<li>非线性数据结构，由完全二叉树构造而成，完全二叉树可由一维数组实现。</li>
-<li>堆中某个节点的值，总是不大于/不小于其父节点的值</li>
-<li>大顶堆（根节点最大），小顶堆（根节点最小）</li>
-</ol>
-<p>由于堆是由完全二叉树构造而成，因此除了堆本身的性质（能快速提供最大值/最小值）之外，还具备二叉树的优点（二叉树具备了数组和链表的优点：快速查找，支持动态插入/删除）。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/25/GAMES101-RayTracing-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Jiang Shao">
-      <meta itemprop="description" content="WeChat: shaojiang9650<br>Email: shao_study@163.com">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邵大宝的学习Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/25/GAMES101-RayTracing-1/" class="post-title-link" itemprop="url">GAMES101 RayTracing Part 1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-25 16:44:37" itemprop="dateCreated datePublished" datetime="2022-02-25T16:44:37+08:00">2022-02-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-01 17:11:18" itemprop="dateModified" datetime="2022-03-01T17:11:18+08:00">2022-03-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GAMES101-%E7%8E%B0%E4%BB%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">GAMES101-现代计算机图形学入门</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="GAMES101-RayTracing-Part-1"><a href="#GAMES101-RayTracing-Part-1" class="headerlink" title="GAMES101 RayTracing Part 1"></a>GAMES101 RayTracing Part 1</h1><blockquote>
-<p>为什么使用Ray Tracing?</p>
-</blockquote>
-<p>光栅化不能很好的处理全局效应。global effect</p>
-<ul>
-<li>(Soft) shadows 软阴影（边界模糊）<br>若光源是点光源，则产生的阴影是<strong>硬阴影</strong>，<strong>边界清晰</strong>。<br>若光源本身具有一定的大小，则产生的阴影是<strong>软阴影</strong>，<strong>边界模糊</strong>，原因是部份位置只能看到光源的一部分。</li>
-<li>Glossy reflection 模糊反射<br>物体表面比较光滑，既有镜面反射，又有一定的漫反射。</li>
-<li>Indirect illumination 间接光照<br>The light bounces more than once. 光线多次弹射。</li>
-</ul>
-<p>Rasterization is fast but quality is relatively low.<br>光栅化很快，但质量相对较低。通常用于实时real-time应用。</p>
-<p>Ray tracing is accurate but is very slow.<br>光线追踪非常精确，但非常耗时。通常用于离线offline应用。</p>
-<h2 id="Basic-Ray-Tracing-Algorithm"><a href="#Basic-Ray-Tracing-Algorithm" class="headerlink" title="Basic Ray-Tracing Algorithm"></a>Basic Ray-Tracing Algorithm</h2><p>对光线的三个假设：</p>
-<ol>
-<li>Light travels in straight lines (though this is wrong)<br>光线沿直线传播。</li>
-<li>Light rays do not “collide” with each other if they cross (though this is still wrong)<br>光线之间不会发生碰撞，不会互相影响。</li>
-<li>Light rays travel from the light sources to the eye (but the physics is invariant under path reversal - reciprocity).<br>光线从光源中发出，最终射入相机中。（可逆性，光路可逆，从相机到光源）</li>
-</ol>
-<p>Ray Casting 光线投射</p>
-<ol>
-<li>Generate an image by casting one ray per pixel<br>每个像素向场景中投射一条光线</li>
-<li>Check for shadows by sending a ray to the light<br>检查投射光线打到的位置是不是处于阴影里（是不是对光源可见）</li>
-</ol>
-<p>检查最近交点（深度测试）</p>
-<center><img src="/2022/02/25/GAMES101-RayTracing-1/1.png" width="100%"></center>
-
-<p>检查是否对光源可见</p>
-<center><img src="/2022/02/25/GAMES101-RayTracing-1/2.png" width="100%"></center>
-
-<h2 id="Recursive-Whitted-Style-Ray-Tracing-递归光线追踪"><a href="#Recursive-Whitted-Style-Ray-Tracing-递归光线追踪" class="headerlink" title="Recursive (Whitted-Style) Ray Tracing 递归光线追踪"></a>Recursive (Whitted-Style) Ray Tracing 递归光线追踪</h2><p>在任意点，光线可以继续传播，而不是仅弹射一次、计算投射点的着色值。对于每个投射点，都用一条shadow ray判断是否处于阴影里并计算对应的着色值，最终像素的值等于所有投射点着色值的加权和。<br>对于光线进行一个简单的分类，第一次投射的光线为primary ray，经过一次弹射的光线为secondary ray，而从每个光线投射点连接到光源判断是否处于阴影的线为shadow ray。</p>
-<center><img src="/2022/02/25/GAMES101-RayTracing-1/3.png" width="100%"></center>
-
-<h2 id="Ray-Surface-Intersection"><a href="#Ray-Surface-Intersection" class="headerlink" title="Ray-Surface Intersection"></a>Ray-Surface Intersection</h2><p>ray光线 = origin起点 + direction vector方向矢量</p>
-<center><img src="/2022/02/25/GAMES101-RayTracing-1/4.png" width="100%"></center>
-
-<h3 id="光线与球的交点"><a href="#光线与球的交点" class="headerlink" title="光线与球的交点"></a>光线与球的交点</h3><p>球面方程：空间中点p到球心c的距离恰好等于球的半径R</p>
-<center><img src="/2022/02/25/GAMES101-RayTracing-1/5.png" width="100%"></center>
-
-<p>球面方程与光线方程联立求解t。使用求根公式</p>
-<ol>
-<li>首先由于光线是沿正向传播的，因此 t &gt; 0。</li>
-<li>利用 b^2 - 4ac 判断解的个数，对应光线与球具有多少个交点。</li>
-<li>若具有两个交点，则取最小的t，对应于最近的交点。<center><img src="/2022/02/25/GAMES101-RayTracing-1/6.png" width="100%"></center>
-
-</li>
-</ol>
-<h3 id="光线与隐式表示的面的交点"><a href="#光线与隐式表示的面的交点" class="headerlink" title="光线与隐式表示的面的交点"></a>光线与隐式表示的面的交点</h3><p>将隐式方程与光线方程联立求根。</p>
-<center><img src="/2022/02/25/GAMES101-RayTracing-1/7.png" width="100%"></center>
-
-<h3 id="光线与显式表示的面的交点"><a href="#光线与显式表示的面的交点" class="headerlink" title="光线与显式表示的面的交点"></a>光线与显式表示的面的交点</h3><p>最常用的几何显式表示法：Triangle Mesh 三角形网络</p>
-<h4 id="光线与三角形的交点"><a href="#光线与三角形的交点" class="headerlink" title="光线与三角形的交点"></a>光线与三角形的交点</h4><p><strong>传统算法</strong></p>
-<ol>
-<li>三角形总是处于一个平面内，那么就求得光线与三角形所在平面的交点</li>
-<li>判断这个交点是否在三角形内部</li>
-</ol>
-<p>Plane is defined by normal vector and a point on plane.<br>平面可以被一条法线和空间中一个点（平面必须穿过这个点）所确定。</p>
-<p>平面上所有的点与确定平面的点p’的连线一定与平面的法线垂直，点乘为0。则可以得到平面方程</p>
-<center><img src="/2022/02/25/GAMES101-RayTracing-1/8.png" width="100%"></center>
-
-<p>联立光线方程与平面方程求交点。求得的t必须为正，且为实数(b^2 - 4ac &gt;= 0)</p>
-<center><img src="/2022/02/25/GAMES101-RayTracing-1/9.png" width="100%"></center>
-
-<p><strong>Möller Trumbore Algorithm MT算法</strong></p>
-<p>快速解法，平面方程直接使用三角形的质心坐标系，利用三角形的三个顶点线性组合得到的点所构成的平面。<br>只要三个顶点前的三个系数的和为1，则组合得到的点一定在三角形所在的平面上。<br>联立光线方程与平面方程，对t、b1、b2求解。<br>要求t为非负，且为实数。（光线为正向且有交点）<br>要求三个顶点前的系数(1-b1-b2)、b1、b2均为非负的。（交点在三角形内）</p>
-<center><img src="/2022/02/25/GAMES101-RayTracing-1/10.png" width="100%"></center>
-
-<h4 id="Accelerating-Ray-Surface-Intersection"><a href="#Accelerating-Ray-Surface-Intersection" class="headerlink" title="Accelerating Ray-Surface Intersection"></a>Accelerating Ray-Surface Intersection</h4><p>如何判断光线与物体的那个三角形网格相交？</p>
-<p>最简单的办法，遍历物体的所有三角形网格。-&gt; 非常耗时</p>
-<p><strong>Bounding Volumes/Box 包围盒</strong><br>Understanding: box is the intersection of 3 pairs of slabs.<br>将包围盒（长方体）理解为三对平行平板所围成的区域。</p>
-<p><strong>Axis-Aligned Bounding Box</strong> (AABB) (轴对⻬包围盒)<br>指长方体包围盒的每条边都与坐标轴平行</p>
-<p><strong>判断光线与包围盒求交</strong></p>
-<p>光线进入包围盒中 -&gt; 光线进入所有围成包围盒的对面中<br><strong>max(tmin)</strong> -&gt; 光线进入最后一个还没进入的对面的时间（之后就进入了所有对面）<br><strong>min(tmax)</strong> -&gt; 光线从任意一个对面出来的时间（从一个对面中出来则就不再处于包围盒内部）</p>
-<center><img src="/2022/02/25/GAMES101-RayTracing-1/11.png" width="100%"></center>
-
-<p>首先求光线与<strong>每对平行平板</strong>的交点，求出对应的tmin与tmax，组成一个区间。最后求这些区间的交集（代表光线处于所有对面内部）。</p>
-<p><strong>Key ideas</strong></p>
-<ul>
-<li>The ray enters the box only when it enters all pairs of slabs 进入所有对面才进入包围盒</li>
-<li>The ray exits the box as long as it exits any pair of slabs 离开任意一个对面则离开了包围盒</li>
-</ul>
-<center><img src="/2022/02/25/GAMES101-RayTracing-1/12.png" width="100%"></center>
-
-<p>同上，每对面求个t区间，之后求交集。<br>如果<strong>tenter &lt; texit</strong>那么说明光线在包围盒中存在了一段时间，光线与包围盒一定有交点。</p>
-<p><strong>各种特殊情况</strong><br>在<strong>tenter &lt; texit</strong>的前提下：</p>
-<ol>
-<li>texit &lt; 0<br>包围盒在光线的反方向 -&gt; 没有交点</li>
-<li>texit &gt;= 0 &amp;&amp; tenter &lt; 0<br>进入交点在光线反方向，离开交点在正方向 -&gt; 光线起点在包围盒内部，有交点</li>
-</ol>
-<p>综上，光线与包围盒有交点，当且仅当</p>
-<center><img src="/2022/02/25/GAMES101-RayTracing-1/13.png" width="100%"></center>
-
-<center><img src="/2022/02/25/GAMES101-RayTracing-1/14.png" width="100%"></center>
-
-<p>包围盒边与坐标轴对齐的好处：<br>求光线与一般平面交点公式如下。而当这个平面与x-axis垂直时，此时有平面法线N = (1, 0)，代入公式可化简计算。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1482,7 +1752,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2022/06/23/Git/1.png">
 <meta property="article:published_time" content="2022-06-23T10:16:26.000Z">
-<meta property="article:modified_time" content="2022-06-23T12:13:43.110Z">
+<meta property="article:modified_time" content="2022-07-16T15:15:53.285Z">
 <meta property="article:author" content="Jiang Shao">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2022/06/23/Git/1.png">
@@ -180,10 +180,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-06-23 18:16:26 / Modified: 20:13:43" itemprop="dateCreated datePublished" datetime="2022-06-23T18:16:26+08:00">2022-06-23</time>
+              <time title="Created: 2022-06-23 18:16:26" itemprop="dateCreated datePublished" datetime="2022-06-23T18:16:26+08:00">2022-06-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-16 23:15:53" itemprop="dateModified" datetime="2022-07-16T23:15:53+08:00">2022-07-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -228,6 +234,130 @@
 <li><strong>Index / Stage</strong>：暂存区，用于临时存放你的改动，事实上它<strong>只是一个文件</strong>，保存即将提交到文件列表信息</li>
 <li><strong>Repository</strong>：仓库区（或本地仓库），就是<strong>安全存放数据</strong>的位置，这里面有你提交到所有版本的数据。其中<strong>HEAD指向最新放入仓库的版本</strong></li>
 <li><strong>Remote</strong>：远程仓库，<strong>托管代码的服务器</strong>，可以简单的认为是你项目组中的一台电脑用于远程数据交换</li>
+</ul>
+</blockquote>
+<h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><p><code>docker image ls</code> or <code>docker images</code>查看所有已装载的image<br><code>docker login -u 519844778 -p azaz123122</code> docker用户登陆<br><code>docker load -i xxx.tgz</code> load image文件<br><code>service docker start</code> 开启docker的守护进程 (后台运行)</p>
+<h4 id="docker创建一个容器"><a href="#docker创建一个容器" class="headerlink" title="docker创建一个容器:"></a>docker创建一个容器:</h4><p><code>docker run --network=host --gpus=all --cap-add=SYS_ADMIN -id -v /home/jiangs/classT:/classT --name=classT physion:0.4Cuda11.4 /bin/bash</code></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--network=host</code></td>
+<td>容器使用主机网络</td>
+</tr>
+<tr>
+<td><code>--gpus all</code></td>
+<td>使用所有的GPU设备</td>
+</tr>
+<tr>
+<td><code>--cap-add=SYS_ADMIN</code></td>
+<td>为容器赋予Linux系统下的SYS_ADMIN权限 (for nsys/GDB/ncu…)</td>
+</tr>
+<tr>
+<td><code>--privileged=true</code></td>
+<td>同上，赋予容器root权限 (for nsys/GDB/ncu…)</td>
+</tr>
+<tr>
+<td><code>--rm</code></td>
+<td>退出容器时不保留用户数据，容器也会消失，而不是仅关闭</td>
+</tr>
+<tr>
+<td><code>-it</code></td>
+<td>交互式容器并分配终端，退出时停止运行</td>
+</tr>
+<tr>
+<td><code>-id</code></td>
+<td>守护式容器，创建时自动运行，退出不会自动关闭，可以使用<code>docker stop [name]</code>来关闭容器</td>
+</tr>
+<tr>
+<td><code>-d</code></td>
+<td>守护式容器，仅创建不自动运行，创建后为关闭状态</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>挂载数据卷(宿主机的一个目录)</td>
+</tr>
+<tr>
+<td><code>--name=classT</code></td>
+<td>容器的名称设置为classT</td>
+</tr>
+<tr>
+<td><code>physion:0.4Cuda11.4</code></td>
+<td>创建容器所使用的image名称physion，版本0.4Cuda11.4</td>
+</tr>
+<tr>
+<td><code>/bin/bash</code></td>
+<td>创建容器时初始化操作</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>关闭守护式容器 (仅关闭容器不消失)<br><code>docker stop [name]</code><br><code>docker kill [容器名]</code> 同上</li>
+<li>启动已关闭的守护式容器<br><code>docker start [容器名]</code> </li>
+<li>进入<strong>正在运行</strong>的守护式容器，进入容器执行<code>/bin/bash</code>初始化操作，<code>-it</code>分配终端<br><code>docker exec -it [容器名] /bin/bash</code> </li>
+<li>删除容器<br><code>docker rm [容器名]</code> </li>
+<li>退出容器，交互式容器消失，守护式转后台运行<br><code>exit</code> </li>
+<li>查看当前所有容器与容器状态<br><code>docker ps -a</code> </li>
+</ul>
+<h4 id="创建一个自己的镜像"><a href="#创建一个自己的镜像" class="headerlink" title="创建一个自己的镜像"></a>创建一个自己的镜像</h4><ol>
+<li><strong>首先使用现有镜像创建一个守护式容器，并exec进入容器按照需求修改</strong></li>
+<li><strong>exit退出容器</strong></li>
+<li><strong>提交更新后的副本 (使用现有容器创建镜像)</strong><br><code>docker commit -a=&quot;作者&quot; -m=&quot;提交的描述信息&quot; 容器id 要创建的目标镜像名:[Tag]</code><br><code>docker commit -a &quot;Jiang Shao&quot; -m &quot;CUDA-11.4 &amp; Nsight&quot; 4c6b1488512c physion:0.4Cuda11.4</code></li>
+</ol>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-m &quot;CUDA-11.4 &amp; Nsight&quot;</code></td>
+<td>#提交的说明和信息</td>
+</tr>
+<tr>
+<td><code>-a &quot;Jiang Shao&quot;</code></td>
+<td>#提交的用户信息</td>
+</tr>
+<tr>
+<td><code>4c6b1488512c</code></td>
+<td>#修改后的容器的ID</td>
+</tr>
+<tr>
+<td><code>physion:0.4Cuda11.4</code></td>
+<td>#要更新的镜像名：版本号</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>Failed to initialize NVML: Driver/library version mismatch<br>原因：NVIDIA 内核驱动版本与系统驱动不一致，ubuntu自动更新导致<br><code>cat /proc/driver/nvidia/version</code> 查看显卡内核版本<br><code>cat /var/log/dpkg.log | grep nvidia</code> 查看电脑驱动版本历史<br>解决方案：<code>sudo reboot</code></p>
+</blockquote>
+<ul>
+<li><p>保存镜像physion:0.4Cuda11.4，name=physion, tag=0.4Cuda11.4, 到文件docker_image_cuda11_4_shao.tar中<br><code>docker save -o docker_image_cuda11_4_shao.tar physion:0.4Cuda11.4</code> </p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.nvidia.cn/gpu-cloud/containers/">NVIDIA GPU 加速的容器</a></p>
+</li>
+<li><p>将docker image文件由台式机拷贝到ComputeLab个人空间上<br><code>scp root@10.19.203.137:/home/jiangs/shao_physion/docker_image/docker_image_cuda11_4_shao.tar /home/scratch.jiangs_sw/docker_image/</code></p>
+</li>
+<li><p>在ComputeLab上找一个芯片为A100的node，开启交互式任务<br><code>crun -q &#39;chip=ga100&#39; -i</code></p>
+</li>
+<li><p>由文件加载docker image<br><code>docker load -i docker_image_cuda11_4_shao.tar</code></p>
+</li>
+</ul>
+<blockquote>
+<p>最终找到了node=cl1-3001</p>
+<ul>
+<li>在ComputeLab上找到node=cl1-3001，开启交互式任务，如果非空闲就等待<br><code>crun -q &#39;node=cl1-3001&#39; -i --wait</code><br>重新登陆后发现刚才load的docker image已经没有了，看来只要exit退出就删除所有痕迹，每次使用都需要重新load docker image</li>
 </ul>
 </blockquote>
 
@@ -310,7 +440,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">Git用户名和邮箱的配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git%E5%9F%BA%E6%9C%AC%E7%90%86%E8%AE%BA"><span class="nav-number">1.2.</span> <span class="nav-text">Git基本理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E6%94%B9%E5%8A%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">提交改动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E8%8E%B7%E5%8F%96"><span class="nav-number">1.2.2.</span> <span class="nav-text">从远程仓库获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%9B%9E%E6%BB%9A"><span class="nav-number">1.2.3.</span> <span class="nav-text">从本地仓库回滚</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E6%9A%82%E5%AD%98%E5%8C%BA%E5%9B%9E%E6%BB%9A%E5%88%B0%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95"><span class="nav-number">1.2.4.</span> <span class="nav-text">从暂存区回滚到工作目录</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">Git用户名和邮箱的配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git%E5%9F%BA%E6%9C%AC%E7%90%86%E8%AE%BA"><span class="nav-number">1.2.</span> <span class="nav-text">Git基本理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E6%94%B9%E5%8A%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">提交改动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E8%8E%B7%E5%8F%96"><span class="nav-number">1.2.2.</span> <span class="nav-text">从远程仓库获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%9B%9E%E6%BB%9A"><span class="nav-number">1.2.3.</span> <span class="nav-text">从本地仓库回滚</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E6%9A%82%E5%AD%98%E5%8C%BA%E5%9B%9E%E6%BB%9A%E5%88%B0%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95"><span class="nav-number">1.2.4.</span> <span class="nav-text">从暂存区回滚到工作目录</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker"><span class="nav-number">2.</span> <span class="nav-text">Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#docker%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%AE%B9%E5%99%A8"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">docker创建一个容器:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84%E9%95%9C%E5%83%8F"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">创建一个自己的镜像</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -326,7 +456,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
