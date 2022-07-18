@@ -153,6 +153,72 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/18/GEMM-shao/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="WeChat: shaojiang9650<br>Email: shao_study@163.com">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/07/18/GEMM-shao/" class="post-title-link" itemprop="url">GEMM_Optimization</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-07-18 22:16:54 / Modified: 22:41:06" itemprop="dateCreated datePublished" datetime="2022-07-18T22:16:54+08:00">2022-07-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>尝试利用Tensor Core来优化GEMM算法</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/07/18/GEMM-shao/">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/16/ComputeLab/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -853,7 +919,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-16 23:15:53" itemprop="dateModified" datetime="2022-07-16T23:15:53+08:00">2022-07-16</time>
+                <time title="Modified: 2022-07-18 20:32:53" itemprop="dateModified" datetime="2022-07-18T20:32:53+08:00">2022-07-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1025,7 +1091,7 @@
 <li>在ComputeLab上找到node=cl1-3001，开启交互式任务，如果非空闲就等待<br><code>crun -q &#39;node=cl1-3001&#39; -i --wait</code><br>重新登陆后发现刚才load的docker image已经没有了，看来只要exit退出就删除所有痕迹，每次使用都需要重新load docker image</li>
 </ul>
 </blockquote>
-
+<h3 id="2022-7-18"><a href="#2022-7-18" class="headerlink" title="2022.7.18"></a>2022.7.18</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">docker run --network=host --gpus=all --cap-add=SYS_ADMIN -id -v /home/jiangs/GEMM_shao:/GEMM_shao --name=GEMM_shao physion:0.4Cuda11.4 /bin/bash</span><br><span class="line"></span><br><span class="line">docker run --network=host --gpus=all --cap-add=SYS_ADMIN -id -v /home/jiangs/shao_physion/PhysionGas:/PhysionGas --name=PhysionGas_shao physion:0.4Cuda11.4 /bin/bash</span><br><span class="line"></span><br><span class="line">docker exec -it GEMM_shao /bin/bash</span><br><span class="line"></span><br><span class="line">VSCode-文件-首选项-搜索docker:host-修改IP为10.19.203.137-重启VSCode</span><br><span class="line">VSCode-左下角-Attach to running container-GEMM_shao</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -1606,181 +1672,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/25/GAMES101-Geometry-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Jiang Shao">
-      <meta itemprop="description" content="WeChat: shaojiang9650<br>Email: shao_study@163.com">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="邵大宝的学习Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/25/GAMES101-Geometry-2/" class="post-title-link" itemprop="url">GAMES101 Geometry part2</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-25 17:03:43" itemprop="dateCreated datePublished" datetime="2022-02-25T17:03:43+08:00">2022-02-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-28 14:24:13" itemprop="dateModified" datetime="2022-02-28T14:24:13+08:00">2022-02-28</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GAMES101-%E7%8E%B0%E4%BB%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">GAMES101-现代计算机图形学入门</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="GAMES101-Geometry-part2"><a href="#GAMES101-Geometry-part2" class="headerlink" title="GAMES101 Geometry part2"></a>GAMES101 Geometry part2</h1><h2 id="Explicit-Representations-in-Computer-Graphics-计算机图形学中几何的显式表示方法"><a href="#Explicit-Representations-in-Computer-Graphics-计算机图形学中几何的显式表示方法" class="headerlink" title="Explicit Representations in Computer Graphics 计算机图形学中几何的显式表示方法"></a>Explicit Representations in Computer Graphics 计算机图形学中几何的显式表示方法</h2><p><strong>Curves</strong></p>
-<ul>
-<li>Bezier curves 贝塞尔曲线<br>— De Casteljau’s algorithm 德卡斯特里奥算法</li>
-<li>B-splines, etc. B样条曲线</li>
-</ul>
-<p><strong>Surfaces</strong></p>
-<ul>
-<li>Bezier surfaces 贝塞尔曲面</li>
-<li>Triangles &amp; quads 三角形网格与四边形网格<br>— Subdivision, simplification, regularization 细化，粗化，正则化</li>
-</ul>
-<h3 id="Point-Cloud-Explicit-点云"><a href="#Point-Cloud-Explicit-点云" class="headerlink" title="Point Cloud (Explicit) 点云"></a>Point Cloud (Explicit) 点云</h3><ol>
-<li>Easiest representation: list of points (x,y,z)<br>最简单的表示方法，点列表</li>
-<li>Easily represent any kind of geometry<br>很容易表示任何形状</li>
-<li>Useful for LARGE datasets (&gt;&gt;1 point/pixel)<br>适用于于大型数据集，每个像素都有远大于1个点</li>
-<li>Often converted into polygon mesh<br>经常被转化为多边形网络</li>
-<li>Difficult to draw in undersampled regions<br>对采样不足的区域很难绘制（指点比较稀疏的区域，每个像素包含的点太少、甚至可能没有）</li>
-</ol>
-<center><img src="/2022/02/25/GAMES101-Geometry-2/1.png" width="50%" height="50%"></center>
-
-<h3 id="Polygon-Mesh-Explicit-多边形网络"><a href="#Polygon-Mesh-Explicit-多边形网络" class="headerlink" title="Polygon Mesh (Explicit) 多边形网络"></a>Polygon Mesh (Explicit) 多边形网络</h3><ol>
-<li>Store vertices &amp; polygons (often triangles or quads)<br>存储顶点和多边形（三角形、四边形居多）</li>
-<li>Easier to do processing / simulation, adaptive sampling<br>易于处理、模拟、自适应采样</li>
-<li>More complicated data structures<br>更复杂的数据结构</li>
-<li>Perhaps most common representation in graphics<br>图形学中目前最常用的表示方法</li>
-</ol>
-<center><img src="/2022/02/25/GAMES101-Geometry-2/2.png" width="100%" height="100%"></center>
-
-<h4 id="The-Wavefront-Object-File-obj-Format"><a href="#The-Wavefront-Object-File-obj-Format" class="headerlink" title="The Wavefront Object File (.obj) Format"></a>The Wavefront Object File (.obj) Format</h4><p>描述多边形网格的文件格式。<br>Commonly used in Graphics research.<br>Just a text file that specifies vertices, normals, texture<br>coordinates and their connectivities.<br>是一个txt文件，指定了多边形网络的<strong>顶点</strong>、<strong>法线</strong>、<strong>纹理坐标</strong>与<strong>顶点之间的连接关系</strong>。</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-2/3.png" width="100%" height="100%"></center>
-
-<p>文件中：<br>v代表vertices顶点坐标<br>vt代表各个顶点对应的纹理坐标<br>vn代表各个顶点对应的法线方向<br>f则代表face，指顶点之间的连接方式从而组成一个面，格式为v/vt/vn</p>
-<h3 id="Bezier-Curves-贝塞尔曲线"><a href="#Bezier-Curves-贝塞尔曲线" class="headerlink" title="Bézier Curves 贝塞尔曲线"></a>Bézier Curves 贝塞尔曲线</h3><p>Defining Cubic Bézier Curve With Tangents<br>使用切线定义三次贝塞尔曲线</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-2/4.png" width="70%" height="70%"></center>
-
-<p>P为一系列控制点，用于定义曲线。指明了曲线要满足的一些性质。</p>
-<ol>
-<li>曲线由P0开始，到P3结束</li>
-<li>在P0处曲线沿着P0P1为切线，切线长度为t0</li>
-<li>在P3处曲线沿着P2P3为切线，切线程度为t1</li>
-</ol>
-<h4 id="de-Casteljau-Algorithm"><a href="#de-Casteljau-Algorithm" class="headerlink" title="de Casteljau Algorithm"></a>de Casteljau Algorithm</h4><p>用于绘制贝塞尔曲线</p>
-<p>Consider three points (quadratic Bezier)<br>考虑三个控制点的情况（二次贝塞尔曲线）</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-2/5_1.png" width="50%"><img src="/2022/02/25/GAMES101-Geometry-2/5_2.png" width="50%"></center>
-
-<p>三次线性插值，根据同一个t得到对应位置。<br>$b_{0}^{1}={ {b}_{0} }+({ {b}_{1} }-{ {b}_{0} })<em>t$<br>$b_{1}^{1}={ {b}_{1} }+({ {b}_{2} }-{ {b}_{1} })</em>t$<br>$b_{0}^{2}=b_{0}^{1}+(b_{1}^{1}-b_{0}^{1})*t$</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45333934/article/details/108274320">公式渲染错误：Nunjucks Error 解决方案</a></p>
-<script type="math/tex; mode=display">b_{0}^{2}={ {(1-t)}^{2} }{ {b}_{0} }+2t(1-t){ {b}_{1} }+{ {t}^{2} }{ {b}_{2} }</script><p>Four input points in total (Cubic Bézier Curve)<br>相同的递归线性插值</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-2/9.png" width="90%"></center>
-
-<center><img src="/2022/02/25/GAMES101-Geometry-2/6.png" width="100%"></center>
-<center><img src="/2022/02/25/GAMES101-Geometry-2/7.png" width="50%"><img src="/2022/02/25/GAMES101-Geometry-2/7_2.png" width="50%"></center>
-
-<p><strong>通用贝塞尔曲线公式</strong><br><strong>Bernstein polynomial 伯恩斯坦多项式</strong></p>
-<center><img src="/2022/02/25/GAMES101-Geometry-2/8.png" width="50%"></center>
-
-<script type="math/tex; mode=display">\left( \begin{align}
-  & n \nonumber \\
- & i \nonumber \\
-\end{align} \right)=\frac{n!}{i!(n-i)!}</script><p><strong>Bernstein form of a Bézier curve of order n:</strong><br><strong>n阶贝塞尔曲线伯恩斯坦形式（n+1个控制点）：</strong></p>
-<script type="math/tex; mode=display">{ {b}^{n} }(t)=\sum\limits_{i=0}^{n}{ { {b}_{i} }B_{i}^{n}(t)}</script><center><img src="/2022/02/25/GAMES101-Geometry-2/11.png" width="50%"></center>
-伯恩斯坦多项式在t的任何位置，各个多项式的和都为1，是对所有控制点的线性插值。可以看到在t=0和1的位置，多项式其他项都是0，只有首项/末项为1，对应插值结果为首个/最后一个控制点。
-
-#### Properties of Bézier Curves 贝塞尔曲线特性
-
-1. Interpolates endpoints 插值端点
-   曲线端点为首末控制点，对于3次贝塞尔曲线，曲线端点为b0, b3
-2. Tangent to end segments 
-   曲线在首末位置正切于控制点组成的线段，同上${b}'(0)=3({ {b}_{1} }-{ {b}_{0} })$, ${b}'(1)=3({ {b}_{3} }-{ {b}_{2} })$括号中为插值变量t。系数3只是因为三阶曲线有四个控制点，其他阶数并不严格是3。
-3. Affine transformation property 
-   Transform curve by transforming control points
-   对控制点进行仿射变换，再使用变换后的控制点绘制贝塞尔曲线，与直接对贝塞尔曲线进行仿射变换等效。（仅对仿射变换有效，对投影等变换无效）
-4. Convex hull property 凸包性质
-   Curve is within convex hull of control points
-   贝塞尔曲线一定在控制点所围成的凸包内（凸包，板上钉钉子，用个橡皮筋围一下，都是凸角）
-<center><img src="/2022/02/25/GAMES101-Geometry-2/12.png" width="50%"></center>
-<center><font color="#708090" size="2">10阶贝塞尔曲线，11个控制点。</font></center>
-
-<h4 id="Piecewise-Bezier-Curves-分段贝塞尔曲线"><a href="#Piecewise-Bezier-Curves-分段贝塞尔曲线" class="headerlink" title="Piecewise Bézier Curves 分段贝塞尔曲线"></a>Piecewise Bézier Curves 分段贝塞尔曲线</h4><p>对于高阶贝塞尔曲线来说，要控制曲线的形状非常困难，控制点之间都是互相耦合的。因此要实现一个较长的贝塞尔曲线，可以将低阶的贝塞尔曲线连接起来实现 -&gt; Piecewise Bézier Curves。</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-2/13.png" width="50%"></center>
-<center><font color="#708090" size="2">Piecewise Bézier Curves.</font></center>
-
-<p>逐段贝塞尔曲线：每四个控制点，定义一段三阶贝塞尔曲线。对于图中第一段来说，控制点为1234，曲线起止与14控制点。</p>
-<h5 id="Piecewise-Bezier-Curve-–-Continuity-连续性"><a href="#Piecewise-Bezier-Curve-–-Continuity-连续性" class="headerlink" title="Piecewise Bézier Curve – Continuity 连续性"></a>Piecewise Bézier Curve – Continuity 连续性</h5><p>如何使两端曲线连接处光滑，起止点连接（值连续），起止点处切线方向一致，且切线大小相同（导数连续）。</p>
-<p><strong>C0连续</strong>：起止点连接</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-2/14.png" width="100%"></center>
-
-<p><strong>C1连续</strong>：切线连续，两端切线方向相反，长度相同。</p>
-<center><img src="/2022/02/25/GAMES101-Geometry-2/15.png" width="100%"></center>
-
-<h3 id="Bezier-Surfaces-贝塞尔曲面"><a href="#Bezier-Surfaces-贝塞尔曲面" class="headerlink" title="Bézier Surfaces 贝塞尔曲面"></a>Bézier Surfaces 贝塞尔曲面</h3><center><img src="/2022/02/25/GAMES101-Geometry-2/16.png" width="100%"></center>
-<center><font color="#708090" size="2">Bicubic Bézier Surface Patch.</font></center>
-
-<p>通过双线性插值方法得到，双三次贝塞尔曲面，一共4*4个控制点。</p>
-<ol>
-<li>每行拿出四个控制点，在所有时间u上插值，得到一条贝塞尔曲线。</li>
-<li>在每个时间u，又能在对应四条贝塞尔曲线上得到四个曲线上的点。</li>
-<li>在每个时间u，以这四个点为控制点，在所有时间v上插值，又能画出一条贝塞尔曲线，则不同时间u的这条曲线构成了一个贝塞尔曲面。</li>
-<li>对应两个插值时间(u, v)，这两个参数可以映射到曲面上的每个点，参数映射-&gt;所以贝塞尔曲面是显示表示方法。</li>
-</ol>
-<center><img src="/2022/02/25/GAMES101-Geometry-2/17.png" width="100%"></center>
-<center><img src="/2022/02/25/GAMES101-Geometry-2/18.png" width="100%"></center>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1852,7 +1743,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

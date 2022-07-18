@@ -20,17 +20,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="WeChat: shaojiang9650Email: shao_study@163.com">
-<meta property="og:type" content="website">
-<meta property="og:title" content="邵大宝的学习Blog">
-<meta property="og:url" content="http://example.com/archives/page/2/index.html">
+  <meta name="description" content="尝试利用Tensor Core来优化GEMM算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GEMM_Optimization">
+<meta property="og:url" content="http://example.com/2022/07/18/GEMM-shao/index.html">
 <meta property="og:site_name" content="邵大宝的学习Blog">
-<meta property="og:description" content="WeChat: shaojiang9650Email: shao_study@163.com">
+<meta property="og:description" content="尝试利用Tensor Core来优化GEMM算法">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/07/18/GEMM-shao/1.jpg">
+<meta property="article:published_time" content="2022-07-18T14:16:54.000Z">
+<meta property="article:modified_time" content="2022-07-18T14:41:06.407Z">
 <meta property="article:author" content="Jiang Shao">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/07/18/GEMM-shao/1.jpg">
 
-<link rel="canonical" href="http://example.com/archives/page/2/">
+<link rel="canonical" href="http://example.com/2022/07/18/GEMM-shao/">
 
 
 <script id="page-configurations">
@@ -38,12 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Archive | 邵大宝的学习Blog</title>
+  <title>GEMM_Optimization | 邵大宝的学习Blog</title>
   
 
 
@@ -147,234 +151,97 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">Um..! 22 posts in total. Keep on posting.</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/18/GEMM-shao/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jiang Shao">
+      <meta itemprop="description" content="WeChat: shaojiang9650<br>Email: shao_study@163.com">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邵大宝的学习Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GEMM_Optimization
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-07-18 22:16:54 / Modified: 22:41:06" itemprop="dateCreated datePublished" datetime="2022-07-18T22:16:54+08:00">2022-07-18</time>
+            </span>
+
+          
+            <div class="post-description">尝试利用Tensor Core来优化GEMM算法</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2022</span>
-    </div>
+        <h1 id="GEMM-Optimization"><a href="#GEMM-Optimization" class="headerlink" title="GEMM Optimization"></a>GEMM Optimization</h1><blockquote>
+<p>References:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://nvidia-my.sharepoint.com/:v:/r/personal/chandlerz_nvidia_com/Documents/Recordings/Meng%20and%20Perkz%20to%20present%20their%20study%20on%20CUDA%20and%20GEMM%20Optimization-20210709_150416-Meeting%20Recording.mp4?csf=1&amp;web=1&amp;e=yuBM4V">20210716_Meng&amp;Perkz_CUDA and GEMM Optimization (Part I)</a></li>
+<li><a target="_blank" rel="noopener" href="https://nvidia-my.sharepoint.com/:v:/r/personal/chandlerz_nvidia_com/Documents/Recordings/Meng%20and%20Perkz%20to%20present%20their%20study%20on%20CUDA%20and%20GEMM%20Optimization%20(Part%202">20210716_Meng&amp;Perkz_CUDA and GEMM Optimization (Part II)</a>-20210715_160453-Meeting%20Recording.mp4?csf=1&amp;web=1&amp;e=uH1eFo)</li>
+<li>CUDA v11.3: CUDA Samples - 0_Simple<ul>
+<li>bf16TensorCoreGemm       </li>
+<li>tf32TensorCoreGemm</li>
+<li>cudaTensorCoreGemm      </li>
+<li>dmmaTensorCoreGemm      </li>
+<li>immaTensorCoreGemm    </li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h2 id="20210716-Meng-amp-Perkz-CUDA-and-GEMM-Optimization"><a href="#20210716-Meng-amp-Perkz-CUDA-and-GEMM-Optimization" class="headerlink" title="20210716_Meng&amp;Perkz_CUDA and GEMM Optimization"></a>20210716_Meng&amp;Perkz_CUDA and GEMM Optimization</h2><h3 id="GEMM-General-Matrix-Multiplication-通用矩阵乘法"><a href="#GEMM-General-Matrix-Multiplication-通用矩阵乘法" class="headerlink" title="GEMM (General Matrix Multiplication, 通用矩阵乘法)"></a>GEMM (General Matrix Multiplication, 通用矩阵乘法)</h3><script type="math/tex; mode=display">\mathbf{C} = \alpha \mathbf{A} \times \mathbf{B} + \beta \mathbf{C}</script><p>为了简便，一般取$\alpha = 1$，$\beta = 0$：</p>
+<script type="math/tex; mode=display">\mathbf{C} = \mathbf{A} \times \mathbf{B}</script><center><img src="/2022/07/18/GEMM-shao/1.jpg" width="100%" height="100%"></center>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-02-25T17:03:43+08:00"
-              content="2022-02-25">
-          02-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/02/25/GAMES101-Geometry-2/" itemprop="url">
-            <span itemprop="name">GAMES101 Geometry part2</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-02-25T17:02:43+08:00"
-              content="2022-02-25">
-          02-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/02/25/GAMES101-Geometry-3/" itemprop="url">
-            <span itemprop="name">GAMES101 Geometry part3</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-02-25T16:44:37+08:00"
-              content="2022-02-25">
-          02-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/02/25/GAMES101-RayTracing-1/" itemprop="url">
-            <span itemprop="name">GAMES101 RayTracing Part 1</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-02-23T21:41:50+08:00"
-              content="2022-02-23">
-          02-23
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/02/23/cuda-6/" itemprop="url">
-            <span itemprop="name">CUDA学习随记6 C++11中的内存模型 std::memory_order</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-02-22T21:51:12+08:00"
-              content="2022-02-22">
-          02-22
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/02/22/cuda-5/" itemprop="url">
-            <span itemprop="name">CUDA学习随记5 Asynchronous copy cp.async</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-02-20T20:09:48+08:00"
-              content="2022-02-20">
-          02-20
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/02/20/cuda-4/" itemprop="url">
-            <span itemprop="name">CUDA学习随记4 Volta’s Independent Thread Scheduling</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-02-16T01:46:36+08:00"
-              content="2022-02-16">
-          02-16
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/02/16/ComSys-1/" itemprop="url">
-            <span itemprop="name">计算机系统学习随记 原子操作是如何实现的</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-02-11T17:13:37+08:00"
-              content="2022-02-11">
-          02-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/02/11/cuda-3/" itemprop="url">
-            <span itemprop="name">CUDA学习随记3 Memory Fence与Synchronization</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-02-10T22:22:15+08:00"
-              content="2022-02-10">
-          02-10
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/02/10/cuda-2/" itemprop="url">
-            <span itemprop="name">CUDA学习随记2 关于Warp Shuffle Functions *_sync 首个参数mask的作用</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-02-10T13:55:56+08:00"
-              content="2022-02-10">
-          02-10
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/02/10/cuda-1/" itemprop="url">
-            <span itemprop="name">CUDA学习随记1 Using CUDA Warp-Level Primitives</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+<p>其中，矩阵$\mathbf{A}$为$M \times K$，矩阵$\mathbf{B}$为$K \times N$，因而矩阵$\mathbf{C}$为$M \times N$。</p>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/07/16/ComputeLab/" rel="prev" title="ComputeLab">
+      <i class="fa fa-chevron-left"></i> ComputeLab
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
   
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
-  </nav>
+  
+  
 
 
 
@@ -426,6 +293,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GEMM-Optimization"><span class="nav-number">1.</span> <span class="nav-text">GEMM Optimization</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#20210716-Meng-amp-Perkz-CUDA-and-GEMM-Optimization"><span class="nav-number">1.1.</span> <span class="nav-text">20210716_Meng&amp;Perkz_CUDA and GEMM Optimization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GEMM-General-Matrix-Multiplication-%E9%80%9A%E7%94%A8%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95"><span class="nav-number">1.1.1.</span> <span class="nav-text">GEMM (General Matrix Multiplication, 通用矩阵乘法)</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

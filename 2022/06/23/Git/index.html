@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2022/06/23/Git/1.png">
 <meta property="article:published_time" content="2022-06-23T10:16:26.000Z">
-<meta property="article:modified_time" content="2022-07-16T15:15:53.285Z">
+<meta property="article:modified_time" content="2022-07-18T12:32:53.001Z">
 <meta property="article:author" content="Jiang Shao">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2022/06/23/Git/1.png">
@@ -188,7 +188,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-16 23:15:53" itemprop="dateModified" datetime="2022-07-16T23:15:53+08:00">2022-07-16</time>
+                <time title="Modified: 2022-07-18 20:32:53" itemprop="dateModified" datetime="2022-07-18T20:32:53+08:00">2022-07-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -360,7 +360,7 @@
 <li>在ComputeLab上找到node=cl1-3001，开启交互式任务，如果非空闲就等待<br><code>crun -q &#39;node=cl1-3001&#39; -i --wait</code><br>重新登陆后发现刚才load的docker image已经没有了，看来只要exit退出就删除所有痕迹，每次使用都需要重新load docker image</li>
 </ul>
 </blockquote>
-
+<h3 id="2022-7-18"><a href="#2022-7-18" class="headerlink" title="2022.7.18"></a>2022.7.18</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">docker run --network=host --gpus=all --cap-add=SYS_ADMIN -id -v /home/jiangs/GEMM_shao:/GEMM_shao --name=GEMM_shao physion:0.4Cuda11.4 /bin/bash</span><br><span class="line"></span><br><span class="line">docker run --network=host --gpus=all --cap-add=SYS_ADMIN -id -v /home/jiangs/shao_physion/PhysionGas:/PhysionGas --name=PhysionGas_shao physion:0.4Cuda11.4 /bin/bash</span><br><span class="line"></span><br><span class="line">docker exec -it GEMM_shao /bin/bash</span><br><span class="line"></span><br><span class="line">VSCode-文件-首选项-搜索docker:host-修改IP为10.19.203.137-重启VSCode</span><br><span class="line">VSCode-左下角-Attach to running container-GEMM_shao</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -440,7 +440,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">Git用户名和邮箱的配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git%E5%9F%BA%E6%9C%AC%E7%90%86%E8%AE%BA"><span class="nav-number">1.2.</span> <span class="nav-text">Git基本理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E6%94%B9%E5%8A%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">提交改动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E8%8E%B7%E5%8F%96"><span class="nav-number">1.2.2.</span> <span class="nav-text">从远程仓库获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%9B%9E%E6%BB%9A"><span class="nav-number">1.2.3.</span> <span class="nav-text">从本地仓库回滚</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E6%9A%82%E5%AD%98%E5%8C%BA%E5%9B%9E%E6%BB%9A%E5%88%B0%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95"><span class="nav-number">1.2.4.</span> <span class="nav-text">从暂存区回滚到工作目录</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker"><span class="nav-number">2.</span> <span class="nav-text">Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#docker%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%AE%B9%E5%99%A8"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">docker创建一个容器:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84%E9%95%9C%E5%83%8F"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">创建一个自己的镜像</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">Git用户名和邮箱的配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git%E5%9F%BA%E6%9C%AC%E7%90%86%E8%AE%BA"><span class="nav-number">1.2.</span> <span class="nav-text">Git基本理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E6%94%B9%E5%8A%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">提交改动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E8%8E%B7%E5%8F%96"><span class="nav-number">1.2.2.</span> <span class="nav-text">从远程仓库获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%9B%9E%E6%BB%9A"><span class="nav-number">1.2.3.</span> <span class="nav-text">从本地仓库回滚</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E6%9A%82%E5%AD%98%E5%8C%BA%E5%9B%9E%E6%BB%9A%E5%88%B0%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95"><span class="nav-number">1.2.4.</span> <span class="nav-text">从暂存区回滚到工作目录</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker"><span class="nav-number">2.</span> <span class="nav-text">Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#docker%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%AE%B9%E5%99%A8"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">docker创建一个容器:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84%E9%95%9C%E5%83%8F"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">创建一个自己的镜像</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2022-7-18"><span class="nav-number">2.0.1.</span> <span class="nav-text">2022.7.18</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -456,7 +456,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
