@@ -28,7 +28,7 @@
 <meta property="og:description" content="MarkDown文件VS Code 中 MarkDown 文件快捷键    快捷键 描述     ctrl + B 切换粗体   ctrl + I 切换斜体   alt + S 切换删除线   ctrl + shift + [\&#x2F;] 切换标题级别   alt + shift + F 表格自动缩进     表格中内容对齐方式 -: 设置内容和标题栏居右对齐。 :- 设置内容和标题栏居左对齐。 :-:">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-07T09:36:57.000Z">
-<meta property="article:modified_time" content="2022-07-07T09:56:35.217Z">
+<meta property="article:modified_time" content="2022-07-17T18:07:45.228Z">
 <meta property="article:author" content="Jiang Shao">
 <meta name="twitter:card" content="summary">
 
@@ -178,10 +178,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-07-07 17:36:57 / Modified: 17:56:35" itemprop="dateCreated datePublished" datetime="2022-07-07T17:36:57+08:00">2022-07-07</time>
+              <time title="Created: 2022-07-07 17:36:57" itemprop="dateCreated datePublished" datetime="2022-07-07T17:36:57+08:00">2022-07-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-18 02:07:45" itemprop="dateModified" datetime="2022-07-18T02:07:45+08:00">2022-07-18</time>
+              </span>
 
           
 
@@ -231,7 +237,23 @@
 <li><code>:-</code> 设置内容和标题栏居左对齐。</li>
 <li><code>:-:</code> 设置内容和标题栏居中对齐。</li>
 </ul>
-<h1 id="使用Hexo-GitHub搭建博客"><a href="#使用Hexo-GitHub搭建博客" class="headerlink" title="使用Hexo + GitHub搭建博客"></a>使用Hexo + GitHub搭建博客</h1>
+<h1 id="使用Hexo-GitHub搭建博客"><a href="#使用Hexo-GitHub搭建博客" class="headerlink" title="使用Hexo + GitHub搭建博客"></a>使用Hexo + GitHub搭建博客</h1><h1 id="Hexo免输入密码部署到github-亲测有效！！！"><a href="#Hexo免输入密码部署到github-亲测有效！！！" class="headerlink" title="Hexo免输入密码部署到github (亲测有效！！！)"></a>Hexo免输入密码部署到github (亲测有效！！！)</h1><p>1.设置SSH<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.sh </span><br><span class="line">sudo ssh-keygen -t rsa -C &quot;你的注册邮箱&quot; #生成ssh</span><br><span class="line">sudo gedit id_rsa.pub #打开id_rsa.pub文件</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li><p>登录到github打开设置；<br>选择SSH and GPG keys，点New SSH，<br>然后配置SSH，点击Add SSH key完成。</p>
+</li>
+<li><p>接下来测试配置是否成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+<p>如果出现以下内容即表示配置完成：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hi username! You&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>4.修改_config.yml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@github.com:xxxx/xxxx.github.io.git</span></span><br><span class="line">  <span class="comment">#格式必须是上述格式</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@github.com:StudyingShao/StudyingShao.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br><span class="line">  <span class="attr">token:</span> <span class="string">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</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">StudyingShao</span></span><br><span class="line">  <span class="attr">email:</span> <span class="string">shao_study@163.com</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>最后<code>hexo d</code>部署即可</li>
+</ol>
+
     </div>
 
     
@@ -311,7 +333,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MarkDown%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">MarkDown文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#VS-Code-%E4%B8%AD-MarkDown-%E6%96%87%E4%BB%B6%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-number">1.0.1.</span> <span class="nav-text">VS Code 中 MarkDown 文件快捷键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E6%A0%BC%E4%B8%AD%E5%86%85%E5%AE%B9%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F"><span class="nav-number">1.0.2.</span> <span class="nav-text">表格中内容对齐方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Hexo-GitHub%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2"><span class="nav-number">2.</span> <span class="nav-text">使用Hexo + GitHub搭建博客</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MarkDown%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">MarkDown文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#VS-Code-%E4%B8%AD-MarkDown-%E6%96%87%E4%BB%B6%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-number">1.0.1.</span> <span class="nav-text">VS Code 中 MarkDown 文件快捷键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E6%A0%BC%E4%B8%AD%E5%86%85%E5%AE%B9%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F"><span class="nav-number">1.0.2.</span> <span class="nav-text">表格中内容对齐方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Hexo-GitHub%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2"><span class="nav-number">2.</span> <span class="nav-text">使用Hexo + GitHub搭建博客</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hexo%E5%85%8D%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81%E9%83%A8%E7%BD%B2%E5%88%B0github-%E4%BA%B2%E6%B5%8B%E6%9C%89%E6%95%88%EF%BC%81%EF%BC%81%EF%BC%81"><span class="nav-number">3.</span> <span class="nav-text">Hexo免输入密码部署到github (亲测有效！！！)</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
