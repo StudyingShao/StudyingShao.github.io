@@ -28,7 +28,7 @@
 <meta property="og:description" content="ComputeLab Usage Reference:Rjeng’s Devtech New Hire Training  VSCode连接ComputeLab  (非常的不好用总掉线！) VSCode端安装拓展Remote-SSH 设置-拓展-Remote-SSH-always reveal the SSH login terminal ssh jiangs@computelab 卡住之后VSC">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-16T12:29:55.000Z">
-<meta property="article:modified_time" content="2022-07-16T15:09:29.101Z">
+<meta property="article:modified_time" content="2022-07-22T17:55:28.160Z">
 <meta property="article:author" content="Jiang Shao">
 <meta name="twitter:card" content="summary">
 
@@ -178,10 +178,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-07-16 20:29:55 / Modified: 23:09:29" itemprop="dateCreated datePublished" datetime="2022-07-16T20:29:55+08:00">2022-07-16</time>
+              <time title="Created: 2022-07-16 20:29:55" itemprop="dateCreated datePublished" datetime="2022-07-16T20:29:55+08:00">2022-07-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-23 01:55:28" itemprop="dateModified" datetime="2022-07-23T01:55:28+08:00">2022-07-23</time>
+              </span>
 
           
 
@@ -266,6 +272,21 @@
 <li><p>CUDA Path pointer in the Makefile that we need to set<br><code>CUDA_PATH ?= /home/scratch.svc_compute_arch/release/cuda_toolkit/r11.5/x86_64/latest/</code></p>
 </li>
 </ul>
+<h4 id="连接自己办公室的台式机"><a href="#连接自己办公室的台式机" class="headerlink" title="连接自己办公室的台式机"></a>连接自己办公室的台式机</h4><p>ssh -l root 10.19.203.137</p>
+<h4 id="起一个虚拟机"><a href="#起一个虚拟机" class="headerlink" title="起一个虚拟机"></a>起一个虚拟机</h4><p>screen</p>
+<h4 id="返回虚拟机"><a href="#返回虚拟机" class="headerlink" title="返回虚拟机"></a>返回虚拟机</h4><p>screen -x XXXX</p>
+<h4 id="连接ComputeLab-dlcluster"><a href="#连接ComputeLab-dlcluster" class="headerlink" title="连接ComputeLab/dlcluster"></a>连接ComputeLab/dlcluster</h4><p>ssh jiangs@computelab<br>ssh jiangs@dlcluster</p>
+<h4 id="获取一个节点"><a href="#获取一个节点" class="headerlink" title="获取一个节点"></a>获取一个节点</h4><p>srun -p a100-pcie-80gb-product -t 240 —pty /bin/bash</p>
+<h4 id="起一个docker-container"><a href="#起一个docker-container" class="headerlink" title="起一个docker container"></a>起一个docker container</h4><p>docker run \<br>        —network=host —gpus=all -it \<br>        -v /home/scratch.jiangs_sw/GEMM_shao:/GEMM_shao \<br>        —user=49095:30  —name=GEMM nvcr.io/nvidia/tensorflow:21.06-tf1-py3 /bin/bash </p>
+<h4 id="Perkz目录"><a href="#Perkz目录" class="headerlink" title="Perkz目录"></a>Perkz目录</h4><p>cd /GEMM_shao/cuda_practice/Gemm/Optimization-Stage-1</p>
+<h4 id="Base-Line-NCU"><a href="#Base-Line-NCU" class="headerlink" title="Base Line NCU"></a>Base Line NCU</h4><p>ncu —kernel-id ::MatrixMulCUDA:1 -o 2022.7.22_ncu-GEMM-MatrixMulCUDA_0 -f —section ComputeWorkloadAnalysis —section InstructionStats —section LaunchStats —section MemoryWorkloadAnalysis —section Occupancy —section SchedulerStats —section SourceCounters —section SpeedOfLight —section WarpStateStats —section MemoryWorkloadAnalysis_Chart —section MemoryWorkloadAnalysis_Tables —section SpeedOfLight —section SpeedOfLight_RooflineChart —section LaunchStats ./0_base_line 0</p>
+<p>ncu —kernel-id ::MatrixMulCUDA:1 -o 2022.7.22_ncu-GEMM-MatrixMulCUDA_1 -f —section ComputeWorkloadAnalysis —section InstructionStats —section LaunchStats —section MemoryWorkloadAnalysis —section Occupancy —section SchedulerStats —section SourceCounters —section SpeedOfLight —section WarpStateStats —section MemoryWorkloadAnalysis_Chart —section MemoryWorkloadAnalysis_Tables —section SpeedOfLight —section SpeedOfLight_RooflineChart —section LaunchStats ./1_shared_memory 0</p>
+<p>ncu —kernel-id ::MatrixMulCUDA:1 -o 2022.7.22_ncu-GEMM-MatrixMulCUDA_2 -f —section ComputeWorkloadAnalysis —section InstructionStats —section LaunchStats —section MemoryWorkloadAnalysis —section Occupancy —section SchedulerStats —section SourceCounters —section SpeedOfLight —section WarpStateStats —section MemoryWorkloadAnalysis_Chart —section MemoryWorkloadAnalysis_Tables —section SpeedOfLight —section SpeedOfLight_RooflineChart —section LaunchStats ./2_shared_memory_thread_tile 0</p>
+<p>ncu —kernel-id ::MatrixMulCUDA:1 -o 2022.7.22_ncu-GEMM-MatrixMulCUDA_3 -f —section ComputeWorkloadAnalysis —section InstructionStats —section LaunchStats —section MemoryWorkloadAnalysis —section Occupancy —section SchedulerStats —section SourceCounters —section SpeedOfLight —section WarpStateStats —section MemoryWorkloadAnalysis_Chart —section MemoryWorkloadAnalysis_Tables —section SpeedOfLight —section SpeedOfLight_RooflineChart —section LaunchStats ./3_shared_memory_thread_tile_STG_float4 0</p>
+<p>ncu —kernel-id ::MatrixMulCUDA:1 -o 2022.7.22_ncu-GEMM-MatrixMulCUDA_4 -f —section ComputeWorkloadAnalysis —section InstructionStats —section LaunchStats —section MemoryWorkloadAnalysis —section Occupancy —section SchedulerStats —section SourceCounters —section SpeedOfLight —section WarpStateStats —section MemoryWorkloadAnalysis_Chart —section MemoryWorkloadAnalysis_Tables —section SpeedOfLight —section SpeedOfLight_RooflineChart —section LaunchStats ./4_thread_tile_8_4 0</p>
+<p>ncu —kernel-id ::MatrixMulCUDA:1 -o 2022.7.22_ncu-GEMM-MatrixMulCUDA_5 -f —section ComputeWorkloadAnalysis —section InstructionStats —section LaunchStats —section MemoryWorkloadAnalysis —section Occupancy —section SchedulerStats —section SourceCounters —section SpeedOfLight —section WarpStateStats —section MemoryWorkloadAnalysis_Chart —section MemoryWorkloadAnalysis_Tables —section SpeedOfLight —section SpeedOfLight_RooflineChart —section LaunchStats ./5_thread_tile_16_4 0</p>
+<p>ncu —kernel-id ::MatrixMulCUDA:1 -o 2022.7.22_ncu-GEMM-MatrixMulCUDA_6 -f —section ComputeWorkloadAnalysis —section InstructionStats —section LaunchStats —section MemoryWorkloadAnalysis —section Occupancy —section SchedulerStats —section SourceCounters —section SpeedOfLight —section WarpStateStats —section MemoryWorkloadAnalysis_Chart —section MemoryWorkloadAnalysis_Tables —section SpeedOfLight —section SpeedOfLight_RooflineChart —section LaunchStats ./6_swizzle_float4 0</p>
+<h4 id="调用nvcc直接编译"><a href="#调用nvcc直接编译" class="headerlink" title="调用nvcc直接编译"></a>调用nvcc直接编译</h4><p>nvcc -o 输出文件名 XXX.cu<br>nvcc -o GEMM_shao GEMM_perkz.cu</p>
 
     </div>
 
@@ -346,7 +367,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ComputeLab-Usage"><span class="nav-number">1.</span> <span class="nav-text">ComputeLab Usage</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#VSCode%E8%BF%9E%E6%8E%A5ComputeLab-%E9%9D%9E%E5%B8%B8%E7%9A%84%E4%B8%8D%E5%A5%BD%E7%94%A8%E6%80%BB%E6%8E%89%E7%BA%BF%EF%BC%81"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">VSCode连接ComputeLab  (非常的不好用总掉线！)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">1.0.0.2.</span> <span class="nav-text"> </span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#crun-interactive-examples"><span class="nav-number">1.0.1.</span> <span class="nav-text">crun interactive_examples</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Attribute-Description"><span class="nav-number">1.1.</span> <span class="nav-text">Attribute               : Description</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ComputeLab-Usage"><span class="nav-number">1.</span> <span class="nav-text">ComputeLab Usage</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#VSCode%E8%BF%9E%E6%8E%A5ComputeLab-%E9%9D%9E%E5%B8%B8%E7%9A%84%E4%B8%8D%E5%A5%BD%E7%94%A8%E6%80%BB%E6%8E%89%E7%BA%BF%EF%BC%81"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">VSCode连接ComputeLab  (非常的不好用总掉线！)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">1.0.0.2.</span> <span class="nav-text"> </span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#crun-interactive-examples"><span class="nav-number">1.0.1.</span> <span class="nav-text">crun interactive_examples</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Attribute-Description"><span class="nav-number">1.1.</span> <span class="nav-text">Attribute               : Description</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E8%87%AA%E5%B7%B1%E5%8A%9E%E5%85%AC%E5%AE%A4%E7%9A%84%E5%8F%B0%E5%BC%8F%E6%9C%BA"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">连接自己办公室的台式机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%B7%E4%B8%80%E4%B8%AA%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">起一个虚拟机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">返回虚拟机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5ComputeLab-dlcluster"><span class="nav-number">1.1.0.4.</span> <span class="nav-text">连接ComputeLab&#x2F;dlcluster</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E4%B8%80%E4%B8%AA%E8%8A%82%E7%82%B9"><span class="nav-number">1.1.0.5.</span> <span class="nav-text">获取一个节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%B7%E4%B8%80%E4%B8%AAdocker-container"><span class="nav-number">1.1.0.6.</span> <span class="nav-text">起一个docker container</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Perkz%E7%9B%AE%E5%BD%95"><span class="nav-number">1.1.0.7.</span> <span class="nav-text">Perkz目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Base-Line-NCU"><span class="nav-number">1.1.0.8.</span> <span class="nav-text">Base Line NCU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E7%94%A8nvcc%E7%9B%B4%E6%8E%A5%E7%BC%96%E8%AF%91"><span class="nav-number">1.1.0.9.</span> <span class="nav-text">调用nvcc直接编译</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

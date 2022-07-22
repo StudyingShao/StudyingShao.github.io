@@ -176,10 +176,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-07-18 22:16:54 / Modified: 23:40:59" itemprop="dateCreated datePublished" datetime="2022-07-18T22:16:54+08:00">2022-07-18</time>
+              <time title="Created: 2022-07-18 22:16:54" itemprop="dateCreated datePublished" datetime="2022-07-18T22:16:54+08:00">2022-07-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-23 02:00:15" itemprop="dateModified" datetime="2022-07-23T02:00:15+08:00">2022-07-23</time>
+              </span>
 
           
 
@@ -242,10 +248,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-07-16 20:29:55 / Modified: 23:09:29" itemprop="dateCreated datePublished" datetime="2022-07-16T20:29:55+08:00">2022-07-16</time>
+              <time title="Created: 2022-07-16 20:29:55" itemprop="dateCreated datePublished" datetime="2022-07-16T20:29:55+08:00">2022-07-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-23 01:55:28" itemprop="dateModified" datetime="2022-07-23T01:55:28+08:00">2022-07-23</time>
+              </span>
 
           
 
@@ -330,6 +342,21 @@
 <li><p>CUDA Path pointer in the Makefile that we need to set<br><code>CUDA_PATH ?= /home/scratch.svc_compute_arch/release/cuda_toolkit/r11.5/x86_64/latest/</code></p>
 </li>
 </ul>
+<h4 id="连接自己办公室的台式机"><a href="#连接自己办公室的台式机" class="headerlink" title="连接自己办公室的台式机"></a>连接自己办公室的台式机</h4><p>ssh -l root 10.19.203.137</p>
+<h4 id="起一个虚拟机"><a href="#起一个虚拟机" class="headerlink" title="起一个虚拟机"></a>起一个虚拟机</h4><p>screen</p>
+<h4 id="返回虚拟机"><a href="#返回虚拟机" class="headerlink" title="返回虚拟机"></a>返回虚拟机</h4><p>screen -x XXXX</p>
+<h4 id="连接ComputeLab-dlcluster"><a href="#连接ComputeLab-dlcluster" class="headerlink" title="连接ComputeLab/dlcluster"></a>连接ComputeLab/dlcluster</h4><p>ssh jiangs@computelab<br>ssh jiangs@dlcluster</p>
+<h4 id="获取一个节点"><a href="#获取一个节点" class="headerlink" title="获取一个节点"></a>获取一个节点</h4><p>srun -p a100-pcie-80gb-product -t 240 —pty /bin/bash</p>
+<h4 id="起一个docker-container"><a href="#起一个docker-container" class="headerlink" title="起一个docker container"></a>起一个docker container</h4><p>docker run \<br>        —network=host —gpus=all -it \<br>        -v /home/scratch.jiangs_sw/GEMM_shao:/GEMM_shao \<br>        —user=49095:30  —name=GEMM nvcr.io/nvidia/tensorflow:21.06-tf1-py3 /bin/bash </p>
+<h4 id="Perkz目录"><a href="#Perkz目录" class="headerlink" title="Perkz目录"></a>Perkz目录</h4><p>cd /GEMM_shao/cuda_practice/Gemm/Optimization-Stage-1</p>
+<h4 id="Base-Line-NCU"><a href="#Base-Line-NCU" class="headerlink" title="Base Line NCU"></a>Base Line NCU</h4><p>ncu —kernel-id ::MatrixMulCUDA:1 -o 2022.7.22_ncu-GEMM-MatrixMulCUDA_0 -f —section ComputeWorkloadAnalysis —section InstructionStats —section LaunchStats —section MemoryWorkloadAnalysis —section Occupancy —section SchedulerStats —section SourceCounters —section SpeedOfLight —section WarpStateStats —section MemoryWorkloadAnalysis_Chart —section MemoryWorkloadAnalysis_Tables —section SpeedOfLight —section SpeedOfLight_RooflineChart —section LaunchStats ./0_base_line 0</p>
+<p>ncu —kernel-id ::MatrixMulCUDA:1 -o 2022.7.22_ncu-GEMM-MatrixMulCUDA_1 -f —section ComputeWorkloadAnalysis —section InstructionStats —section LaunchStats —section MemoryWorkloadAnalysis —section Occupancy —section SchedulerStats —section SourceCounters —section SpeedOfLight —section WarpStateStats —section MemoryWorkloadAnalysis_Chart —section MemoryWorkloadAnalysis_Tables —section SpeedOfLight —section SpeedOfLight_RooflineChart —section LaunchStats ./1_shared_memory 0</p>
+<p>ncu —kernel-id ::MatrixMulCUDA:1 -o 2022.7.22_ncu-GEMM-MatrixMulCUDA_2 -f —section ComputeWorkloadAnalysis —section InstructionStats —section LaunchStats —section MemoryWorkloadAnalysis —section Occupancy —section SchedulerStats —section SourceCounters —section SpeedOfLight —section WarpStateStats —section MemoryWorkloadAnalysis_Chart —section MemoryWorkloadAnalysis_Tables —section SpeedOfLight —section SpeedOfLight_RooflineChart —section LaunchStats ./2_shared_memory_thread_tile 0</p>
+<p>ncu —kernel-id ::MatrixMulCUDA:1 -o 2022.7.22_ncu-GEMM-MatrixMulCUDA_3 -f —section ComputeWorkloadAnalysis —section InstructionStats —section LaunchStats —section MemoryWorkloadAnalysis —section Occupancy —section SchedulerStats —section SourceCounters —section SpeedOfLight —section WarpStateStats —section MemoryWorkloadAnalysis_Chart —section MemoryWorkloadAnalysis_Tables —section SpeedOfLight —section SpeedOfLight_RooflineChart —section LaunchStats ./3_shared_memory_thread_tile_STG_float4 0</p>
+<p>ncu —kernel-id ::MatrixMulCUDA:1 -o 2022.7.22_ncu-GEMM-MatrixMulCUDA_4 -f —section ComputeWorkloadAnalysis —section InstructionStats —section LaunchStats —section MemoryWorkloadAnalysis —section Occupancy —section SchedulerStats —section SourceCounters —section SpeedOfLight —section WarpStateStats —section MemoryWorkloadAnalysis_Chart —section MemoryWorkloadAnalysis_Tables —section SpeedOfLight —section SpeedOfLight_RooflineChart —section LaunchStats ./4_thread_tile_8_4 0</p>
+<p>ncu —kernel-id ::MatrixMulCUDA:1 -o 2022.7.22_ncu-GEMM-MatrixMulCUDA_5 -f —section ComputeWorkloadAnalysis —section InstructionStats —section LaunchStats —section MemoryWorkloadAnalysis —section Occupancy —section SchedulerStats —section SourceCounters —section SpeedOfLight —section WarpStateStats —section MemoryWorkloadAnalysis_Chart —section MemoryWorkloadAnalysis_Tables —section SpeedOfLight —section SpeedOfLight_RooflineChart —section LaunchStats ./5_thread_tile_16_4 0</p>
+<p>ncu —kernel-id ::MatrixMulCUDA:1 -o 2022.7.22_ncu-GEMM-MatrixMulCUDA_6 -f —section ComputeWorkloadAnalysis —section InstructionStats —section LaunchStats —section MemoryWorkloadAnalysis —section Occupancy —section SchedulerStats —section SourceCounters —section SpeedOfLight —section WarpStateStats —section MemoryWorkloadAnalysis_Chart —section MemoryWorkloadAnalysis_Tables —section SpeedOfLight —section SpeedOfLight_RooflineChart —section LaunchStats ./6_swizzle_float4 0</p>
+<h4 id="调用nvcc直接编译"><a href="#调用nvcc直接编译" class="headerlink" title="调用nvcc直接编译"></a>调用nvcc直接编译</h4><p>nvcc -o 输出文件名 XXX.cu<br>nvcc -o GEMM_shao GEMM_perkz.cu</p>
 
       
     </div>
